@@ -1,0 +1,523 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/frame_silver"
+    android:padding="16dp">
+
+    <!-- ========== HEADER ========== -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/logoText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="EXODASH"
+                android:textColor="#C0C0C0"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.15" />
+
+            <TextView
+                android:id="@+id/byText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="BY ALEX. P"
+                android:textColor="#666666"
+                android:textSize="9sp"
+                android:letterSpacing="0.2"
+                android:layout_marginTop="2dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/statusExo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="EXODASH: OFFLINE"
+                android:textColor="#FFAA00"
+                android:textSize="10sp"
+                android:layout_marginEnd="12dp" />
+
+            <TextView
+                android:id="@+id/statusObd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="OBD: OFFLINE"
+                android:textColor="#FF3333"
+                android:textSize="10sp"
+                android:layout_marginEnd="12dp" />
+
+            <TextView
+                android:id="@+id/statusUser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="USUÁRIO: SENHOR"
+                android:textColor="#00FFCC"
+                android:textSize="10sp"
+                android:layout_marginEnd="12dp" />
+
+            <!-- BOTAO CONFIGURACOES -->
+            <LinearLayout
+                android:id="@+id/btnConfig"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="@drawable/shortcut_bg">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="⚙"
+                    android:textColor="#00FFCC"
+                    android:textSize="18sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- ========== DIVISORIA ========== -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/divider_gradient"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp" />
+
+    <!-- ========== ZONA CENTRAL ========== -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <!-- TELEMETRIA (esquerda) -->
+        <LinearLayout
+            android:id="@+id/telemetryLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="VELOCIDADE"
+                    android:textColor="#888888"
+                    android:textSize="9sp"
+                    android:letterSpacing="0.15" />
+                <TextView
+                    android:id="@+id/telSpeed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="--"
+                    android:textColor="#666666"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="RPM"
+                    android:textColor="#888888"
+                    android:textSize="9sp" />
+                <TextView
+                    android:id="@+id/telRpm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="--"
+                    android:textColor="#666666"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="MOTOR"
+                    android:textColor="#888888"
+                    android:textSize="9sp" />
+                <TextView
+                    android:id="@+id/telTemp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="--"
+                    android:textColor="#666666"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="COMBUSTÍVEL"
+                    android:textColor="#888888"
+                    android:textSize="9sp" />
+                <TextView
+                    android:id="@+id/telFuel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="--"
+                    android:textColor="#666666"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="BATERIA"
+                    android:textColor="#888888"
+                    android:textSize="9sp" />
+                <TextView
+                    android:id="@+id/telBattery"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="--"
+                    android:textColor="#666666"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- BOSS (centro) -->
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp">
+
+            <View
+                android:id="@+id/bossGlow"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:layout_gravity="center"
+                android:background="@drawable/boss_glow" />
+
+            <Button
+                android:id="@+id/bossButton"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:text="BOSS"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#00FFCC"
+                android:letterSpacing="0.15"
+                android:background="@drawable/boss_button_bg"
+                android:stateListAnimator="@null" />
+        </FrameLayout>
+
+        <!-- DIREITA: relogio + musica -->
+        <LinearLayout
+            android:id="@+id/rightColumn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="end">
+
+            <LinearLayout
+                android:id="@+id/clockLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="end">
+
+                <FrameLayout
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
+                    android:background="@drawable/clock_ring">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/clockTime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="--:--"
+                            android:textColor="#E8E8E8"
+                            android:textSize="26sp"
+                            android:fontFamily="sans-serif-thin"
+                            android:letterSpacing="0.05" />
+
+                        <View
+                            android:layout_width="40dp"
+                            android:layout_height="1dp"
+                            android:background="#4000FFCC"
+                            android:layout_marginTop="4dp" />
+
+                        <TextView
+                            android:id="@+id/clockSeconds"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=":--"
+                            android:textColor="#00FFCC"
+                            android:textSize="10sp"
+                            android:letterSpacing="0.2"
+                            android:alpha="0.6"
+                            android:layout_marginTop="4dp" />
+                    </LinearLayout>
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/clockDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-- DE --------"
+                    android:textColor="#666666"
+                    android:textSize="8sp"
+                    android:letterSpacing="0.25"
+                    android:layout_marginTop="6dp" />
+
+                <TextView
+                    android:id="@+id/clockDay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="----------"
+                    android:textColor="#00FFCC"
+                    android:textSize="9sp"
+                    android:letterSpacing="0.15"
+                    android:layout_marginTop="1dp" />
+            </LinearLayout>
+
+            <!-- FAIXA DE MUSICA -->
+            <LinearLayout
+                android:id="@+id/musicFrame"
+                android:layout_width="170dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/music_frame_bg"
+                android:padding="8dp"
+                android:layout_marginTop="10dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TOCANDO AGORA"
+                    android:textColor="#00FFCC"
+                    android:textSize="7sp"
+                    android:letterSpacing="0.2"
+                    android:alpha="0.7" />
+
+                <TextView
+                    android:id="@+id/musicTrack"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="---"
+                    android:textColor="#E8E8E8"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:layout_marginTop="4dp" />
+
+                <TextView
+                    android:id="@+id/musicArtist"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="---"
+                    android:textColor="#888888"
+                    android:textSize="8sp"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:layout_marginTop="1dp" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@drawable/music_progress_bg"
+                    android:layout_marginTop="6dp">
+                    <View
+                        android:id="@+id/musicProgress"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/music_progress_bar" />
+                </FrameLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <!-- ========== TRIANGULO DE ERRO ========== -->
+    <View
+        android:id="@+id/errorTriangle"
+        android:layout_width="28dp"
+        android:layout_height="24dp"
+        android:layout_gravity="end"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="4dp"
+        android:background="@drawable/error_triangle"
+        android:visibility="gone" />
+
+    <!-- ========== RODAPE ========== -->
+    <LinearLayout
+        android:id="@+id/bottomLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingTop="10dp">
+
+        <LinearLayout
+            android:id="@+id/btnTelefone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_marginEnd="20dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="@drawable/shortcut_ripple">
+            <TextView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:text="T"
+                android:textSize="14sp"
+                android:textColor="#00FFCC"
+                android:gravity="center"
+                android:background="@drawable/shortcut_bg" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Telefone"
+                android:textColor="#666666"
+                android:textSize="8sp"
+                android:layout_marginTop="3dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/btnMidia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_marginEnd="20dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="@drawable/shortcut_ripple">
+            <TextView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:text="M"
+                android:textSize="14sp"
+                android:textColor="#00FFCC"
+                android:gravity="center"
+                android:background="@drawable/shortcut_bg" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mídia"
+                android:textColor="#666666"
+                android:textSize="8sp"
+                android:layout_marginTop="3dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/btnGps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_marginEnd="20dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="@drawable/shortcut_ripple">
+            <TextView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:text="G"
+                android:textSize="14sp"
+                android:textColor="#00FFCC"
+                android:gravity="center"
+                android:background="@drawable/shortcut_bg" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="GPS"
+                android:textColor="#666666"
+                android:textSize="8sp"
+                android:layout_marginTop="3dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/btnApps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="@drawable/shortcut_ripple">
+            <TextView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:text="A"
+                android:textSize="14sp"
+                android:textColor="#00FFCC"
+                android:gravity="center"
+                android:background="@drawable/shortcut_bg" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="APPS"
+                android:textColor="#666666"
+                android:textSize="8sp"
+                android:layout_marginTop="3dp" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

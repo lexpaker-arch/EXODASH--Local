@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>EXODASH — Splash Preview</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #0d0d0d;
+    font-family: Roboto, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 30px;
+    gap: 20px;
+  }
+  .label {
+    color: #666;
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+  .screen {
+    width: 920px;
+    height: 520px;
+    background: #000;
+    border: 3px solid #C0C0C0;
+    border-radius: 6px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 40px rgba(192,192,192,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .video-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #000 0%, #001a1a 50%, #000 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  /* Efeito de scanline sutil */
+  .video-placeholder::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent 0px,
+      transparent 3px,
+      rgba(0,255,204,0.02) 3px,
+      rgba(0,255,204,0.02) 4px
+    );
+    pointer-events: none;
+  }
+  /* Círculo pulsante */
+  .pulse-circle {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    border: 2px solid #00FFCC;
+    box-shadow: 0 0 60px rgba(0,255,204,0.6), inset 0 0 40px rgba(0,255,204,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: pulse 2s ease-in-out infinite;
+    position: relative;
+  }
+  @keyframes pulse {
+    0%, 100% {
+      transform: scale(1);
+      box-shadow: 0 0 60px rgba(0,255,204,0.6), inset 0 0 40px rgba(0,255,204,0.15);
+    }
+    50% {
+      transform: scale(1.05);
+      box-shadow: 0 0 100px rgba(0,255,204,0.9), inset 0 0 60px rgba(0,255,204,0.25);
+    }
+  }
+  .pulse-circle .logo {
+    color: #00FFCC;
+    font-size: 28px;
+    font-weight: bold;
+    letter-spacing: 6px;
+    text-shadow: 0 0 20px rgba(0,255,204,0.8);
+  }
+  .by-splash {
+    position: absolute;
+    bottom: 24px;
+    color: #666;
+    font-size: 11px;
+    letter-spacing: 4px;
+  }
+  /* Barra de progresso do splash */
+  .progress-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: #00FFCC;
+    box-shadow: 0 0 10px rgba(0,255,204,0.8);
+    animation: progress 8s linear forwards;
+  }
+  @keyframes progress {
+    0% { width: 0%; }
+    100% { width: 100%; }
+  }
+  /* Contador */
+  .counter {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    color: #00FFCC;
+    font-size: 11px;
+    letter-spacing: 3px;
+    font-variant-numeric: tabular-nums;
+    opacity: 0.6;
+  }
+  .note {
+    color: #555;
+    font-size: 11px;
+    text-align: center;
+    max-width: 920px;
+    line-height: 1.6;
+  }
+  .note b { color: #00FFCC; }
+</style>
+</head>
+<body>
+
+  <div class="label">SPLASH — 8 segundos com vídeo</div>
+
+  <div class="screen">
+    <div class="video-placeholder">
+      <div class="counter" id="counter">8.0s</div>
+
+      <div class="pulse-circle">
+        <div class="logo">EXODASH</div>
+      </div>
+
+      <div class="by-splash">BY ALEX. P</div>
+
+      <div class="progress-bar"></div>
+    </div>
+  </div>
+
+  <div class="note">
+    <b>O que aparece:</b> seu vídeo <code>splash.mp4</code> em tela cheia, com som, sem opção de pular.<br>
+    <b>Onde está:</b> <code>app/src/main/res/raw/splash.mp4</code><br>
+    <b>Fallback:</b> se o vídeo falhar, mostra "EXODASH" por 3s e vai para a launcher.<br>
+    <br>
+    <em>Este preview é uma simulação. O vídeo real vai rodar em tela cheia.</em>
+  </div>
+
+<script>
+  let t = 8.0;
+  const el = document.getElementById('counter');
+  const iv = setInterval(() => {
+    t -= 0.1;
+    if (t <= 0) {
+      t = 0;
+      clearInterval(iv);
+    }
+    el.textContent = t.toFixed(1) + 's';
+  }, 100);
+</script>
+
+</body>
+</html>

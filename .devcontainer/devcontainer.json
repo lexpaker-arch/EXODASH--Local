@@ -1,0 +1,14 @@
+{
+  "name": "EXODASH Android",
+  "image": "ghcr.io/cirruslabs/android-sdk:34",
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "fwcd.kotlin",
+        "mathiasfrohlich.kotlin",
+        "vscjava.vscode-gradle"
+      ]
+    }
+  }
+}
