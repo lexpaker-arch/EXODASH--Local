@@ -258,7 +258,11 @@ class MainActivity : AppCompatActivity() {
                 override fun onBeginningOfSpeech() {}
                 override fun onRmsChanged(rmsdB: Float) {}
                 override fun onBufferReceived(buffer: ByteArray?) {}
-                override fun onEndOfSpeech() {}
+                override fun onEndOfSpeech() {
+                    handler.postDelayed({
+                        if (ouvindo) pararEscuta()
+                    }, 2000)
+                }
                 override fun onError(error: Int) {
                     pararEscuta()
                     val msg = when (error) {
@@ -302,6 +306,14 @@ class MainActivity : AppCompatActivity() {
         bossButton.setBackgroundResource(R.drawable.boss_button_listening)
         bossButton.text = "OUVINDO"
         speechRecognizer?.startListening(intent)
+
+        // Timeout: se em 10s nao recebeu resultado, destrava
+        handler.postDelayed({
+            if (ouvindo) {
+                pararEscuta()
+                toast("Nao consegui ouvir. Tente de novo.")
+            }
+        }, 10000)
     }
 
     private fun pararEscuta() {
