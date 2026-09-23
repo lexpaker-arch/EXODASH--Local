@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>EXODASH — Modelo Editável</title>
+<!--
+  ═══════════════════════════════════════════════
+  MODELO EDITÁVEL DO EXODASH
+  ═══════════════════════════════════════════════
+
+  COMO EDITAR:
+  - Cores: procure por "var(--" no <style> e mude os valores
+  - Tamanhos: procure por "px" ou "sp" e ajuste
+  - Textos: procure direto no HTML e mude
+  - Posições: mude os "top/left/right/bottom" dos elementos
+  - Salvar: Ctrl+S. Depois recarregar no navegador (F5)
+
+  CORES ATUAIS:
+  --ciano: #00FFCC     (destaque principal)
+  --prata: #C0C0C0     (moldura, logo)
+  --escuro: #0A0A0A    (fundo)
+  --cinza-medio: #888888
+  --cinza-escuro: #666666
+  --vermelho: #FF3333  (erro)
+  --amarelo: #FFAA00   (alerta)
+
+  TELA: 900 x 520 (proporção do painel da multimídia)
+  ═══════════════════════════════════════════════
+-->
+
+<style>
+  /* ============================================
+     VARIAVEIS — MUDE AQUI AS CORES
+     ============================================ */
+  :root {
+    --ciano: #00FFCC;
+    --prata: #C0C0C0;
+    --escuro: #0A0A0A;
+    --preto: #000000;
+    --cinza-claro: #888888;
+    --cinza-medio: #666666;
+    --cinza-escuro: #333333;
+    --vermelho: #FF3333;
+    --amarelo: #FFAA00;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #1a1a1a;
+    font-family: Roboto, -apple-system, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 30px;
+    gap: 20px;
+  }
+
+  /* ============================================
+     MOLDURA PRATEADA
+     ============================================ */
+  .tela {
+    width: 900px;
+    height: 520px;
+    background: var(--escuro);
+    border: 3px solid var(--prata);
+    border-radius: 6px;
+    box-shadow: 0 0 40px rgba(192,192,192,0.15);
+    position: relative;
+    padding: 16px;
+  }
+
+  .moldura-interna {
+    width: 100%;
+    height: 100%;
+    border: 1px solid rgba(0,255,204,0.25);
+    border-radius: 4px;
+    position: relative;
+    padding: 12px;
+  }
+
+  /* Cantos HUD */
+  .canto { position: absolute; width: 30px; height: 30px; pointer-events: none; }
+  .canto::before, .canto::after { content: ""; position: absolute; }
+  .canto::before { border: 2px solid var(--prata); }
+  .canto::after { border: 2px solid var(--ciano); }
+  .canto-tl { top: -8px; left: -8px; }
+  .canto-tl::before { top:0; left:0; width:30px; height:30px; border-right:none; border-bottom:none; }
+  .canto-tl::after { top:4px; left:4px; width:22px; height:22px; border-right:none; border-bottom:none; }
+  .canto-tr { top: -8px; right: -8px; }
+  .canto-tr::before { top:0; right:0; width:30px; height:30px; border-left:none; border-bottom:none; }
+  .canto-tr::after { top:4px; right:4px; width:22px; height:22px; border-left:none; border-bottom:none; }
+  .canto-bl { bottom: -8px; left: -8px; }
+  .canto-bl::before { bottom:0; left:0; width:30px; height:30px; border-right:none; border-top:none; }
+  .canto-bl::after { bottom:4px; left:4px; width:22px; height:22px; border-right:none; border-top:none; }
+  .canto-br { bottom: -8px; right: -8px; }
+  .canto-br::before { bottom:0; right:0; width:30px; height:30px; border-left:none; border-top:none; }
+  .canto-br::after { bottom:4px; right:4px; width:22px; height:22px; border-left:none; border-top:none; }
+
+  /* ============================================
+     HEADER — Logo (esquerda) + Status (direita)
+     ============================================ */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-bottom: 8px;
+  }
+
+  .logo-bloco .logo {
+    color: var(--prata);
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 0.15em;
+    text-shadow: 0 0 10px rgba(192,192,192,0.3);
+  }
+  .logo-bloco .assinatura {
+    color: var(--cinza-medio);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    margin-top: 2px;
+  }
+
+  .status-bloco {
+    display: flex;
+    gap: 14px;
+    font-size: 10px;
+    letter-spacing: 0.05em;
+  }
+  .status-item { color: var(--cinza-medio); }
+  .status-ok { color: var(--ciano); }
+  .status-off { color: var(--vermelho); }
+  .status-warn { color: var(--amarelo); }
+
+  /* Botão configurações */
+  .btn-config {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid var(--cinza-escuro);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ciano);
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  /* Divisória */
+  .divisoria {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--ciano), transparent);
+    opacity: 0.5;
+    margin-bottom: 10px;
+  }
+
+  /* ============================================
+     ZONA CENTRAL — 3 colunas
+     ============================================ */
+  .central {
+    display: flex;
+    height: calc(100% - 130px);
+    align-items: center;
+  }
+
+  /* ----- TELEMETRIA (esquerda) ----- */
+  .telemetria {
+    flex: 1;
+    padding-right: 16px;
+  }
+  .tel-linha {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-bottom: 6px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+  }
+  .tel-label {
+    color: var(--cinza-claro);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-shadow: 0 0 6px rgba(0,255,204,0.4);
+  }
+  .tel-valor {
+    color: var(--cinza-medio);
+    font-size: 15px;
+    font-weight: bold;
+    font-variant-numeric: tabular-nums;
+    text-shadow: 0 0 8px rgba(0,255,204,0.4);
+  }
+
+  /* ----- BOSS (centro) ----- */
+  .boss-area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 180px;
+    height: 180px;
+  }
+  .boss-brilho {
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,255,204,0.35) 0%, rgba(0,255,204,0.1) 40%, transparent 70%);
+    pointer-events: none;
+  }
+  .boss-botao {
+    position: relative;
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    background: rgba(10,42,42,1);
+    border: 4px solid var(--ciano);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ciano);
+    font-size: 16px;
+    font-weight: bold;
+    letter-spacing: 0.15em;
+    box-shadow: 0 0 30px rgba(0,255,204,0.35), inset 0 0 30px rgba(0,255,204,0.08);
+    cursor: pointer;
+  }
+  .boss-botao:hover {
+    box-shadow: 0 0 60px rgba(0,255,204,0.9);
+  }
+
+  /* ----- DIREITA (relógio + música) ----- */
+  .direita {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+  }
+
+  /* Relógio */
+  .relogio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .relogio-anel {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    border: 1px solid rgba(0,255,204,0.25);
+    box-shadow: 0 0 25px rgba(0,255,204,0.1), inset 0 0 20px rgba(0,255,204,0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .relogio-hora {
+    color: #E8E8E8;
+    font-size: 22px;
+    font-weight: 100;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.02em;
+  }
+  .relogio-linha {
+    width: 40px;
+    height: 1px;
+    background: rgba(0,255,204,0.25);
+    margin: 4px 0;
+  }
+  .relogio-segundos {
+    color: var(--ciano);
+    font-size: 9px;
+    opacity: 0.6;
+    letter-spacing: 0.2em;
+  }
+  .relogio-data {
+    color: var(--cinza-medio);
+    font-size: 8px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-top: 6px;
+  }
+  .relogio-dia {
+    color: var(--ciano);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    opacity: 0.85;
+    margin-top: 1px;
+  }
+
+  /* Música */
+  .musica {
+    width: 170px;
+    background: var(--escuro);
+    border: 1px solid rgba(0,255,204,0.25);
+    border-radius: 6px;
+    padding: 8px;
+  }
+  .musica-label {
+    color: var(--ciano);
+    font-size: 7px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+  .musica-titulo {
+    color: #E8E8E8;
+    font-size: 10px;
+    font-weight: bold;
+    margin-top: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .musica-artista {
+    color: var(--cinza-claro);
+    font-size: 8px;
+    margin-top: 1px;
+  }
+  .musica-barra {
+    width: 100%;
+    height: 2px;
+    background: #1a1a1a;
+    border-radius: 1px;
+    margin-top: 6px;
+    position: relative;
+  }
+  .musica-progresso {
+    position: absolute;
+    left: 0; top: 0;
+    width: 42%;
+    height: 100%;
+    background: var(--ciano);
+    border-radius: 1px;
+    box-shadow: 0 0 8px rgba(0,255,204,0.5);
+  }
+
+  /* ============================================
+     RODAPÉ — 4 botões
+     ============================================ */
+  .rodape {
+    position: absolute;
+    bottom: 16px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+  }
+  .atalho {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    cursor: pointer;
+  }
+  .atalho-icone {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2px solid var(--cinza-escuro);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ciano);
+    font-size: 14px;
+    font-weight: bold;
+    background: var(--preto);
+    transition: all 0.3s;
+  }
+  .atalho:hover .atalho-icone {
+    border-color: var(--ciano);
+    box-shadow: 0 0 15px rgba(0,255,204,0.5);
+  }
+  .atalho-nome {
+    color: var(--cinza-medio);
+    font-size: 8px;
+    letter-spacing: 0.05em;
+  }
+
+  /* Triângulo de erro */
+  .triangulo-erro {
+    position: absolute;
+    bottom: 120px;
+    right: 20px;
+    width: 0;
+    height: 0;
+    border-left: 14px solid transparent;
+    border-right: 14px solid transparent;
+    border-bottom: 24px solid var(--vermelho);
+    animation: piscar 1s infinite;
+    cursor: pointer;
+    display: none; /* Mude para "block" para ver o triangulo */
+  }
+  @keyframes piscar {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  /* Nota explicativa */
+  .nota {
+    color: var(--cinza-claro);
+    font-size: 11px;
+    text-align: center;
+    max-width: 900px;
+    line-height: 1.6;
+  }
+  .nota code {
+    color: var(--ciano);
+    background: rgba(0,255,204,0.1);
+    padding: 1px 4px;
+    border-radius: 3px;
+  }
+</style>
+</head>
+<body>
+
+<div class="tela">
+  <div class="moldura-interna">
+
+    <!-- Cantos HUD -->
+    <div class="canto canto-tl"></div>
+    <div class="canto canto-tr"></div>
+    <div class="canto canto-bl"></div>
+    <div class="canto canto-br"></div>
+
+    <!-- ============================================
+         HEADER
+         ============================================ -->
+    <div class="header">
+      <div class="logo-bloco">
+        <div class="logo">EXODASH</div>
+        <div class="assinatura">BY ALEX. P</div>
+      </div>
+
+      <div class="status-bloco">
+        <span class="status-item">EXODASH: <span class="status-ok">ONLINE</span></span>
+        <span class="status-item">OBD: <span class="status-ok">ONLINE</span></span>
+        <span class="status-item">USUÁRIO: <span class="status-ok">SENHOR</span></span>
+        <div class="btn-config">⚙</div>
+      </div>
+    </div>
+
+    <!-- Divisória -->
+    <div class="divisoria"></div>
+
+    <!-- ============================================
+         ZONA CENTRAL
+         ============================================ -->
+    <div class="central">
+
+      <!-- TELEMETRIA -->
+      <div class="telemetria">
+        <div class="tel-linha">
+          <span class="tel-label">VELOCIDADE</span>
+          <span class="tel-valor">87 km/h</span>
+        </div>
+        <div class="tel-linha">
+          <span class="tel-label">RPM</span>
+          <span class="tel-valor">2450</span>
+        </div>
+        <div class="tel-linha">
+          <span class="tel-label">MOTOR</span>
+          <span class="tel-valor">89 °C</span>
+        </div>
+        <div class="tel-linha">
+          <span class="tel-label">COMBUSTÍVEL</span>
+          <span class="tel-valor">62 %</span>
+        </div>
+        <div class="tel-linha">
+          <span class="tel-label">BATERIA</span>
+          <span class="tel-valor">13.8 V</span>
+        </div>
+      </div>
+
+      <!-- BOSS -->
+      <div class="boss-area">
+        <div class="boss-brilho"></div>
+        <div class="boss-botao">BOSS</div>
+      </div>
+
+      <!-- DIREITA -->
+      <div class="direita">
+        <div class="relogio">
+          <div class="relogio-anel">
+            <div class="relogio-hora" id="hora">14:32</div>
+            <div class="relogio-linha"></div>
+            <div class="relogio-segundos" id="seg">:47</div>
+          </div>
+          <div class="relogio-data" id="data">23 DE SETEMBRO</div>
+          <div class="relogio-dia" id="dia">QUARTA-FEIRA</div>
+        </div>
+
+        <div class="musica">
+          <div class="musica-label">TOCANDO AGORA</div>
+          <div class="musica-titulo">Bohemian Rhapsody</div>
+          <div class="musica-artista">Queen</div>
+          <div class="musica-barra">
+            <div class="musica-progresso"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Triângulo de erro (descomentar para ver) -->
+    <!-- <div class="triangulo-erro"></div> -->
+
+    <!-- ============================================
+         RODAPÉ
+         ============================================ -->
+    <div class="rodape">
+      <div class="atalho">
+        <div class="atalho-icone">T</div>
+        <div class="atalho-nome">Telefone</div>
+      </div>
+      <div class="atalho">
+        <div class="atalho-icone">M</div>
+        <div class="atalho-nome">Mídia</div>
+      </div>
+      <div class="atalho">
+        <div class="atalho-icone">G</div>
+        <div class="atalho-nome">GPS</div>
+      </div>
+      <div class="atalho">
+        <div class="atalho-icone">A</div>
+        <div class="atalho-nome">APPS</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="nota">
+  <b>Como editar:</b><br>
+  Abra este arquivo em qualquer editor de texto.<br>
+  Cores: procure por <code>var(--ciano)</code> ou <code>var(--prata)</code> no <code>&lt;style&gt;</code><br>
+  Textos: edite direto no HTML<br>
+  Salvar: <code>Ctrl+S</code> → atualizar no navegador (<code>F5</code>)<br>
+  <br>
+  Quando terminar de remodelar, me manda o arquivo de volta.
+</div>
+
+<script>
+  const meses = ["JANEIRO","FEVEREIRO","MARÇO","ABRIL","MAIO","JUNHO","JULHO","AGOSTO","SETEMBRO","OUTUBRO","NOVEMBRO","DEZEMBRO"];
+  const dias = ["DOMINGO","SEGUNDA-FEIRA","TERÇA-FEIRA","QUARTA-FEIRA","QUINTA-FEIRA","SEXTA-FEIRA","SÁBADO"];
+  function tick() {
+    const now = new Date();
+    const hh = String(now.getHours()).padStart(2,'0');
+    const mm = String(now.getMinutes()).padStart(2,'0');
+    const ss = String(now.getSeconds()).padStart(2,'0');
+    document.getElementById('hora').textContent = hh + ':' + mm;
+    document.getElementById('seg').textContent = ':' + ss;
+    document.getElementById('data').textContent = now.getDate() + ' DE ' + meses[now.getMonth()];
+    document.getElementById('dia').textContent = dias[now.getDay()];
+  }
+  tick();
+  setInterval(tick, 1000);
+</script>
+
+</body>
+</html>
