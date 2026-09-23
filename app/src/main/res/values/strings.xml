@@ -2,4 +2,5 @@
 <resources>
     <string name="app_name">EXODASH</string>
     <string name="boss">BOSS</string>
+    <string name="assistant_label">BOSS</string>
 </resources>
