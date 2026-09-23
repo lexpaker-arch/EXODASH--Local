@@ -71,6 +71,7 @@ class MainActivity : AppCompatActivity() {
 
     private val runnable = object : Runnable {
         override fun run() {
+            if (isFinishing || isDestroyed) return
             updateClock()
             handler.postDelayed(this, 1000)
         }
@@ -114,9 +115,13 @@ class MainActivity : AppCompatActivity() {
         musicProgress = findViewById(R.id.musicProgress)
         musicFrame.visibility = View.GONE
 
-        // Listener de midia
+        // Listener de midia (guard para nao crashar se activity morrer)
         MediaListenerService.callback = { info ->
-            runOnUiThread { atualizarMusica(info) }
+            if (!isFinishing && !isDestroyed) {
+                runOnUiThread {
+                    if (!isFinishing && !isDestroyed) atualizarMusica(info)
+                }
+            }
         }
 
         // Triangulo de erro
@@ -369,6 +374,7 @@ class MainActivity : AppCompatActivity() {
     // =============================================================
 
     private fun pedirPermissaoMidia() {
+        if (isFinishing || isDestroyed) return
         if (!MediaListenerService.temPermissao(this)) {
             androidx.appcompat.app.AlertDialog.Builder(this)
                 .setTitle("Acesso a midia")
@@ -462,6 +468,7 @@ class MainActivity : AppCompatActivity() {
     // =============================================================
 
     private fun updateClock() {
+        if (isFinishing || isDestroyed) return
         val now = Date()
         clockTime.text = SimpleDateFormat("HH:mm", locale).format(now)
         clockSeconds.text = ": " + SimpleDateFormat("ss", locale).format(now)
@@ -480,6 +487,7 @@ class MainActivity : AppCompatActivity() {
 
     @Suppress("DEPRECATION")
     private fun esconderBarrasSistema() {
+        if (isFinishing || isDestroyed) return
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 // Android 11+
@@ -512,7 +520,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        handler.removeCallbacks(runnable)
+        MediaListenerService.callback = null
+        handler.removeCallbacksAndMessages(null)
         network.parar()
         obd?.parar()
         speechRecognizer?.destroy()

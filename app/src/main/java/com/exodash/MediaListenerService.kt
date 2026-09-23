@@ -97,8 +97,9 @@ class MediaListenerService : NotificationListenerService() {
     }
 
     private fun emitirInfo() {
-        val c = controller
-        if (c == null) { callback?.invoke(null); return }
+        try {
+            val c = controller
+            if (c == null) { callback?.invoke(null); return }
 
         val meta = c.metadata
         val titulo = meta?.getString(MediaMetadata.METADATA_KEY_TITLE) ?: ""
@@ -114,5 +115,8 @@ class MediaListenerService : NotificationListenerService() {
         }
 
         callback?.invoke(MusicaInfo(titulo, artista, posicao, duracao, tocando))
+        } catch (e: Exception) {
+            Log.e("MediaListener", "Erro ao emitir info", e)
+        }
     }
 }
