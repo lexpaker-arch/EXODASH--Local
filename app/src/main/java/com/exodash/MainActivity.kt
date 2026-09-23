@@ -84,8 +84,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         CrashHandler.instalar(this)
+        Breadcrumbs.iniciar(this)
+        Breadcrumbs.registrar("MainActivity: setContentView")
         setContentView(R.layout.activity_main)
         prefs = Prefs(this)
+        Breadcrumbs.registrar("MainActivity: prefs criadas")
 
         // Modo imersivo: esconde status bar e navigation bar
         esconderBarrasSistema()
@@ -428,6 +431,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun abrirTelefone() {
+        Breadcrumbs.registrar("abrirTelefone: chamado")
         val escolhido = prefs.appTelefone
         if (escolhido.isNotEmpty()) {
             val intent = packageManager.getLaunchIntentForPackage(escolhido)
@@ -440,6 +444,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun abrirMidia() {
+        Breadcrumbs.registrar("abrirMidia: chamado")
         val escolhido = prefs.appMusica
         if (escolhido.isNotEmpty()) {
             val intent = packageManager.getLaunchIntentForPackage(escolhido)
@@ -449,6 +454,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun abrirGps() {
+        Breadcrumbs.registrar("abrirGps: chamado")
         val escolhido = prefs.appGps
         if (escolhido.isNotEmpty()) {
             val intent = packageManager.getLaunchIntentForPackage(escolhido)
@@ -461,7 +467,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun abrirApps() {
-        startActivity(Intent(this, AppDrawerActivity::class.java))
+        Breadcrumbs.registrar("abrirApps: chamado")
+        try {
+            startActivity(Intent(this, AppDrawerActivity::class.java))
+            Breadcrumbs.registrar("abrirApps: activity iniciada")
+        } catch (e: Exception) {
+            Breadcrumbs.registrarErro("abrirApps", e)
+        }
     }
 
     // =============================================================
@@ -520,6 +532,7 @@ class MainActivity : AppCompatActivity() {
     override fun onBackPressed() {}
 
     override fun onDestroy() {
+        Breadcrumbs.registrar("MainActivity: onDestroy")
         super.onDestroy()
         MediaListenerService.callback = null
         handler.removeCallbacksAndMessages(null)
