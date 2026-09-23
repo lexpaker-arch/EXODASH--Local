@@ -5,17 +5,16 @@ import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
+import android.os.Handler
+import android.os.Looper
 
-/**
- * Monitora o estado real da conexao (Wi-Fi, 4G, etc).
- * Dispara callback quando muda.
- */
 class NetworkMonitor(
     context: Context,
     private val onChange: (online: Boolean) -> Unit
 ) {
 
     private val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    private val mainHandler = Handler(Looper.getMainLooper())
 
     private val callback = object : ConnectivityManager.NetworkCallback() {
         override fun onAvailable(network: Network) { emitir() }
@@ -45,6 +44,8 @@ class NetworkMonitor(
     }
 
     private fun emitir() {
-        onChange(estaOnline())
+        val online = estaOnline()
+        // IMPORTANTE: sempre chama callback na main thread
+        mainHandler.post { onChange(online) }
     }
 }

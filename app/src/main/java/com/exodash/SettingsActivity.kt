@@ -235,7 +235,7 @@ class SettingsActivity : AppCompatActivity() {
                     .setTitle("Atualização disponível")
                     .setMessage("Versão atual: ${r.versaoAtual}\nNova versão: ${r.versaoNova}\n\n${r.notas}")
                     .setPositiveButton("Baixar e instalar") { _, _ ->
-                        Updater.baixarEInstalar(this@SettingsActivity, r.urlApk)
+                        Updater.iniciarAtualizacao(this@SettingsActivity, r)
                     }
                     .setNegativeButton("Depois", null)
                     .show()
@@ -358,6 +358,12 @@ class SettingsActivity : AppCompatActivity() {
         } catch (e: PackageManager.NameNotFoundException) {
             padrao
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Se ficou um update pendente (usuario foi autorizar permissao), retoma
+        Updater.retomarSePendente(this)
     }
 
     override fun onBackPressed() {

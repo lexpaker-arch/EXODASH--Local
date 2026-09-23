@@ -93,6 +93,32 @@
             </intent-filter>
         </service>
 
+        <!-- ============================================================ -->
+        <!-- VoiceInteractionService — faz o EXODASH aparecer como        -->
+        <!-- assistente em Configuracoes > Apps > Apps padrao > Assistente -->
+        <!-- ============================================================ -->
+        <service
+            android:name=".MainVoiceInteractionService"
+            android:exported="true"
+            android:label="@string/assistant_label"
+            android:permission="android.permission.BIND_VOICE_INTERACTION">
+            <meta-data
+                android:name="android.voice_interaction"
+                android:resource="@xml/voice_interaction_service" />
+            <intent-filter>
+                <action android:name="android.service.voice.VoiceInteractionService" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".MainVoiceInteractionSessionService"
+            android:exported="true"
+            android:permission="android.permission.BIND_VOICE_INTERACTION">
+            <intent-filter>
+                <action android:name="android.service.voice.VoiceInteractionSessionService" />
+            </intent-filter>
+        </service>
+
         <receiver
             android:name=".BootReceiver"
             android:enabled="true"
