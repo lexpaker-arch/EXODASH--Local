@@ -103,6 +103,36 @@ object Updater {
         return 0
     }
 
+
+    /**
+     * Verifica se o app tem permissao para instalar APKs.
+     * Se nao tiver, abre a tela de configuracoes para o usuario autorizar.
+     */
+    fun temPermissaoInstalar(context: Context): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context.packageManager.canRequestPackageInstalls()
+        } else {
+            true
+        }
+    }
+
+    fun abrirConfigPermissao(context: Context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            try {
+                val intent = Intent(android.provider.Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES)
+                intent.data = Uri.parse("package:${context.packageName}")
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                context.startActivity(intent)
+            } catch (e: Exception) {
+                try {
+                    val intent = Intent(android.provider.Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    context.startActivity(intent)
+                } catch (e2: Exception) {}
+            }
+        }
+    }
+
     /**
      * Baixa o APK e abre o instalador do Android.
      */
@@ -152,6 +182,19 @@ object Updater {
             override fun onPostExecute(apk: File?) {
                 dialog.dismiss()
                 if (apk == null || !apk.exists()) return
+
+                // Verificar permissao de instalar APK
+                if (!temPermissaoInstalar(context)) {
+                    android.app.AlertDialog.Builder(context)
+                        .setTitle("Permissao necessaria")
+                        .setMessage("Para instalar a atualizacao, o EXODASH precisa de permissao para instalar apps. Toque em OK e ative a opcao nas proximas telas.")
+                        .setPositiveButton("OK") { _, _ ->
+                            abrirConfigPermissao(context)
+                        }
+                        .setCancelable(false)
+                        .show()
+                    return
+                }
 
                 val uri: Uri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     FileProvider.getUriForFile(
