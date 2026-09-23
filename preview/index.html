@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>EXODASH — Preview Completo</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #0d0d0d;
+    font-family: Roboto, sans-serif;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+  .tab-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .tab {
+    padding: 10px 24px;
+    background: #1a1a1a;
+    border: 1px solid #333;
+    color: #888;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: all 0.2s;
+  }
+  .tab:hover { border-color: #00FFCC; color: #00FFCC; }
+  .tab.active {
+    background: #0A2A2A;
+    border-color: #00FFCC;
+    color: #00FFCC;
+  }
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* ===== MOLDURA ===== */
+  .frame {
+    width: 920px;
+    height: 520px;
+    background: #0A0A0A;
+    border: 3px solid #C0C0C0;
+    border-radius: 6px;
+    padding: 10px;
+    box-shadow: 0 0 40px rgba(192,192,192,0.15);
+    position: relative;
+  }
+  .inner-frame {
+    width: 100%;
+    height: 100%;
+    border: 1px solid rgba(0,255,204,0.25);
+    border-radius: 4px;
+    padding: 18px;
+    position: relative;
+  }
+  .corner {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    pointer-events: none;
+  }
+  .corner::before, .corner::after {
+    content: ""; position: absolute; background: transparent;
+  }
+  .corner::before { border-color: #C0C0C0; border-style: solid; border-width: 0; }
+  .corner::after { border-color: #00FFCC; border-style: solid; border-width: 0; }
+  .corner-tl { top: -8px; left: -8px; }
+  .corner-tl::before { top:0; left:0; width:30px; height:30px; border-top-width:2px; border-left-width:2px; }
+  .corner-tl::after { top:4px; left:4px; width:22px; height:22px; border-top-width:2px; border-left-width:2px; }
+  .corner-tr { top: -8px; right: -8px; }
+  .corner-tr::before { top:0; right:0; width:30px; height:30px; border-top-width:2px; border-right-width:2px; }
+  .corner-tr::after { top:4px; right:4px; width:22px; height:22px; border-top-width:2px; border-right-width:2px; }
+  .corner-bl { bottom: -8px; left: -8px; }
+  .corner-bl::before { bottom:0; left:0; width:30px; height:30px; border-bottom-width:2px; border-left-width:2px; }
+  .corner-bl::after { bottom:4px; left:4px; width:22px; height:22px; border-bottom-width:2px; border-left-width:2px; }
+  .corner-br { bottom: -8px; right: -8px; }
+  .corner-br::before { bottom:0; right:0; width:30px; height:30px; border-bottom-width:2px; border-right-width:2px; }
+  .corner-br::after { bottom:4px; right:4px; width:22px; height:22px; border-bottom-width:2px; border-right-width:2px; }
+
+  /* ===== LAUNCHER ===== */
+  .logo {
+    position: absolute; top: 18px; left: 18px;
+    color: #C0C0C0; font-size: 22px; font-weight: bold;
+    letter-spacing: 4px;
+    text-shadow: 0 0 10px rgba(192,192,192,0.3);
+  }
+  .by {
+    position: absolute; top: 48px; left: 18px;
+    color: #666; font-size: 10px; letter-spacing: 2px;
+  }
+  .header {
+    position: absolute; top: 26px; right: 18px;
+    display: flex; gap: 16px;
+    font-size: 12px; letter-spacing: 1px;
+  }
+  .off { color: #FF3333; } .warn { color: #FFAA00; } .ok { color: #00FFCC; }
+  .divider {
+    position: absolute; top: 76px; left: 18px; right: 18px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, #00FFCC 50%, transparent 100%);
+    opacity: 0.6;
+  }
+  .tele { position: absolute; top: 110px; left: 18px; width: 220px; }
+  .row {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding-bottom: 6px; margin-bottom: 14px;
+    border-bottom: 1px solid #1a1a1a;
+  }
+  .row .k {
+    color: #888; font-size: 10px; letter-spacing: 2px;
+    text-shadow: 0 0 6px rgba(0,255,204,0.4);
+  }
+  .row .v {
+    color: #666; font-size: 18px; font-weight: bold;
+    font-variant-numeric: tabular-nums;
+    text-shadow: 0 0 8px rgba(0,255,204,0.4);
+  }
+
+  /* RELÓGIO */
+  .clock {
+    position: absolute; top: 110px; right: 18px;
+    display: flex; flex-direction: column; align-items: flex-end;
+  }
+  .clock-ring {
+    width: 140px; height: 140px; border-radius: 50%;
+    border: 1px solid rgba(0,255,204,0.25);
+    box-shadow: 0 0 25px rgba(0,255,204,0.1), inset 0 0 20px rgba(0,255,204,0.05);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    margin-bottom: 12px;
+  }
+  .clock-time {
+    color: #E8E8E8; font-size: 36px; font-weight: 100;
+    letter-spacing: 1px; line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .clock-sec {
+    color: #00FFCC; font-size: 11px; letter-spacing: 3px;
+    margin-top: 4px; opacity: 0.7;
+  }
+  .clock-date {
+    color: #666; font-size: 11px; letter-spacing: 4px;
+    text-transform: uppercase;
+  }
+  .clock-day {
+    color: #00FFCC; font-size: 12px; letter-spacing: 2px;
+    text-transform: uppercase; margin-top: 2px; opacity: 0.85;
+  }
+
+  /* MÚSICA (abaixo do relógio) */
+  .music {
+    position: absolute; top: 340px; right: 18px;
+    width: 220px;
+    background: #0A0A0A;
+    border: 1px solid rgba(0,255,204,0.25);
+    border-radius: 6px;
+    padding: 12px;
+  }
+  .music .label {
+    color: #00FFCC; font-size: 9px; letter-spacing: 2px;
+    text-transform: uppercase; opacity: 0.7;
+  }
+  .music .track {
+    color: #E8E8E8; font-size: 13px; font-weight: bold;
+    margin-top: 6px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .music .artist {
+    color: #888; font-size: 11px;
+    margin-top: 2px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .music .bar {
+    width: 100%; height: 3px; background: #1a1a1a;
+    border-radius: 2px; margin-top: 10px; position: relative;
+  }
+  .music .bar .fill {
+    position: absolute; left: 0; top: 0;
+    height: 100%; width: 42%;
+    background: #00FFCC; border-radius: 2px;
+    box-shadow: 0 0 8px rgba(0,255,204,0.5);
+  }
+  .music .time {
+    color: #666; font-size: 9px;
+    text-align: right; margin-top: 4px;
+  }
+
+  /* BOSS */
+  .boss-wrapper {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 220px; height: 220px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .boss-glow {
+    position: absolute; inset: 0; border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,255,204,0.35) 0%, rgba(0,255,204,0.1) 40%, transparent 70%);
+    pointer-events: none;
+  }
+  .boss {
+    position: relative;
+    width: 160px; height: 160px; border-radius: 50%;
+    background: #0A2A2A; border: 4px solid #00FFCC;
+    color: #00FFCC; font-size: 24px; font-weight: bold;
+    letter-spacing: 5px;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 30px rgba(0,255,204,0.35), inset 0 0 30px rgba(0,255,204,0.08);
+    cursor: pointer; transition: all 0.3s;
+  }
+  .boss:hover, .boss.listening {
+    background: #0A3A3A;
+    box-shadow: 0 0 60px rgba(0,255,204,0.9), inset 0 0 40px rgba(0,255,204,0.2);
+  }
+
+  /* RODAPÉ */
+  .bottom {
+    position: absolute; bottom: 18px; left: 0; right: 0;
+    display: flex; justify-content: center; align-items: center; gap: 30px;
+  }
+  .shortcut {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    cursor: pointer;
+  }
+  .shortcut .icon {
+    width: 46px; height: 46px; border-radius: 50%;
+    border: 2px solid #333;
+    display: flex; align-items: center; justify-content: center;
+    color: #00FFCC; font-size: 18px; font-weight: bold;
+    background: #000; transition: all 0.3s;
+  }
+  .shortcut:hover .icon {
+    border-color: #00FFCC;
+    box-shadow: 0 0 15px rgba(0,255,204,0.5);
+  }
+  .shortcut .name { color: #666; font-size: 10px; letter-spacing: 1px; }
+  .shortcut:hover .name { color: #00FFCC; }
+
+  /* ===== SETTINGS ===== */
+  .settings {
+    padding: 24px;
+    color: #E8E8E8;
+  }
+  .settings .voltar {
+    display: flex; align-items: center; gap: 10px;
+    color: #00FFCC; cursor: pointer;
+    margin-bottom: 20px;
+  }
+  .settings .voltar .seta { font-size: 24px; }
+  .settings .voltar .txt { font-size: 13px; letter-spacing: 2px; }
+  .settings h1 {
+    color: #C0C0C0; font-size: 22px; font-weight: bold;
+    letter-spacing: 2px;
+  }
+  .settings .by2 {
+    color: #666; font-size: 10px; letter-spacing: 2px;
+    margin-top: 2px;
+  }
+  .settings .section {
+    color: #00FFCC; font-size: 12px; letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 32px; margin-bottom: 12px;
+  }
+  .settings .item {
+    display: flex; justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #1a1a1a;
+  }
+  .settings .item .info .name {
+    color: #E8E8E8; font-size: 14px;
+  }
+  .settings .item .info .val {
+    color: #666; font-size: 12px; margin-top: 2px;
+  }
+  .settings .btn-escolher {
+    padding: 8px 18px;
+    background: #0A2A2A; border: 1px solid #00FFCC;
+    color: #00FFCC; font-size: 12px;
+    border-radius: 4px; cursor: pointer;
+    letter-spacing: 1px;
+  }
+  .settings .btn-escolher:hover {
+    background: #0A3A3A;
+    box-shadow: 0 0 10px rgba(0,255,204,0.4);
+  }
+
+  /* ===== SPLASH ===== */
+  .splash {
+    width: 920px; height: 520px;
+    background: #000;
+    border: 3px solid #C0C0C0;
+    border-radius: 6px;
+    position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .splash-video {
+    width: 100%; height: 100%;
+    background: linear-gradient(135deg, #000 0%, #001a1a 50%, #000 100%);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    position: relative;
+  }
+  .splash-video::before {
+    content: ""; position: absolute; inset: 0;
+    background: repeating-linear-gradient(0deg, transparent 0px, transparent 3px, rgba(0,255,204,0.02) 3px, rgba(0,255,204,0.02) 4px);
+    pointer-events: none;
+  }
+  .splash-circle {
+    width: 180px; height: 180px; border-radius: 50%;
+    border: 2px solid #00FFCC;
+    box-shadow: 0 0 60px rgba(0,255,204,0.6), inset 0 0 40px rgba(0,255,204,0.15);
+    display: flex; align-items: center; justify-content: center;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 60px rgba(0,255,204,0.6), inset 0 0 40px rgba(0,255,204,0.15); }
+    50% { transform: scale(1.05); box-shadow: 0 0 100px rgba(0,255,204,0.9), inset 0 0 60px rgba(0,255,204,0.25); }
+  }
+  .splash-logo {
+    color: #00FFCC; font-size: 28px; font-weight: bold;
+    letter-spacing: 6px;
+    text-shadow: 0 0 20px rgba(0,255,204,0.8);
+  }
+  .splash-by {
+    position: absolute; bottom: 24px;
+    color: #666; font-size: 11px; letter-spacing: 4px;
+  }
+  .splash-progress {
+    position: absolute; bottom: 0; left: 0;
+    height: 3px; background: #00FFCC;
+    box-shadow: 0 0 10px rgba(0,255,204,0.8);
+    animation: progress 8s linear infinite;
+  }
+  @keyframes progress {
+    0% { width: 0%; } 100% { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="tab-bar">
+    <div class="tab active" onclick="showView('launcher', this)">Launcher</div>
+    <div class="tab" onclick="showView('settings', this)">Configurações</div>
+    <div class="tab" onclick="showView('splash', this)">Splash</div>
+  </div>
+
+  <!-- ============ LAUNCHER ============ -->
+  <div id="launcher" class="view active">
+    <div class="frame">
+      <div class="inner-frame">
+        <div class="corner corner-tl"></div>
+        <div class="corner corner-tr"></div>
+        <div class="corner corner-bl"></div>
+        <div class="corner corner-br"></div>
+
+        <div class="logo">EXODASH</div>
+        <div class="by">BY ALEX. P</div>
+
+        <div class="header">
+          <span class="warn">EXODASH: OFFLINE</span>
+          <span class="off">OBD: OFFLINE</span>
+          <span class="ok">USUÁRIO: SENHOR</span>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="tele">
+          <div class="row"><span class="k">VELOCIDADE</span><span class="v">--</span></div>
+          <div class="row"><span class="k">RPM</span><span class="v">--</span></div>
+          <div class="row"><span class="k">MOTOR</span><span class="v">--</span></div>
+          <div class="row"><span class="k">COMBUSTÍVEL</span><span class="v">--</span></div>
+          <div class="row"><span class="k">BATERIA</span><span class="v">--</span></div>
+        </div>
+
+        <div class="clock">
+          <div class="clock-ring">
+            <div class="clock-time" id="hora">--:--</div>
+            <div class="clock-sec" id="seg">: --</div>
+          </div>
+          <div class="clock-date" id="data">-- DE --------</div>
+          <div class="clock-day" id="dia">----------</div>
+        </div>
+
+        <div class="music">
+          <div class="label">Tocando agora</div>
+          <div class="track">---</div>
+          <div class="artist">---</div>
+          <div class="bar"><div class="fill" style="width:0%"></div></div>
+          <div class="time">0:00 / 0:00</div>
+        </div>
+
+        <div class="boss-wrapper">
+          <div class="boss-glow"></div>
+          <div class="boss" onclick="this.classList.toggle('listening')">BOSS</div>
+        </div>
+
+        <div class="bottom">
+          <div class="shortcut"><div class="icon">T</div><div class="name">Telefone</div></div>
+          <div class="shortcut"><div class="icon">M</div><div class="name">Mídia</div></div>
+          <div class="shortcut"><div class="icon">G</div><div class="name">GPS</div></div>
+          <div class="shortcut"><div class="icon">A</div><div class="name">APPS</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SETTINGS ============ -->
+  <div id="settings" class="view">
+    <div class="frame">
+      <div class="inner-frame">
+        <div class="corner corner-tl"></div>
+        <div class="corner corner-tr"></div>
+        <div class="corner corner-bl"></div>
+        <div class="corner corner-br"></div>
+
+        <div class="settings">
+          <div class="voltar">
+            <span class="seta">←</span>
+            <span class="txt">VOLTAR</span>
+          </div>
+
+          <h1>EXODASH Config</h1>
+          <div class="by2">BY ALEX. P</div>
+
+          <div class="section">Atalhos</div>
+
+          <div class="item">
+            <div class="info">
+              <div class="name">Telefone</div>
+              <div class="val">Padrão do sistema</div>
+            </div>
+            <div class="btn-escolher">Escolher</div>
+          </div>
+
+          <div class="item">
+            <div class="info">
+              <div class="name">Mídia</div>
+              <div class="val">Não escolhido</div>
+            </div>
+            <div class="btn-escolher">Escolher</div>
+          </div>
+
+          <div class="item">
+            <div class="info">
+              <div class="name">GPS</div>
+              <div class="val">Padrão do sistema</div>
+            </div>
+            <div class="btn-escolher">Escolher</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SPLASH ============ -->
+  <div id="splash" class="view">
+    <div class="splash">
+      <div class="splash-video">
+        <div class="splash-circle">
+          <div class="splash-logo">EXODASH</div>
+        </div>
+        <div class="splash-by">BY ALEX. P</div>
+        <div class="splash-progress"></div>
+      </div>
+    </div>
+  </div>
+
+<script>
+  function showView(id, el) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    el.classList.add('active');
+  }
+
+  const meses = ["JANEIRO","FEVEREIRO","MARÇO","ABRIL","MAIO","JUNHO","JULHO","AGOSTO","SETEMBRO","OUTUBRO","NOVEMBRO","DEZEMBRO"];
+  const dias = ["DOMINGO","SEGUNDA-FEIRA","TERÇA-FEIRA","QUARTA-FEIRA","QUINTA-FEIRA","SEXTA-FEIRA","SÁBADO"];
+  function tick() {
+    const now = new Date();
+    const hh = String(now.getHours()).padStart(2,'0');
+    const mm = String(now.getMinutes()).padStart(2,'0');
+    const ss = String(now.getSeconds()).padStart(2,'0');
+    document.getElementById('hora').textContent = hh + ':' + mm;
+    document.getElementById('seg').textContent = ': ' + ss;
+    document.getElementById('data').textContent = now.getDate() + ' DE ' + meses[now.getMonth()];
+    document.getElementById('dia').textContent = dias[now.getDay()];
+  }
+  tick();
+  setInterval(tick, 1000);
+</script>
+
+</body>
+</html>
