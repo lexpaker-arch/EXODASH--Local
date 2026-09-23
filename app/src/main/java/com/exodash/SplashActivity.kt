@@ -18,6 +18,7 @@ class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        CrashHandler.instalar(this)
         setContentView(R.layout.activity_splash)
 
         videoView = findViewById(R.id.splashVideo)

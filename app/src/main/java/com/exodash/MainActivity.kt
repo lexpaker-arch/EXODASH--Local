@@ -83,6 +83,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        CrashHandler.instalar(this)
         setContentView(R.layout.activity_main)
         prefs = Prefs(this)
 
