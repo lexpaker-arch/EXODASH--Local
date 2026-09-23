@@ -26,21 +26,30 @@ jobs:
       - name: Grant execute permission
         run: chmod +x gradlew
 
-      - name: Create secrets.properties
+      - name: Criar secrets.properties
         run: echo "GROQ_API_KEY=${{ secrets.GROQ_API_KEY }}" > secrets.properties
 
-      - name: Build APK
-        run: ./gradlew assembleDebug
+      - name: Restaurar keystore
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > app/exodash.keystore
+          ls -la app/exodash.keystore
 
-      - name: Rename APK
+      - name: Build APK (assinado)
+        run: |
+          ./gradlew assembleRelease \
+            -Pandroid.injected.signing.store.file=$PWD/app/exodash.keystore \
+            -Pandroid.injected.signing.store.password=${{ secrets.KEYSTORE_PASSWORD }} \
+            -Pandroid.injected.signing.key.alias=${{ secrets.KEY_ALIAS }} \
+            -Pandroid.injected.signing.key.password=${{ secrets.KEY_PASSWORD }}
+
+      - name: Renomear APK
         run: |
           VERSION=${GITHUB_REF#refs/tags/}
           if [ "$VERSION" = "$GITHUB_REF" ]; then
             VERSION="manual-$(date +%Y%m%d-%H%M)"
           fi
           mkdir -p release
-          cp app/build/outputs/apk/debug/app-debug.apk release/EXODASH-${VERSION}.apk
-          echo "VERSION=${VERSION}" >> $GITHUB_ENV
+          cp app/build/outputs/apk/release/app-release.apk release/EXODASH-${VERSION}.apk
           ls -lh release/
 
       - name: Upload artifact
