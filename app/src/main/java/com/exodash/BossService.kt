@@ -21,6 +21,13 @@ class BossService(
     private val brain = BossBrain(context)
     private val mainHandler = Handler(Looper.getMainLooper())
 
+    private val audioManager: AudioManager by lazy {
+        context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+    }
+
+    // Listener de foco de audio (para abaixar o Waze/Spotify enquanto fala)
+    private val focusListener = AudioManager.OnAudioFocusChangeListener { }
+
     init {
         tts = TextToSpeech(context, this)
     }
@@ -44,15 +51,16 @@ class BossService(
             return
         }
 
+        val nome = prefs.nomeUsuario.ifEmpty { "Senhor" }
         val modo = prefs.modoIA
         if (modo == "offline_only") {
-            responder("Nao tenho essa informacao offline, Senhor.")
+            responder("Nao entendi, $nome. Posso consultar codigos de erro, abrir GPS, musica, telefone ou apps.")
             return
         }
 
         val apiKey = prefs.groqApiKey
         if (apiKey.isEmpty()) {
-            responder("Nao tenho essa informacao, Senhor.")
+            responder("Nao entendi, $nome. Posso consultar codigos de erro, abrir GPS, musica, telefone ou apps.")
             return
         }
 
@@ -62,8 +70,9 @@ class BossService(
                 return GroqClient.perguntar(apiKey, frase, nome)
             }
             override fun onPostExecute(resposta: String?) {
+                val nome = prefs.nomeUsuario.ifEmpty { "Senhor" }
                 if (resposta.isNullOrEmpty()) {
-                    responder("Nao consegui consultar agora, Senhor.")
+                    responder("Sem conexao, $nome. Posso consultar codigos de erro, abrir GPS, musica, telefone ou apps.")
                 } else {
                     responder(resposta)
                 }
@@ -73,27 +82,59 @@ class BossService(
 
     fun responder(texto: String) {
         if (prefs.vozAtiva && ttsPronto) {
+            // Pede foco de audio (abaixa Waze/Spotify enquanto fala)
+            val foco = try {
+                audioManager.requestAudioFocus(
+                    focusListener,
+                    AudioManager.STREAM_MUSIC,
+                    AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK
+                )
+            } catch (e: Exception) {
+                AudioManager.AUDIOFOCUS_REQUEST_FAILED
+            }
+
+            val liberarFoco = Runnable {
+                try { audioManager.abandonAudioFocus(focusListener) } catch (_: Exception) {}
+            }
+
             if (prefs.bipeAtivo) {
                 try {
                     val tg = ToneGenerator(AudioManager.STREAM_NOTIFICATION, 80)
                     tg.startTone(ToneGenerator.TONE_PROP_BEEP, 150)
                     mainHandler.postDelayed({
                         try { tg.release() } catch (_: Exception) {}
-                        tts?.speak(texto, TextToSpeech.QUEUE_FLUSH, null, "boss_${System.currentTimeMillis()}")
+                        falar(texto, liberarFoco)
                     }, 200)
                 } catch (e: Exception) {
-                    tts?.speak(texto, TextToSpeech.QUEUE_FLUSH, null, "boss_${System.currentTimeMillis()}")
+                    falar(texto, liberarFoco)
                 }
             } else {
-                tts?.speak(texto, TextToSpeech.QUEUE_FLUSH, null, "boss_${System.currentTimeMillis()}")
+                falar(texto, liberarFoco)
             }
         } else {
             Toast.makeText(context, texto, Toast.LENGTH_LONG).show()
         }
     }
 
+    private fun falar(texto: String, liberarFoco: Runnable) {
+        try { LogEventos.registrar(context, "BOSS: ${texto.take(80)}") } catch (_: Exception) {}
+        val utteranceId = "boss_${System.currentTimeMillis()}"
+        tts?.setOnUtteranceProgressListener(object : android.speech.tts.UtteranceProgressListener() {
+            override fun onStart(utteranceId: String?) {}
+            override fun onDone(utteranceId: String?) {
+                mainHandler.post(liberarFoco)
+            }
+            @Deprecated("Deprecated in Java")
+            override fun onError(utteranceId: String?) {
+                mainHandler.post(liberarFoco)
+            }
+        })
+        tts?.speak(texto, TextToSpeech.QUEUE_FLUSH, null, utteranceId)
+    }
+
     fun destroy() {
         try { mainHandler.removeCallbacksAndMessages(null) } catch (_: Exception) {}
+        try { audioManager.abandonAudioFocus(focusListener) } catch (_: Exception) {}
         try { tts?.stop() } catch (_: Exception) {}
         try { tts?.shutdown() } catch (_: Exception) {}
         tts = null

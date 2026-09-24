@@ -78,6 +78,12 @@
             android:screenOrientation="landscape" />
 
         <activity
+            android:name=".LogsActivity"
+            android:exported="false"
+            android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
+            android:screenOrientation="landscape" />
+
+        <activity
             android:name=".DtcActivity"
             android:exported="false"
             android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"

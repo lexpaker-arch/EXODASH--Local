@@ -26,6 +26,20 @@ class Prefs(context: Context) {
         get() = prefs.getString(KEY_USUARIO, "Senhor") ?: "Senhor"
         set(v) = prefs.edit().putString(KEY_USUARIO, v).apply()
 
+    /**
+     * Nome do assistente. Padrao: EXO.
+     * Pode ser alterado para BOSS via opcao escondida (7 toques na versao).
+     * Fica em SharedPreferences (filesDir), sobrevive a updates.
+     */
+    var nomeAssistente: String
+        get() = prefs.getString(KEY_ASSISTENTE, "EXO") ?: "EXO"
+        set(v) = prefs.edit().putString(KEY_ASSISTENTE, v).apply()
+
+    /** Modo avancado (desbloqueado com 7 toques na versao). */
+    var modoAvancado: Boolean
+        get() = prefs.getBoolean(KEY_MODO_AVANCADO, false)
+        set(v) = prefs.edit().putBoolean(KEY_MODO_AVANCADO, v).apply()
+
     // Voz
     var vozAtiva: Boolean
         get() = prefs.getBoolean(KEY_VOZ_ATIVA, true)
@@ -110,6 +124,8 @@ class Prefs(context: Context) {
         private const val KEY_MUSICA = "app_musica"
         private const val KEY_GPS = "app_gps"
         private const val KEY_USUARIO = "nome_usuario"
+        private const val KEY_ASSISTENTE = "nome_assistente"
+        private const val KEY_MODO_AVANCADO = "modo_avancado"
         private const val KEY_VOZ_ATIVA = "voz_ativa"
         private const val KEY_BIPE_ATIVO = "bipe_ativo"
         private const val KEY_IDIOMA = "idioma"

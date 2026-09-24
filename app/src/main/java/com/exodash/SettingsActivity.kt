@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity
 class SettingsActivity : AppCompatActivity() {
 
     private lateinit var prefs: Prefs
+    private var contadorToquesVersao = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,7 +78,62 @@ class SettingsActivity : AppCompatActivity() {
         findViewById<android.view.View>(R.id.btnLimparCache).setOnClickListener { limparCache() }
         findViewById<android.view.View>(R.id.btnSobre).setOnClickListener { mostrarSobre() }
 
+        // Click oculto: 7 toques na versao desbloqueia modo avancado
+        findViewById<TextView>(R.id.txtVersaoAtual).setOnClickListener {
+            contadorToquesVersao++
+            if (contadorToquesVersao >= 7) {
+                prefs.modoAvancado = true
+                contadorToquesVersao = 0
+                Toast.makeText(this, "Modo avancado ativado", Toast.LENGTH_SHORT).show()
+                recreate()
+            } else if (contadorToquesVersao >= 4) {
+                Toast.makeText(this,
+                    "Faltam ${7 - contadorToquesVersao} toques",
+                    Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        // Botao de escolher nome do assistente (so visivel no modo avancado)
+        findViewById<android.view.View>(R.id.btnNomeAssistente).setOnClickListener {
+            escolherNomeAssistente()
+        }
+
         atualizarLabels()
+        atualizarSecaoAvancada()
+    }
+
+    private fun atualizarSecaoAvancada() {
+        try {
+            val secao = findViewById<TextView>(R.id.secaoAvancadaNome)
+            val botao = findViewById<android.view.View>(R.id.btnNomeAssistente)
+            val txt = findViewById<TextView>(R.id.txtNomeAssistenteAtual)
+
+            if (prefs.modoAvancado) {
+                secao.visibility = android.view.View.VISIBLE
+                botao.visibility = android.view.View.VISIBLE
+                txt.text = prefs.nomeAssistente
+            } else {
+                secao.visibility = android.view.View.GONE
+                botao.visibility = android.view.View.GONE
+            }
+        } catch (e: Exception) {}
+    }
+
+    private fun escolherNomeAssistente() {
+        val opcoes = arrayOf("EXO (padrao)", "BOSS (particular)")
+        val atual = if (prefs.nomeAssistente == "BOSS") 1 else 0
+        androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle("Nome do assistente")
+            .setSingleChoiceItems(opcoes, atual) { dialog, which ->
+                prefs.nomeAssistente = if (which == 0) "EXO" else "BOSS"
+                atualizarSecaoAvancada()
+                Toast.makeText(this,
+                    "Nome alterado para ${prefs.nomeAssistente}",
+                    Toast.LENGTH_SHORT).show()
+                dialog.dismiss()
+            }
+            .setNegativeButton("Cancelar", null)
+            .show()
     }
 
     // =============================================
@@ -364,6 +420,15 @@ class SettingsActivity : AppCompatActivity() {
         super.onResume()
         // Se ficou um update pendente (usuario foi autorizar permissao), retoma
         Updater.retomarSePendente(this)
+    }
+
+    private fun atualizarResumoLogs() {
+        try {
+            val total = LogEventos.ler(this).size
+            val txt = findViewById<TextView>(R.id.txtLogsResumo)
+            txt.text = if (total == 0) "Nenhum registro"
+                       else "$total evento${if (total > 1) "s" else ""} registrado${if (total > 1) "s" else ""}"
+        } catch (e: Exception) {}
     }
 
     private fun atualizarResumoDtc() {

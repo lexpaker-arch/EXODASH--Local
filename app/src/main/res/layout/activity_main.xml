@@ -446,14 +446,13 @@
             android:clickable="true"
             android:focusable="true"
             android:background="@drawable/shortcut_ripple">
-            <TextView
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:text="T"
-                android:textSize="14sp"
-                android:textColor="#00FFCC"
-                android:gravity="center"
-                android:background="@drawable/shortcut_bg" />
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:padding="12dp"
+                android:src="@drawable/ic_phone"
+                android:background="@drawable/shortcut_bg"
+                android:contentDescription="T" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -473,14 +472,13 @@
             android:clickable="true"
             android:focusable="true"
             android:background="@drawable/shortcut_ripple">
-            <TextView
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:text="M"
-                android:textSize="14sp"
-                android:textColor="#00FFCC"
-                android:gravity="center"
-                android:background="@drawable/shortcut_bg" />
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:padding="12dp"
+                android:src="@drawable/ic_music"
+                android:background="@drawable/shortcut_bg"
+                android:contentDescription="M" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -500,14 +498,13 @@
             android:clickable="true"
             android:focusable="true"
             android:background="@drawable/shortcut_ripple">
-            <TextView
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:text="G"
-                android:textSize="14sp"
-                android:textColor="#00FFCC"
-                android:gravity="center"
-                android:background="@drawable/shortcut_bg" />
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:padding="12dp"
+                android:src="@drawable/ic_gps"
+                android:background="@drawable/shortcut_bg"
+                android:contentDescription="G" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -526,14 +523,13 @@
             android:clickable="true"
             android:focusable="true"
             android:background="@drawable/shortcut_ripple">
-            <TextView
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:text="A"
-                android:textSize="14sp"
-                android:textColor="#00FFCC"
-                android:gravity="center"
-                android:background="@drawable/shortcut_bg" />
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:padding="12dp"
+                android:src="@drawable/ic_apps"
+                android:background="@drawable/shortcut_bg"
+                android:contentDescription="A" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -543,4 +539,14 @@
                 android:layout_marginTop="3dp" />
         </LinearLayout>
     </LinearLayout>
+
+    <!-- ========== SCANLINE (sutil) ========== -->
+    <View
+        android:id="@+id/scanlineView"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/scanline_line"
+        android:alpha="0.4"
+        android:clickable="false"
+        android:focusable="false" />
 </LinearLayout>
