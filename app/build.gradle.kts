@@ -19,8 +19,8 @@ android {
         applicationId = "com.exodash"
         minSdk = 24
         targetSdk = 34
-        versionCode = 13
-        versionName = "2.4"
+        versionCode = 14
+        versionName = "2.5"
 
         // Chave Groq embutida no BuildConfig
         val groqKey = secrets.getProperty("GROQ_API_KEY", "")

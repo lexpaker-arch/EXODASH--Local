@@ -22,7 +22,6 @@
             android:paddingBottom="16dp"
             android:clickable="true"
             android:focusable="true">
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -30,7 +29,6 @@
                 android:textColor="#00FFCC"
                 android:textSize="22sp"
                 android:layout_marginEnd="8dp" />
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -76,20 +74,17 @@
             android:gravity="center_vertical"
             android:paddingTop="6dp"
             android:paddingBottom="6dp">
-
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical">
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Nome do usuário"
+                    android:text="Nome do usuario"
                     android:textColor="#E8E8E8"
                     android:textSize="13sp" />
-
                 <TextView
                     android:id="@+id/txtNomeUsuario"
                     android:layout_width="wrap_content"
@@ -99,7 +94,6 @@
                     android:textSize="11sp"
                     android:layout_marginTop="2dp" />
             </LinearLayout>
-
             <Button
                 android:id="@+id/btnNomeUsuario"
                 android:layout_width="wrap_content"
@@ -142,7 +136,7 @@
                     android:id="@+id/txtEscolhaTelefone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Padrão do sistema"
+                    android:text="Padrao do sistema"
                     android:textColor="#666666"
                     android:textSize="11sp"
                     android:layout_marginTop="2dp" />
@@ -171,14 +165,14 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Mídia"
+                    android:text="Midia"
                     android:textColor="#E8E8E8"
                     android:textSize="13sp" />
                 <TextView
                     android:id="@+id/txtEscolhaMidia"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Não escolhido"
+                    android:text="Nao escolhido"
                     android:textColor="#666666"
                     android:textSize="11sp"
                     android:layout_marginTop="2dp" />
@@ -214,7 +208,7 @@
                     android:id="@+id/txtEscolhaGps"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Padrão do sistema"
+                    android:text="Padrao do sistema"
                     android:textColor="#666666"
                     android:textSize="11sp"
                     android:layout_marginTop="2dp" />
@@ -280,49 +274,6 @@
         </LinearLayout>
 
         <!-- ===== OBD ===== -->
-        <LinearLayout
-            android:id="@+id/btnInstalarAndrobd"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:clickable="true"
-            android:focusable="true">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Instalar AndrOBd"
-                    android:textColor="#E8E8E8"
-                    android:textSize="13sp" />
-
-                <TextView
-                    android:id="@+id/txtAndrobdStatus"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Verificando..."
-                    android:textColor="#666666"
-                    android:textSize="11sp"
-                    android:layout_marginTop="2dp" />
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="→"
-                android:textColor="#666666"
-                android:textSize="16sp" />
-        </LinearLayout>
-
-        <!-- ===== OBD ===== -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -332,6 +283,44 @@
             android:letterSpacing="0.2"
             android:layout_marginTop="28dp"
             android:layout_marginBottom="10dp" />
+
+        <LinearLayout
+            android:id="@+id/btnInstalarAndrobd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:clickable="true"
+            android:focusable="true">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Instalar AndrOBd"
+                    android:textColor="#E8E8E8"
+                    android:textSize="13sp" />
+                <TextView
+                    android:id="@+id/txtAndrobdStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Verificando..."
+                    android:textColor="#666666"
+                    android:textSize="11sp"
+                    android:layout_marginTop="2dp" />
+            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="→"
+                android:textColor="#666666"
+                android:textSize="16sp" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -355,7 +344,7 @@
                     android:id="@+id/txtObdHost"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="127.0.0.1"
+                    android:text="127.0.0.1:35000"
                     android:textColor="#666666"
                     android:textSize="11sp"
                     android:layout_marginTop="2dp" />
@@ -369,11 +358,11 @@
                 android:backgroundTint="#0A2A2A" />
         </LinearLayout>
 
-        <!-- ===== VEÍCULO ===== -->
+        <!-- ===== VEICULO ===== -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="VEÍCULO"
+            android:text="VEICULO"
             android:textColor="#00FFCC"
             android:textSize="11sp"
             android:letterSpacing="0.2"
@@ -402,7 +391,7 @@
                     android:id="@+id/txtVeiculo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Não informado"
+                    android:text="Nao informado"
                     android:textColor="#666666"
                     android:textSize="11sp"
                     android:layout_marginTop="2dp" />
@@ -416,11 +405,11 @@
                 android:backgroundTint="#0A2A2A" />
         </LinearLayout>
 
-        <!-- ===== INTELIGÊNCIA ===== -->
+        <!-- ===== INTELIGENCIA ===== -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="INTELIGÊNCIA"
+            android:text="INTELIGENCIA"
             android:textColor="#00FFCC"
             android:textSize="11sp"
             android:letterSpacing="0.2"
@@ -449,7 +438,7 @@
                     android:id="@+id/txtGroqStatus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Não configurada"
+                    android:text="Nao configurada"
                     android:textColor="#FF3333"
                     android:textSize="11sp"
                     android:layout_marginTop="2dp" />
@@ -503,24 +492,21 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
             android:clickable="true"
             android:focusable="true">
-
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical">
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Codigos de falha"
                     android:textColor="#E8E8E8"
                     android:textSize="13sp" />
-
                 <TextView
                     android:id="@+id/txtDtcResumo"
                     android:layout_width="wrap_content"
@@ -530,7 +516,6 @@
                     android:textSize="11sp"
                     android:layout_marginTop="2dp" />
             </LinearLayout>
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -558,25 +543,22 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
             android:clickable="true"
             android:focusable="true"
             android:visibility="gone">
-
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical">
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Nome do assistente"
                     android:textColor="#E8E8E8"
                     android:textSize="13sp" />
-
                 <TextView
                     android:id="@+id/txtNomeAssistenteAtual"
                     android:layout_width="wrap_content"
@@ -586,7 +568,6 @@
                     android:textSize="11sp"
                     android:layout_marginTop="2dp" />
             </LinearLayout>
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -594,7 +575,49 @@
                 android:textColor="#666666"
                 android:textSize="16sp" />
         </LinearLayout>
-<TextView
+
+        <!-- ===== LOGS ===== -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="LOGS"
+            android:textColor="#00FFCC"
+            android:textSize="11sp"
+            android:letterSpacing="0.2"
+            android:layout_marginTop="28dp"
+            android:layout_marginBottom="10dp" />
+
+        <LinearLayout
+            android:id="@+id/btnVerLogs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:clickable="true"
+            android:focusable="true">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Eventos do sistema"
+                    android:textColor="#E8E8E8"
+                    android:textSize="13sp" />
+                <TextView
+                    android:id="@+id/txtLogsResumo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nenhum registro"
+                    android:textColor="#666666"
+                    android:textSize="11sp"
+                    android:layout_marginTop="2dp" />
+            </LinearLayout>
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="→"
@@ -602,11 +625,11 @@
                 android:textSize="16sp" />
         </LinearLayout>
 
-        <!-- ===== ATUALIZAÇÃO ===== -->
+        <!-- ===== ATUALIZACAO ===== -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ATUALIZAÇÃO"
+            android:text="ATUALIZACAO"
             android:textColor="#00FFCC"
             android:textSize="11sp"
             android:letterSpacing="0.2"
@@ -648,14 +671,14 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Versão atual"
+                    android:text="Versao atual"
                     android:textColor="#E8E8E8"
                     android:textSize="13sp" />
                 <TextView
                     android:id="@+id/txtVersaoAtual"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1.0"
+                    android:text="2.4"
                     android:textColor="#666666"
                     android:textSize="11sp"
                     android:layout_marginTop="2dp" />
@@ -667,59 +690,6 @@
                 android:text="Verificar agora"
                 android:textColor="#00FFCC"
                 android:backgroundTint="#0A2A2A" />
-        </LinearLayout>
-
-        <!-- ===== LOGS ===== -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="LOGS"
-            android:textColor="#00FFCC"
-            android:textSize="11sp"
-            android:letterSpacing="0.2"
-            android:layout_marginTop="28dp"
-            android:layout_marginBottom="10dp" />
-
-        <LinearLayout
-            android:id="@+id/btnVerLogs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:clickable="true"
-            android:focusable="true">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Eventos do sistema"
-                    android:textColor="#E8E8E8"
-                    android:textSize="13sp" />
-
-                <TextView
-                    android:id="@+id/txtLogsResumo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Nenhum registro"
-                    android:textColor="#666666"
-                    android:textSize="11sp"
-                    android:layout_marginTop="2dp" />
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="→"
-                android:textColor="#666666"
-                android:textSize="16sp" />
         </LinearLayout>
 
         <!-- ===== SOBRE ===== -->
@@ -734,6 +704,7 @@
             android:layout_marginBottom="10dp" />
 
         <LinearLayout
+            android:id="@+id/btnLimparCache"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -741,8 +712,7 @@
             android:paddingTop="6dp"
             android:paddingBottom="6dp"
             android:clickable="true"
-            android:focusable="true"
-            android:id="@+id/btnLimparCache">
+            android:focusable="true">
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -759,6 +729,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/btnSobre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -766,8 +737,7 @@
             android:paddingTop="6dp"
             android:paddingBottom="6dp"
             android:clickable="true"
-            android:focusable="true"
-            android:id="@+id/btnSobre">
+            android:focusable="true">
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -787,4 +757,5 @@
             android:layout_width="match_parent"
             android:layout_height="32dp" />
 
+    </LinearLayout>
 </ScrollView>
