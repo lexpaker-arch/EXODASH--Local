@@ -31,13 +31,13 @@ jobs:
 
       - name: Restaurar keystore
         run: |
-          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > app/exodash.keystore
-          ls -la app/exodash.keystore
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > exodash.keystore
+          ls -la exodash.keystore
 
-      - name: Build APK (assinado)
+      - name: Build APK assinado
         run: |
           ./gradlew assembleRelease \
-            -Pandroid.injected.signing.store.file=$PWD/app/exodash.keystore \
+            -Pandroid.injected.signing.store.file=$PWD/exodash.keystore \
             -Pandroid.injected.signing.store.password=${{ secrets.KEYSTORE_PASSWORD }} \
             -Pandroid.injected.signing.key.alias=${{ secrets.KEY_ALIAS }} \
             -Pandroid.injected.signing.key.password=${{ secrets.KEY_PASSWORD }}
