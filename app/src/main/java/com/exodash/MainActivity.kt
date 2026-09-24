@@ -169,6 +169,13 @@ class MainActivity : AppCompatActivity() {
         }
         network.iniciar()
 
+        // Verificar se AndrOBd esta instalado (1a execucao)
+        handler.postDelayed({
+            if (!AndrObdInstaller.estaInstalado(this)) {
+                mostrarDialogoAndrObd()
+            }
+        }, 4000)
+
         // Iniciar OBD (tenta conectar, mas nao trava se nao tiver)
         iniciarObd()
 
@@ -191,6 +198,22 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+
+    private fun mostrarDialogoAndrObd() {
+        try {
+            android.app.AlertDialog.Builder(this)
+                .setTitle("Configuracao do OBD")
+                .setMessage("Para ler os dados do carro, o EXODASH precisa do AndrOBd. Quer instalar agora?")
+                .setPositiveButton("Instalar") { _, _ ->
+                    AndrObdInstaller.instalar(this)
+                }
+                .setNegativeButton("Depois") { _, _ ->
+                    LogEventos.registrar(this, "AndrOBd: instalacao adiada")
+                }
+                .setCancelable(false)
+                .show()
+        } catch (e: Exception) {}
+    }
 
     private fun saudar() {
         try {
@@ -248,6 +271,7 @@ class MainActivity : AppCompatActivity() {
     private fun iniciarObd() {
         Breadcrumbs.registrar("iniciando OBD")
         obd = ObdService(
+            context = this,
             host = prefs.obdHost,
             porta = prefs.obdPorta,
             onStatus = { conectado ->
