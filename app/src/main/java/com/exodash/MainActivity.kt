@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var boss: BossService
     private lateinit var network: NetworkMonitor
     private var obd: ObdService? = null
+    private lateinit var dtcHistory: DtcHistory
 
     // Header
     private lateinit var statusExo: TextView
@@ -62,6 +63,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var bossButton: Button
     private lateinit var errorTriangle: View
     private var speechRecognizer: SpeechRecognizer? = null
+    private var vosk: VoskSttService? = null
     private var ouvindo = false
     private var obdConectado = false
     private var online = false
@@ -88,6 +90,7 @@ class MainActivity : AppCompatActivity() {
         Breadcrumbs.registrar("MainActivity: setContentView")
         setContentView(R.layout.activity_main)
         prefs = Prefs(this)
+        dtcHistory = DtcHistory(this)
         Breadcrumbs.registrar("MainActivity: prefs criadas")
 
         // Modo imersivo: esconde status bar e navigation bar
@@ -131,6 +134,10 @@ class MainActivity : AppCompatActivity() {
         // Triangulo de erro
         errorTriangle = findViewById(R.id.errorTriangle)
         errorTriangle.visibility = View.GONE
+        errorTriangle.setOnClickListener {
+            Breadcrumbs.registrar("Triangulo tocado")
+            startActivity(Intent(this, DtcActivity::class.java))
+        }
 
         // BOSS
         bossButton = findViewById(R.id.bossButton)
@@ -163,8 +170,12 @@ class MainActivity : AppCompatActivity() {
         // Iniciar OBD (tenta conectar, mas nao trava se nao tiver)
         iniciarObd()
 
-        // Inicializa STT
-        inicializarSpeech()
+        // Inicializa STT: Vosk (offline) com fallback para o nativo
+        vosk = VoskSttService(this,
+            onResultado = { texto -> boss.processar(texto) },
+            onErro = { msg -> toast(msg) }
+        )
+        vosk?.inicializar()
 
         // Pede permissao de midia (se ainda nao tiver)
         handler.postDelayed({ pedirPermissaoMidia() }, 2000)
@@ -173,6 +184,7 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         atualizarUsuario()
+        atualizarTriangulo()
     }
 
     private fun atualizarUsuario() {
@@ -206,11 +218,14 @@ class MainActivity : AppCompatActivity() {
     // =============================================================
 
     private fun iniciarObd() {
+        Breadcrumbs.registrar("iniciando OBD")
         obd = ObdService(
             host = prefs.obdHost,
             porta = prefs.obdPorta,
             onStatus = { conectado ->
                 obdConectado = conectado
+                // Registra no ObdBus para outras Activities
+                ObdBus.servico = if (conectado) obd else null
                 atualizarHeader()
                 if (!conectado) {
                     // OBD caiu: zera a telemetria
@@ -235,10 +250,32 @@ class MainActivity : AppCompatActivity() {
         telFuel.text = dados.combustivel?.let { "$it %" } ?: "--"
         telBattery.text = dados.bateria?.let { String.format("%.1f V", it) } ?: "--"
 
-        // Triangulo de erro
-        if (dados.dtcs.isNotEmpty()) {
+        // Sincronizar DTCs com o historico
+        if (dados.dtcs.isNotEmpty() || dtcHistory.contarAtivos() > 0) {
+            dtcHistory.sincronizar(dados.dtcs)
+        }
+
+        // Atualizar triangulo
+        atualizarTriangulo()
+    }
+
+    private fun atualizarTriangulo() {
+        val qtd = dtcHistory.contarAtivos()
+        if (qtd > 0) {
             errorTriangle.visibility = View.VISIBLE
+            val count = findViewById<TextView>(R.id.errorTriangleCount)
+            count.text = if (qtd > 9) "9+" else qtd.toString()
+
+            // Animacao de pulso
+            val pulse = android.view.animation.AnimationUtils.loadAnimation(
+                this, android.R.anim.fade_in
+            )
+            pulse.duration = 800
+            pulse.repeatCount = android.view.animation.Animation.INFINITE
+            pulse.repeatMode = android.view.animation.Animation.REVERSE
+            errorTriangle.startAnimation(pulse)
         } else {
+            errorTriangle.clearAnimation()
             errorTriangle.visibility = View.GONE
         }
     }
@@ -290,22 +327,22 @@ class MainActivity : AppCompatActivity() {
     private fun iniciarEscuta() {
         if (ouvindo) { pararEscuta(); return }
         if (!temPermissaoAudio()) { pedirPermissaoAudio(); return }
-        if (speechRecognizer == null) {
-            inicializarSpeech()
-            if (speechRecognizer == null) { abrirDialogoPergunta(); return }
-        }
-
-        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
-            putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
-            putExtra(RecognizerIntent.EXTRA_LANGUAGE, "pt-BR")
-            putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, false)
-            putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1)
-        }
 
         ouvindo = true
         bossButton.setBackgroundResource(R.drawable.boss_button_listening)
         bossButton.text = "OUVINDO"
-        speechRecognizer?.startListening(intent)
+
+        if (vosk != null) {
+            vosk?.iniciarEscuta()
+        } else {
+            // Fallback para o reconhecedor nativo
+            inicializarSpeech()
+            val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+                putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+                putExtra(RecognizerIntent.EXTRA_LANGUAGE, "pt-BR")
+            }
+            speechRecognizer?.startListening(intent)
+        }
 
         // Timeout: se em 10s nao recebeu resultado, destrava
         handler.postDelayed({
@@ -320,6 +357,7 @@ class MainActivity : AppCompatActivity() {
         ouvindo = false
         bossButton.setBackgroundResource(R.drawable.boss_button_bg)
         bossButton.text = "BOSS"
+        vosk?.pararEscuta()
         speechRecognizer?.stopListening()
         speechRecognizer?.cancel()
     }
@@ -550,6 +588,8 @@ class MainActivity : AppCompatActivity() {
         handler.removeCallbacksAndMessages(null)
         network.parar()
         obd?.parar()
+        ObdBus.servico = null
+        vosk?.destroy()
         speechRecognizer?.destroy()
         speechRecognizer = null
         if (::boss.isInitialized) boss.destroy()

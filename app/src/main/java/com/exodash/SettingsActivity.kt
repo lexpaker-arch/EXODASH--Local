@@ -366,6 +366,32 @@ class SettingsActivity : AppCompatActivity() {
         Updater.retomarSePendente(this)
     }
 
+    private fun atualizarResumoDtc() {
+        try {
+            val history = DtcHistory(this)
+            val ativos = history.contarAtivos()
+            val total = history.lerTodas().size
+            val txt = findViewById<TextView>(R.id.txtDtcResumo)
+            txt.text = when {
+                total == 0 -> "Nenhum registro"
+                ativos == 0 -> "$total no historico, nenhum ativo"
+                ativos == 1 -> "1 ativo, $total no historico"
+                else -> "$ativos ativos, $total no historico"
+            }
+        } catch (e: Exception) {}
+    }
+
+    private fun simularDtc() {
+        try {
+            val history = DtcHistory(this)
+            history.sincronizar(listOf("P0301"), mapOf("P0301" to "Falha de ignicao no cilindro 1"))
+            Toast.makeText(this, "DTC P0301 simulado", Toast.LENGTH_SHORT).show()
+            atualizarResumoDtc()
+        } catch (e: Exception) {
+            Toast.makeText(this, "Erro: ${e.message}", Toast.LENGTH_SHORT).show()
+        }
+    }
+
     override fun onBackPressed() {
         finish()
     }
