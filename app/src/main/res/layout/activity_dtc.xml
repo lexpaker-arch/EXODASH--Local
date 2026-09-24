@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#000000"
+    android:padding="20dp">
+
+    <!-- Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="16dp">
+
+        <LinearLayout
+            android:id="@+id/btnVoltarDtc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingEnd="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="←"
+                android:textColor="#00FFCC"
+                android:textSize="22sp"
+                android:layout_marginEnd="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="VOLTAR"
+                android:textColor="#00FFCC"
+                android:textSize="12sp"
+                android:letterSpacing="0.2" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tituloDtc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="CODIGOS DE FALHA"
+            android:textColor="#C0C0C0"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.15"
+            android:gravity="end" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/divider_gradient"
+        android:layout_marginBottom="12dp" />
+
+    <!-- Lista de DTCs -->
+    <ListView
+        android:id="@+id/listaDtc"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:divider="#1a1a1a"
+        android:dividerHeight="1dp"
+        android:layout_marginBottom="12dp" />
+
+    <!-- Texto vazio -->
+    <TextView
+        android:id="@+id/textoVazio"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="Nenhum codigo de falha registrado."
+        android:textColor="#666666"
+        android:textSize="14sp"
+        android:gravity="center"
+        android:visibility="gone" />
+
+    <!-- Botoes -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="8dp">
+
+        <Button
+            android:id="@+id/btnLimparHistorico"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="LIMPAR HISTORICO"
+            android:textColor="#888888"
+            android:textSize="12sp"
+            android:backgroundTint="#1a1a1a"
+            android:layout_marginEnd="8dp" />
+
+        <Button
+            android:id="@+id/btnApagarErros"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="APAGAR ERROS DO CARRO"
+            android:textColor="#FF3333"
+            android:textSize="12sp"
+            android:backgroundTint="#2A0A0A"
+            android:layout_marginStart="8dp" />
+    </LinearLayout>
+
+</LinearLayout>
