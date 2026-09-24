@@ -320,8 +320,14 @@ class SettingsActivity : AppCompatActivity() {
             .setMessage(
                 "Versão: $versao\n\n" +
                 "Launcher para multimídia automotiva\n" +
-                "Assistente de voz BOSS\n\n" +
+                "Assistente de voz\n\n" +
                 "BY ALEX. P\n\n" +
+                "─── Créditos ───\n\n" +
+                "AndrOBD (GPL-3.0)\n" +
+                "github.com/fr3ts0n/AndrOBD\n\n" +
+                "Vosk (Apache 2.0)\n" +
+                "alphacephei.com/vosk\n\n" +
+                "─ Código-fonte ─\n" +
                 "github.com/lexpaker-arch/EXODASH--Local"
             )
             .setPositiveButton("OK", null)
@@ -422,6 +428,19 @@ class SettingsActivity : AppCompatActivity() {
         Updater.retomarSePendente(this)
     }
 
+    private fun atualizarStatusAndrObd() {
+        try {
+            val txt = findViewById<TextView>(R.id.txtAndrobdStatus)
+            if (AndrObdInstaller.estaInstalado(this)) {
+                txt.text = "Instalado ✓"
+                txt.setTextColor(0xFF00FFCC.toInt())
+            } else {
+                txt.text = "Nao instalado - toque para instalar"
+                txt.setTextColor(0xFFFFAA00.toInt())
+            }
+        } catch (e: Exception) {}
+    }
+
     private fun atualizarResumoLogs() {
         try {
             val total = LogEventos.ler(this).size
@@ -444,17 +463,6 @@ class SettingsActivity : AppCompatActivity() {
                 else -> "$ativos ativos, $total no historico"
             }
         } catch (e: Exception) {}
-    }
-
-    private fun simularDtc() {
-        try {
-            val history = DtcHistory(this)
-            history.sincronizar(listOf("P0301"), mapOf("P0301" to "Falha de ignicao no cilindro 1"))
-            Toast.makeText(this, "DTC P0301 simulado", Toast.LENGTH_SHORT).show()
-            atualizarResumoDtc()
-        } catch (e: Exception) {
-            Toast.makeText(this, "Erro: ${e.message}", Toast.LENGTH_SHORT).show()
-        }
     }
 
     override fun onBackPressed() {
