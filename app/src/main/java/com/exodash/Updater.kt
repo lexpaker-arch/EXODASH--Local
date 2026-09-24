@@ -66,6 +66,8 @@ object Updater {
             val versaoAtual = versaoLocal(context)
             val tem = compararVersoes(versaoAtual, tag) < 0
 
+            LogEventos.registrar(context, "Update: versao atual $versaoAtual, ultima $tag")
+
             Resultado(tem, versaoAtual, tag, urlApk, bodyNotas)
         } catch (e: Exception) {
             Log.e("Updater", "Erro ao verificar", e)
@@ -207,9 +209,11 @@ object Updater {
                             if (total > 0) publishProgress(((soma * 100) / total).toInt())
                         }
                     }
+                    LogEventos.registrar(context, "Update: APK baixado")
                     apk
                 } catch (e: Exception) {
                     Log.e("Updater", "Erro ao baixar", e)
+                    LogEventos.registrar(context, "Update: falha no download")
                     null
                 }
             }

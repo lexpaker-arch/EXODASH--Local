@@ -65,6 +65,7 @@ class MainActivity : AppCompatActivity() {
     private var speechRecognizer: SpeechRecognizer? = null
     private var vosk: VoskSttService? = null
     private var ouvindo = false
+    private var jaSaudou = false
     private var obdConectado = false
     private var online = false
 
@@ -157,8 +158,9 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, SettingsActivity::class.java))
         }
 
-        // Atualizar nome do usuario
+        // Atualizar nome do usuario e do assistente
         atualizarUsuario()
+        atualizarNomeAssistente()
 
         // Iniciar monitor de rede (REAL)
         network = NetworkMonitor(this) { conectado ->
@@ -184,7 +186,33 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         atualizarUsuario()
+        atualizarNomeAssistente()
         atualizarTriangulo()
+    }
+
+
+
+    private fun saudar() {
+        try {
+            if (!prefs.vozAtiva) return
+            val hora = java.util.Calendar.getInstance().get(java.util.Calendar.HOUR_OF_DAY)
+            val nome = prefs.nomeUsuario.ifEmpty { "Senhor" }
+            val saudacao = when {
+                hora < 12 -> "Bom dia, $nome."
+                hora < 18 -> "Boa tarde, $nome."
+                else -> "Boa noite, $nome."
+            }
+            boss.responder(saudacao)
+        } catch (e: Exception) {}
+    }
+
+    private fun atualizarNomeAssistente() {
+        try {
+            val nome = prefs.nomeAssistente
+            if (::bossButton.isInitialized) {
+                bossButton.text = nome
+            }
+        } catch (e: Exception) {}
     }
 
     private fun atualizarUsuario() {
@@ -227,6 +255,7 @@ class MainActivity : AppCompatActivity() {
                 // Registra no ObdBus para outras Activities
                 ObdBus.servico = if (conectado) obd else null
                 atualizarHeader()
+                LogEventos.registrar(this, if (conectado) "OBD conectado" else "OBD desconectado")
                 if (!conectado) {
                     // OBD caiu: zera a telemetria
                     telSpeed.text = "--"
@@ -253,11 +282,16 @@ class MainActivity : AppCompatActivity() {
         // Sincronizar DTCs com o historico
         if (dados.dtcs.isNotEmpty() || dtcHistory.contarAtivos() > 0) {
             dtcHistory.sincronizar(dados.dtcs)
+            if (dados.dtcs.isNotEmpty()) {
+                LogEventos.registrar(this, "DTC detectado: ${dados.dtcs.joinToString(",")}")
+            }
         }
 
         // Atualizar triangulo
         atualizarTriangulo()
     }
+
+    private var ultimoNumeroDtc = 0
 
     private fun atualizarTriangulo() {
         val qtd = dtcHistory.contarAtivos()
@@ -266,7 +300,6 @@ class MainActivity : AppCompatActivity() {
             val count = findViewById<TextView>(R.id.errorTriangleCount)
             count.text = if (qtd > 9) "9+" else qtd.toString()
 
-            // Animacao de pulso
             val pulse = android.view.animation.AnimationUtils.loadAnimation(
                 this, android.R.anim.fade_in
             )
@@ -275,9 +308,15 @@ class MainActivity : AppCompatActivity() {
             pulse.repeatMode = android.view.animation.Animation.REVERSE
             errorTriangle.startAnimation(pulse)
         } else {
+            // Avisar se tinha DTC antes e agora nao tem mais
+            if (ultimoNumeroDtc > 0) {
+                val nome = prefs.nomeUsuario.ifEmpty { "Senhor" }
+                boss.responder("Problema resolvido, $nome.")
+            }
             errorTriangle.clearAnimation()
             errorTriangle.visibility = View.GONE
         }
+        ultimoNumeroDtc = qtd
     }
 
     // =============================================================
@@ -356,7 +395,7 @@ class MainActivity : AppCompatActivity() {
     private fun pararEscuta() {
         ouvindo = false
         bossButton.setBackgroundResource(R.drawable.boss_button_bg)
-        bossButton.text = "BOSS"
+        bossButton.text = prefs.nomeAssistente
         vosk?.pararEscuta()
         speechRecognizer?.stopListening()
         speechRecognizer?.cancel()
