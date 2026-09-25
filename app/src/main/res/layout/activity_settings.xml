@@ -11,7 +11,6 @@
         android:orientation="vertical"
         android:padding="24dp">
 
-        <!-- Botão Voltar -->
         <LinearLayout
             android:id="@+id/btnVoltar"
             android:layout_width="wrap_content"
@@ -56,7 +55,6 @@
             android:layout_marginTop="2dp"
             android:letterSpacing="0.2" />
 
-        <!-- ===== PERFIS ===== -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -103,7 +101,6 @@
                 android:backgroundTint="#0A2A2A" />
         </LinearLayout>
 
-        <!-- ===== ATALHOS ===== -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -222,7 +219,6 @@
                 android:backgroundTint="#0A2A2A" />
         </LinearLayout>
 
-        <!-- ===== VOZ ===== -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -273,7 +269,6 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
-        <!-- ===== OBD ===== -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -283,44 +278,6 @@
             android:letterSpacing="0.2"
             android:layout_marginTop="28dp"
             android:layout_marginBottom="10dp" />
-
-        <LinearLayout
-            android:id="@+id/btnInstalarAndrobd"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
-            android:clickable="true"
-            android:focusable="true">
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Instalar AndrOBd"
-                    android:textColor="#E8E8E8"
-                    android:textSize="13sp" />
-                <TextView
-                    android:id="@+id/txtAndrobdStatus"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Verificando..."
-                    android:textColor="#666666"
-                    android:textSize="11sp"
-                    android:layout_marginTop="2dp" />
-            </LinearLayout>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="→"
-                android:textColor="#666666"
-                android:textSize="16sp" />
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -358,7 +315,6 @@
                 android:backgroundTint="#0A2A2A" />
         </LinearLayout>
 
-        <!-- ===== VEICULO ===== -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -405,7 +361,6 @@
                 android:backgroundTint="#0A2A2A" />
         </LinearLayout>
 
-        <!-- ===== INTELIGENCIA ===== -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -475,7 +430,6 @@
                 android:textSize="12sp" />
         </LinearLayout>
 
-        <!-- ===== DIAGNOSTICO ===== -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -524,7 +478,6 @@
                 android:textSize="16sp" />
         </LinearLayout>
 
-        <!-- ===== AVANCADO (escondido) ===== -->
         <TextView
             android:id="@+id/secaoAvancadaNome"
             android:layout_width="wrap_content"
@@ -576,7 +529,6 @@
                 android:textSize="16sp" />
         </LinearLayout>
 
-        <!-- ===== LOGS ===== -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -625,7 +577,6 @@
                 android:textSize="16sp" />
         </LinearLayout>
 
-        <!-- ===== ATUALIZACAO ===== -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -678,7 +629,7 @@
                     android:id="@+id/txtVersaoAtual"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="2.4"
+                    android:text="3.0"
                     android:textColor="#666666"
                     android:textSize="11sp"
                     android:layout_marginTop="2dp" />
@@ -692,7 +643,6 @@
                 android:backgroundTint="#0A2A2A" />
         </LinearLayout>
 
-        <!-- ===== SOBRE ===== -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

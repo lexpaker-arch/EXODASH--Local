@@ -19,8 +19,13 @@ android {
         applicationId = "com.exodash"
         minSdk = 24
         targetSdk = 34
-        versionCode = 14
-        versionName = "2.5"
+        versionCode = 15
+        versionName = "3.0"
+
+        ndk {
+            abiFilters.clear()
+            abiFilters += listOf("arm64-v8a", "armeabi-v7a")
+        }
 
         // Chave Groq embutida no BuildConfig
         val groqKey = secrets.getProperty("GROQ_API_KEY", "")
@@ -32,14 +37,17 @@ android {
         buildConfig = true
     }
 
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    kotlinOptions {
-        jvmTarget = "17"
-    }
 }
 
 dependencies {
@@ -49,6 +57,7 @@ dependencies {
     implementation("com.google.android.material:material:1.12.0")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("com.google.code.gson:gson:2.11.0")
-    implementation("net.java.dev.jna:jna:5.13.0@aar")
-    implementation("com.alphacephei:vosk-android:0.3.75")
+    // OBD USB direto
+    implementation("com.github.mik3y:usb-serial-for-android:3.10.0")
+    // Dependências locais (baixadas manualmente)
 }

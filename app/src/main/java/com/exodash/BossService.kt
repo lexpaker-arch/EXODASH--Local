@@ -132,6 +132,13 @@ class BossService(
         tts?.speak(texto, TextToSpeech.QUEUE_FLUSH, null, utteranceId)
     }
 
+    fun pararFala() {
+        try {
+            tts?.stop()
+            mainHandler.removeCallbacksAndMessages(null)
+        } catch (e: Exception) {}
+    }
+
     fun destroy() {
         try { mainHandler.removeCallbacksAndMessages(null) } catch (_: Exception) {}
         try { audioManager.abandonAudioFocus(focusListener) } catch (_: Exception) {}
