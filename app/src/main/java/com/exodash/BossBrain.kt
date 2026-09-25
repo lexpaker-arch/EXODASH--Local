@@ -80,7 +80,7 @@ class BossBrain(private val context: Context) {
         // ============================================================
         // 5. VEICULO
         // ============================================================
-        if (Regex("(que|qual) (carro|veiculo|modelo)|meu carro|o carro e)").containsMatchIn(t)) {
+        if (Regex("(que|qual) (carro|veiculo|modelo)|meu carro|o carro e").containsMatchIn(t)) {
             val v = veiculo?.veiculoAlvo ?: prefs.let {
                 if (it.veiculoMarca.isNotEmpty())
                     "${it.veiculoMarca} ${it.veiculoModelo} ${it.veiculoAno}"
