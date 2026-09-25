@@ -79,6 +79,16 @@ class SettingsActivity : AppCompatActivity() {
         findViewById<android.view.View>(R.id.btnSobre).setOnClickListener { mostrarSobre() }
 
         // Click oculto: 7 toques na versao desbloqueia modo avancado
+        // Diagnostico (codigos de falha)
+        findViewById<android.view.View>(R.id.btnVerDtc).setOnClickListener {
+            startActivity(Intent(this, DtcActivity::class.java))
+        }
+
+        // Logs de eventos
+        findViewById<android.view.View>(R.id.btnVerLogs).setOnClickListener {
+            startActivity(Intent(this, LogsActivity::class.java))
+        }
+
         findViewById<TextView>(R.id.txtVersaoAtual).setOnClickListener {
             contadorToquesVersao++
             if (contadorToquesVersao >= 7) {
@@ -325,8 +335,8 @@ class SettingsActivity : AppCompatActivity() {
                 "─── Créditos ───\n\n" +
                 "AndrOBD (GPL-3.0)\n" +
                 "github.com/fr3ts0n/AndrOBD\n\n" +
-                "Vosk (Apache 2.0)\n" +
-                "alphacephei.com/vosk\n\n" +
+                "usb-serial-for-android (MIT)\n" +
+                "github.com/mik3y/usb-serial-for-android\n\n" +
                 "─ Código-fonte ─\n" +
                 "github.com/lexpaker-arch/EXODASH--Local"
             )
@@ -426,19 +436,6 @@ class SettingsActivity : AppCompatActivity() {
         super.onResume()
         // Se ficou um update pendente (usuario foi autorizar permissao), retoma
         Updater.retomarSePendente(this)
-    }
-
-    private fun atualizarStatusAndrObd() {
-        try {
-            val txt = findViewById<TextView>(R.id.txtAndrobdStatus)
-            if (AndrObdInstaller.estaInstalado(this)) {
-                txt.text = "Instalado ✓"
-                txt.setTextColor(0xFF00FFCC.toInt())
-            } else {
-                txt.text = "Nao instalado - toque para instalar"
-                txt.setTextColor(0xFFFFAA00.toInt())
-            }
-        } catch (e: Exception) {}
     }
 
     private fun atualizarResumoLogs() {

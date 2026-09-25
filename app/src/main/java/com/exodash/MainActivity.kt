@@ -3,6 +3,7 @@ package com.exodash
 import android.Manifest
 import android.app.AlertDialog
 import android.content.Intent
+import android.media.AudioManager
 import android.net.Uri
 import android.content.pm.PackageManager
 import android.os.Build
@@ -29,10 +30,14 @@ import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
 
+    private val audioManager: AudioManager by lazy {
+        getSystemService(AUDIO_SERVICE) as AudioManager
+    }
+
     private lateinit var prefs: Prefs
     private lateinit var boss: BossService
     private lateinit var network: NetworkMonitor
-    private var obd: ObdService? = null
+    private var obd: ObdUsbService? = null
     private lateinit var dtcHistory: DtcHistory
 
     // Header
@@ -63,7 +68,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var bossButton: Button
     private lateinit var errorTriangle: View
     private var speechRecognizer: SpeechRecognizer? = null
-    private var vosk: VoskSttService? = null
     private var ouvindo = false
     private var jaSaudou = false
     private var obdConectado = false
@@ -169,22 +173,8 @@ class MainActivity : AppCompatActivity() {
         }
         network.iniciar()
 
-        // Verificar se AndrOBd esta instalado (1a execucao)
-        handler.postDelayed({
-            if (!AndrObdInstaller.estaInstalado(this)) {
-                mostrarDialogoAndrObd()
-            }
-        }, 4000)
-
         // Iniciar OBD (tenta conectar, mas nao trava se nao tiver)
         iniciarObd()
-
-        // Inicializa STT: Vosk (offline) com fallback para o nativo
-        vosk = VoskSttService(this,
-            onResultado = { texto -> boss.processar(texto) },
-            onErro = { msg -> toast(msg) }
-        )
-        vosk?.inicializar()
 
         // Pede permissao de midia (se ainda nao tiver)
         handler.postDelayed({ pedirPermissaoMidia() }, 2000)
@@ -195,24 +185,6 @@ class MainActivity : AppCompatActivity() {
         atualizarUsuario()
         atualizarNomeAssistente()
         atualizarTriangulo()
-    }
-
-
-
-    private fun mostrarDialogoAndrObd() {
-        try {
-            android.app.AlertDialog.Builder(this)
-                .setTitle("Configuracao do OBD")
-                .setMessage("Para ler os dados do carro, o EXODASH precisa do AndrOBd. Quer instalar agora?")
-                .setPositiveButton("Instalar") { _, _ ->
-                    AndrObdInstaller.instalar(this)
-                }
-                .setNegativeButton("Depois") { _, _ ->
-                    LogEventos.registrar(this, "AndrOBd: instalacao adiada")
-                }
-                .setCancelable(false)
-                .show()
-        } catch (e: Exception) {}
     }
 
     private fun saudar() {
@@ -270,10 +242,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun iniciarObd() {
         Breadcrumbs.registrar("iniciando OBD")
-        obd = ObdService(
+        obd = ObdUsbService(
             context = this,
-            host = prefs.obdHost,
-            porta = prefs.obdPorta,
             onStatus = { conectado ->
                 obdConectado = conectado
                 // Registra no ObdBus para outras Activities
@@ -297,6 +267,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun atualizarTelemetria(dados: TelemetryData) {
+        TelemetryState.atual = dados
+
         telSpeed.text = dados.velocidade?.let { "$it km/h" } ?: "--"
         telRpm.text = dados.rpm?.toString() ?: "--"
         telTemp.text = dados.temperaturaMotor?.let { "$it °C" } ?: "--"
@@ -395,17 +367,14 @@ class MainActivity : AppCompatActivity() {
         bossButton.setBackgroundResource(R.drawable.boss_button_listening)
         bossButton.text = "OUVINDO"
 
-        if (vosk != null) {
-            vosk?.iniciarEscuta()
-        } else {
-            // Fallback para o reconhecedor nativo
-            inicializarSpeech()
-            val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
-                putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
-                putExtra(RecognizerIntent.EXTRA_LANGUAGE, "pt-BR")
-            }
-            speechRecognizer?.startListening(intent)
+        // Reconhecedor nativo
+        if (speechRecognizer == null) inicializarSpeech()
+        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+            putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+            putExtra(RecognizerIntent.EXTRA_LANGUAGE, "pt-BR")
+            putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1)
         }
+        speechRecognizer?.startListening(intent)
 
         // Timeout: se em 10s nao recebeu resultado, destrava
         handler.postDelayed({
@@ -420,7 +389,6 @@ class MainActivity : AppCompatActivity() {
         ouvindo = false
         bossButton.setBackgroundResource(R.drawable.boss_button_bg)
         bossButton.text = prefs.nomeAssistente
-        vosk?.pararEscuta()
         speechRecognizer?.stopListening()
         speechRecognizer?.cancel()
     }
@@ -525,6 +493,16 @@ class MainActivity : AppCompatActivity() {
     // ACOES
     // =============================================================
 
+    private fun ajustarVolume(direcao: Int) {
+        try {
+            audioManager.adjustStreamVolume(
+                AudioManager.STREAM_MUSIC,
+                if (direcao > 0) AudioManager.ADJUST_RAISE else AudioManager.ADJUST_LOWER,
+                AudioManager.FLAG_SHOW_UI
+            )
+        } catch (e: Exception) {}
+    }
+
     private fun executarAcao(acao: BossBrain.Acao) {
         when (acao) {
             BossBrain.Acao.ABRIR_GPS -> abrirGps()
@@ -539,6 +517,9 @@ class MainActivity : AppCompatActivity() {
                     toast("OBD offline")
                 }
             }
+            BossBrain.Acao.AUMENTAR_VOLUME -> ajustarVolume(1)
+            BossBrain.Acao.DIMINUIR_VOLUME -> ajustarVolume(-1)
+            BossBrain.Acao.SILENCIAR -> boss.pararFala()
             BossBrain.Acao.NENHUMA -> {}
         }
     }
@@ -652,7 +633,6 @@ class MainActivity : AppCompatActivity() {
         network.parar()
         obd?.parar()
         ObdBus.servico = null
-        vosk?.destroy()
         speechRecognizer?.destroy()
         speechRecognizer = null
         if (::boss.isInitialized) boss.destroy()

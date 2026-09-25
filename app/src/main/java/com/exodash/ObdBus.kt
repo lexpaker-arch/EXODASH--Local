@@ -1,12 +1,12 @@
 package com.exodash
 
 /**
- * Ponte simples entre Activities e o ObdService.
+ * Ponte simples entre Activities e o ObdUsbService.
  * O MainActivity registra o service quando estiver ativo.
  */
 object ObdBus {
 
-    var servico: ObdService? = null
+    var servico: ObdUsbService? = null
 
     fun limparDTCs(): Boolean {
         val s = servico ?: return false
