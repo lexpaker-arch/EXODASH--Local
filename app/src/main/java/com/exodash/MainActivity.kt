@@ -390,7 +390,7 @@ class MainActivity : AppCompatActivity() {
     private fun pararEscuta() {
         ouvindo = false
         bossButton.setBackgroundResource(R.drawable.boss_button_bg)
-        bossButton.text = prefs.nomeAssistente
+        bossButton.text = "EXO"
         speechRecognizer?.stopListening()
         speechRecognizer?.cancel()
     }

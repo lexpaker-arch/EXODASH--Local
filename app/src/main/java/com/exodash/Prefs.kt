@@ -32,7 +32,7 @@ class Prefs(context: Context) {
      * Fica em SharedPreferences (filesDir), sobrevive a updates.
      */
     var nomeAssistente: String
-        get() = prefs.getString(KEY_ASSISTENTE, "EXO") ?: "EXO"
+        get() = "EXO"  // fixo na matriz
         set(v) = prefs.edit().putString(KEY_ASSISTENTE, v).apply()
 
     /** Modo avancado (desbloqueado com 7 toques na versao). */

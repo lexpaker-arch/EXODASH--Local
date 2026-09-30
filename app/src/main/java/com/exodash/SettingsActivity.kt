@@ -97,34 +97,7 @@ class SettingsActivity : AppCompatActivity() {
             }
         }
 
-        // Botao de escolher nome do assistente (so visivel no modo avancado)
-        findViewById<android.view.View>(R.id.btnNomeAssistente).setOnClickListener {
-            escolherNomeAssistente()
-        }
-
         atualizarLabels()
-        atualizarSecaoAvancada()
-    }    private fun atualizarSecaoAvancada() {
-        try {
-            val txt = findViewById<TextView>(R.id.txtNomeAssistenteAtual)
-            txt.text = prefs.nomeAssistente
-        } catch (e: Exception) {}
-    }
-
-    private fun escolherNomeAssistente() {
-        val opcoes = arrayOf("EXO (padrao)", "BOSS (particular)")
-        val atual = if (prefs.nomeAssistente == "BOSS") 1 else 0
-        androidx.appcompat.app.AlertDialog.Builder(this)
-            .setTitle("Nome do assistente")
-            .setSingleChoiceItems(opcoes, atual) { dialog, which ->
-                prefs.nomeAssistente = if (which == 0) "EXO" else "BOSS"
-                        Toast.makeText(this,
-                    "Nome alterado para ${prefs.nomeAssistente}",
-                    Toast.LENGTH_SHORT).show()
-                dialog.dismiss()
-            }
-            .setNegativeButton("Cancelar", null)
-            .show()
     }
 
     // =============================================

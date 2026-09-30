@@ -18,7 +18,7 @@ object GroqClient {
      */
     fun perguntar(apiKey: String, pergunta: String, nomeUsuario: String): String? {
         val systemPrompt = buildString {
-            append("Voce e BOSS, um assistente automotivo formal e direto dentro de um carro. ")
+            append("Voce e EXO, um assistente automotivo formal e direto dentro de um carro. ")
             append("Trate o usuario por '")
             append(nomeUsuario)
             append("'. ")
