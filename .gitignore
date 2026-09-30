@@ -13,3 +13,4 @@ keystore/
 keystore.jks
 keystore/
 app/src/main/assets/vehicle.json
+app/build/
