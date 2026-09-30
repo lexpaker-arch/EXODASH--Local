@@ -15,12 +15,21 @@ android {
     namespace = "com.exodash"
     compileSdk = 34
 
+    signingConfigs {
+        create("release") {
+            storeFile = file("${rootDir}/keystore/exodash.keystore")
+            storePassword = "exodash123"
+            keyAlias = "exodash"
+            keyPassword = "exodash123"
+        }
+    }
+
     defaultConfig {
         applicationId = "com.exodash"
         minSdk = 24
         targetSdk = 34
-        versionCode = 21
-        versionName = "3.1.2"
+        versionCode = 22
+        versionName = "3.1.3"
 
         ndk {
             abiFilters.clear()
@@ -40,6 +49,15 @@ android {
     kotlin {
         compilerOptions {
             jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+        }
+    }
+
+    buildTypes {
+        debug {
+            signingConfig = signingConfigs.getByName("release")
+        }
+        release {
+            signingConfig = signingConfigs.getByName("release")
         }
     }
 
