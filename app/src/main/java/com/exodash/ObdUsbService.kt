@@ -124,8 +124,10 @@ class ObdUsbService(
 
     private fun enviarCmd(cmd: String): String {
         return try {
+            LogEventos.registrar(context, "OBD >> $cmd")
             output?.write("$cmd\r".toByteArray())
             output?.flush()
+
             val sb = StringBuilder()
             val buf = ByteArray(256)
             var timeout = 0
@@ -143,34 +145,76 @@ class ObdUsbService(
                     timeout++
                 }
             }
-            sb.toString().trim()
+            val resposta = sb.toString().trim()
+            LogEventos.registrar(context, "OBD << ${resposta.take(100)}")
+            resposta
         } catch (e: Exception) {
             Log.e(TAG, "Erro cmd $cmd", e)
+            LogEventos.registrar(context, "OBD ERRO $cmd: ${e.message}")
             ""
         }
     }
 
     private fun configurarElm327() {
-        Log.d(TAG, "Reset...")
-        enviarCmd("AT Z")
+        LogEventos.registrar(context, "=== Iniciando ELM327 ===")
+
+        LogEventos.registrar(context, "Passo 1: Reset")
+        val reset = enviarCmd("AT Z")
         Thread.sleep(2000)
-        enviarCmd("AT E0")  // echo off
-        enviarCmd("AT L0")  // linefeed off
-        enviarCmd("AT S0")  // spaces off
-        enviarCmd("AT H0")  // headers off
-        enviarCmd("AT SP 3")  // ISO 9141-2 (Focus 2001)
+
+        LogEventos.registrar(context, "Passo 2: Echo off")
+        enviarCmd("AT E0")
+
+        LogEventos.registrar(context, "Passo 3: Linefeed off")
+        enviarCmd("AT L0")
+
+        LogEventos.registrar(context, "Passo 4: Spaces off")
+        enviarCmd("AT S0")
+
+        LogEventos.registrar(context, "Passo 5: Headers off")
+        enviarCmd("AT H0")
+
+        LogEventos.registrar(context, "Passo 6: Forcando ISO 9141-2")
+        enviarCmd("AT SP 3")
         Thread.sleep(500)
-        Log.d(TAG, "ELM327 configurado")
-        LogEventos.registrar(context, "ELM327 configurado (ISO 9141-2)")
+
+        // Verificar versao do adaptador
+        LogEventos.registrar(context, "Verificando versao")
+        val versao = enviarCmd("AT I")
+        LogEventos.registrar(context, "Versao ELM327: $versao")
+
+        // Verificar protocolo atual
+        val protocolo = enviarCmd("AT DP")
+        LogEventos.registrar(context, "Protocolo: $protocolo")
+
+        // Teste de comunicacao com a ECU
+        LogEventos.registrar(context, "Testando comunicacao com ECU (PID 00)")
+        val pid00 = enviarCmd("01 00")
+        LogEventos.registrar(context, "Resposta 01 00: ${pid00.take(80)}")
+
+        LogEventos.registrar(context, "=== ELM327 pronto ===")
     }
 
     private fun loopLeitura() {
+        var ciclos = 0
         while (conectado) {
             try {
-                val vel = parseSpeed(enviarCmd("01 0D"))
-                val rpm = parseRpm(enviarCmd("01 0C"))
-                val temp = parseTemp(enviarCmd("01 05"))
-                val comb = parseFuel(enviarCmd("01 2F"))
+                val velResp = enviarCmd("01 0D")
+                val rpmResp = enviarCmd("01 0C")
+                val tempResp = enviarCmd("01 05")
+                val combResp = enviarCmd("01 2F")
+
+                val vel = parseSpeed(velResp)
+                val rpm = parseRpm(rpmResp)
+                val temp = parseTemp(tempResp)
+                val comb = parseFuel(combResp)
+
+                // Log apenas a cada 5 ciclos (evitar poluir)
+                if (ciclos % 5 == 0) {
+                    LogEventos.registrar(context,
+                        "Dados: vel=$vel rpm=$rpm temp=$temp comb=$comb")
+                }
+                ciclos++
 
                 val dados = TelemetryData(vel, rpm, temp, comb, null)
                 handler.post { onTelemetria(dados) }
@@ -178,6 +222,7 @@ class ObdUsbService(
                 Thread.sleep(1000)
             } catch (e: Exception) {
                 Log.e(TAG, "Erro leitura", e)
+                LogEventos.registrar(context, "Erro leitura: ${e.message}")
                 Thread.sleep(2000)
             }
         }

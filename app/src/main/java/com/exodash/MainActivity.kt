@@ -95,6 +95,7 @@ class MainActivity : AppCompatActivity() {
         Breadcrumbs.registrar("MainActivity: setContentView")
         setContentView(R.layout.activity_main)
         prefs = Prefs(this)
+        prefs.migrarSeNecessario()
         dtcHistory = DtcHistory(this)
         Breadcrumbs.registrar("MainActivity: prefs criadas")
 

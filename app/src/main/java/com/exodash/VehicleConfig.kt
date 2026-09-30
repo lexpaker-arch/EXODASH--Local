@@ -15,6 +15,8 @@ object VehicleConfig {
 
     data class DadoVeiculo(
         val veiculoAlvo: String,
+        val motor: String,
+        val protocoloObd: String,
         val dtcs: Map<String, DtcInfo>,
         val falhasOcultas: List<FalhaOculta>
     )
@@ -25,7 +27,9 @@ object VehicleConfig {
         val titulo: String,
         val descricao: String,
         val urgencia: String,
-        val tagsSintomas: List<String>
+        val sintomas: List<String>,
+        val observacoes: String,
+        val fonte: String
     )
 
     data class FalhaOculta(
@@ -35,12 +39,13 @@ object VehicleConfig {
         val titulo: String,
         val descricao: String,
         val urgencia: String,
-        val tagsSintomas: List<String>
+        val sintomas: List<String>,
+        val observacoes: String,
+        val fonte: String
     )
 
     private var cache: DadoVeiculo? = null
 
-    /** Garante que o arquivo esta em filesDir (copia de assets na 1a vez). */
     fun garantirArquivo(context: Context) {
         try {
             val destino = File(context.filesDir, NOME_ARQUIVO)
@@ -66,7 +71,10 @@ object VehicleConfig {
             val json = JSONObject(texto)
             val metadados = json.optJSONObject("metadados")
             val veiculo = metadados?.optString("veiculo_alvo", "Veiculo") ?: "Veiculo"
+            val motor = metadados?.optString("motor", "") ?: ""
+            val protocolo = metadados?.optString("protocolo_obd", "") ?: ""
 
+            // DTCs
             val dtcMap = mutableMapOf<String, DtcInfo>()
             json.optJSONArray("falhas_registradas")?.let { arr ->
                 for (i in 0 until arr.length()) {
@@ -79,11 +87,14 @@ object VehicleConfig {
                         titulo = o.optString("titulo", ""),
                         descricao = o.optString("descricao", ""),
                         urgencia = o.optString("urgencia", "media"),
-                        tagsSintomas = optStringList(o, "tags_sintomas")
+                        sintomas = optStringList(o, "sintomas"),
+                        observacoes = o.optString("observacoes", ""),
+                        fonte = o.optString("fonte", "")
                     )
                 }
             }
 
+            // Falhas ocultas
             val ocultas = mutableListOf<FalhaOculta>()
             json.optJSONArray("falhas_ocultas")?.let { arr ->
                 for (i in 0 until arr.length()) {
@@ -96,7 +107,9 @@ object VehicleConfig {
                             titulo = o.optString("titulo", ""),
                             descricao = o.optString("descricao", ""),
                             urgencia = o.optString("urgencia", "media"),
-                            tagsSintomas = optStringList(o, "tags_sintomas")
+                            sintomas = optStringList(o, "sintomas"),
+                            observacoes = o.optString("observacoes", ""),
+                            fonte = o.optString("fonte", "")
                         )
                     )
                 }
@@ -104,6 +117,8 @@ object VehicleConfig {
 
             DadoVeiculo(
                 veiculoAlvo = veiculo,
+                motor = motor,
+                protocoloObd = protocolo,
                 dtcs = dtcMap,
                 falhasOcultas = ocultas
             ).also { cache = it }

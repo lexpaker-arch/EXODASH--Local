@@ -19,8 +19,8 @@ android {
         applicationId = "com.exodash"
         minSdk = 24
         targetSdk = 34
-        versionCode = 17
-        versionName = "3.0.2"
+        versionCode = 100
+        versionName = "1.0-BOSS"
 
         ndk {
             abiFilters.clear()

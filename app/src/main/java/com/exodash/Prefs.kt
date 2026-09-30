@@ -32,7 +32,7 @@ class Prefs(context: Context) {
      * Fica em SharedPreferences (filesDir), sobrevive a updates.
      */
     var nomeAssistente: String
-        get() = prefs.getString(KEY_ASSISTENTE, "EXO") ?: "EXO"
+        get() = prefs.getString(KEY_ASSISTENTE, "BOSS") ?: "BOSS"
         set(v) = prefs.edit().putString(KEY_ASSISTENTE, v).apply()
 
     /** Modo avancado (desbloqueado com 7 toques na versao). */
@@ -119,12 +119,30 @@ class Prefs(context: Context) {
         get() = prefs.getString(KEY_ULTIMA_VERSAO, "") ?: ""
         set(v) = prefs.edit().putString(KEY_ULTIMA_VERSAO, v).apply()
 
+
+    private var jaMigrado: Boolean
+        get() = prefs.getBoolean(KEY_MIGRADO, false)
+        set(v) = prefs.edit().putBoolean(KEY_MIGRADO, v).apply()
+
+    /**
+     * Garante que os defaults atuais fiquem em SharedPreferences na 1a execucao.
+     * Assim "BOSS" sobrevive a updates da matriz.
+     */
+    fun migrarSeNecessario() {
+        if (jaMigrado) return
+        prefs.edit()
+            .putString(KEY_ASSISTENTE, nomeAssistente)
+            .putBoolean(KEY_MIGRADO, true)
+            .apply()
+    }
+
     companion object {
         private const val KEY_TELEFONE = "app_telefone"
         private const val KEY_MUSICA = "app_musica"
         private const val KEY_GPS = "app_gps"
         private const val KEY_USUARIO = "nome_usuario"
         private const val KEY_ASSISTENTE = "nome_assistente"
+        private const val KEY_MIGRADO = "migrado_boss"
         private const val KEY_MODO_AVANCADO = "modo_avancado"
         private const val KEY_VOZ_ATIVA = "voz_ativa"
         private const val KEY_BIPE_ATIVO = "bipe_ativo"

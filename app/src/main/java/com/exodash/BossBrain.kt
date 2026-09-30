@@ -44,7 +44,7 @@ class BossBrain(private val context: Context) {
         // 0. EASTER EGG — Zé Ruela
         // ============================================================
         if (Regex("\\b(z[eé] ?ruela|zeruela|ze ruela)\\b").containsMatchIn(t)) {
-            return Resposta("Ze Ruela e voce, $nome.")
+            return Resposta("Zé Ruela é você, $nome!")
         }
 
         // ============================================================
@@ -294,22 +294,50 @@ class BossBrain(private val context: Context) {
     // SINTOMA
     // ============================================================
     private fun buscarPorSintoma(texto: String, nome: String): Resposta? {
+        // 1. PRIMEIRO: verificar se ha DTC ativo no historico
+        try {
+            val history = DtcHistory(context)
+            val ativos = history.ativos()
+            for (ativo in ativos) {
+                val dtcInfo = veiculo?.dtcs?.get(ativo.codigo)
+                if (dtcInfo != null && dtcInfo.sintomas.any { texto.contains(it) }) {
+                    return Resposta("Detectei ${ativo.codigo} ativo, $nome. ${dtcInfo.titulo}.")
+                }
+            }
+        } catch (e: Exception) {}
+
+        // 2. Buscar no vehicle.json
         val v = veiculo ?: return null
 
-        v.dtcs.values.firstOrNull { dtc ->
-            dtc.tagsSintomas.any { tag -> texto.contains(tag) }
-        }?.let {
-            return Resposta("${it.titulo}. ${it.componente}.")
+        // DTCs que batem com o sintoma
+        val dtcMatches = v.dtcs.values.filter { dtc ->
+            dtc.sintomas.any { tag -> texto.contains(tag) }
         }
 
-        v.falhasOcultas.firstOrNull { f ->
-            f.tagsSintomas.any { tag -> texto.contains(tag) }
-        }?.let {
-            return Resposta("Pode ser ${it.titulo.lowercase()}, $nome.")
+        // Falhas ocultas que batem
+        val ocultaMatches = v.falhasOcultas.filter { f ->
+            f.sintomas.any { tag -> texto.contains(tag) }
         }
 
-        return null
+        // Se nada bateu, retorna null
+        if (dtcMatches.isEmpty() && ocultaMatches.isEmpty()) return null
+
+        // Monta resposta com ate 3 possibilidades
+        val possibilidades = mutableListOf<String>()
+        for (dtc in dtcMatches.take(3)) {
+            possibilidades.add("${dtc.titulo} (${dtc.codigo})")
+        }
+        for (oculta in ocultaMatches.take((3 - possibilidades.size).coerceAtLeast(0))) {
+            possibilidades.add(oculta.titulo.lowercase())
+        }
+
+        return if (possibilidades.size == 1) {
+            Resposta("Pode ser ${possibilidades[0].lowercase()}, $nome.")
+        } else {
+            Resposta("Pode ser: ${possibilidades.joinToString(" ou ")}, $nome.")
+        }
     }
+
 
     // ============================================================
     // HORA E DATA
