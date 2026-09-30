@@ -11,3 +11,5 @@ local.properties
 secrets.properties
 keystore/
 keystore.jks
+keystore/
+app/src/main/assets/vehicle.json

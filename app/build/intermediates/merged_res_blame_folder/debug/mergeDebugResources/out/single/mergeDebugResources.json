@@ -1,0 +1,150 @@
+[
+    {
+        "merged": "com.exodash.app-debug-31:/layout_activity_settings.xml.flat",
+        "source": "com.exodash.app-main-33:/layout/activity_settings.xml"
+    },
+    {
+        "merged": "com.exodash.app-debug-31:/drawable_shortcut_ripple.xml.flat",
+        "source": "com.exodash.app-main-33:/drawable/shortcut_ripple.xml"
+    },
+    {
+        "merged": "com.exodash.app-debug-31:/layout_activity_logs.xml.flat",
+        "source": "com.exodash.app-main-33:/layout/activity_logs.xml"
+    },
+    {
+        "merged": "com.exodash.app-debug-31:/drawable_hud_corner_tl.xml.flat",
+        "source": "com.exodash.app-main-33:/drawable/hud_corner_tl.xml"
+    },
+    {
+        "merged": "com.exodash.app-debug-31:/drawable_card_bg.xml.flat",
+        "source": "com.exodash.app-main-33:/drawable/card_bg.xml"
+    },
+    {
+        "merged": "com.exodash.app-debug-31:/drawable_music_progress_bar.xml.flat",
+        "source": "com.exodash.app-main-33:/drawable/music_progress_bar.xml"
+    },
+    {
+        "merged": "com.exodash.app-debug-31:/drawable_ic_apps.xml.flat",
+        "source": "com.exodash.app-main-33:/drawable/ic_apps.xml"
+    },
+    {
+        "merged": "com.exodash.app-debug-31:/drawable_error_triangle.xml.flat",
+        "source": "com.exodash.app-main-33:/drawable/error_triangle.xml"
+    },
+    {
+        "merged": "com.exodash.app-debug-31:/drawable_exo_button_bg.xml.flat",
+        "source": "com.exodash.app-main-33:/drawable/exo_button_bg.xml"
+    },
+    {
+        "merged": "com.exodash.app-debug-31:/drawable_ic_music.xml.flat",
+        "source": "com.exodash.app-main-33:/drawable/ic_music.xml"
+    },
+    {
+        "merged": "com.exodash.app-debug-31:/drawable_hud_corner_bl.xml.flat",
+        "source": "com.exodash.app-main-33:/drawable/hud_corner_bl.xml"
+    },
+    {
+        "merged": "com.exodash.app-debug-31:/drawable_clock_ring.xml.flat",
+        "source": "com.exodash.app-main-33:/drawable/clock_ring.xml"
+    },
+    {
+        "merged": "com.exodash.app-debug-31:/drawable_boss_button_bg.xml.flat",
+        "source": "com.exodash.app-main-33:/drawable/boss_button_bg.xml"
+    },
+    {
+        "merged": "com.exodash.app-debug-31:/drawable_music_progress_bg.xml.flat",
+        "source": "com.exodash.app-main-33:/drawable/music_progress_bg.xml"
+    },
+    {
+        "merged": "com.exodash.app-debug-31:/raw_splash.mp4.flat",
+        "source": "com.exodash.app-main-33:/raw/splash.mp4"
+    },
+    {
+        "merged": "com.exodash.app-debug-31:/drawable_boss_button_listening.xml.flat",
+        "source": "com.exodash.app-main-33:/drawable/boss_button_listening.xml"
+    },
+    {
+        "merged": "com.exodash.app-debug-31:/xml_file_paths.xml.flat",
+        "source": "com.exodash.app-main-33:/xml/file_paths.xml"
+    },
+    {
+        "merged": "com.exodash.app-debug-31:/layout_item_app.xml.flat",
+        "source": "com.exodash.app-main-33:/layout/item_app.xml"
+    },
+    {
+        "merged": "com.exodash.app-debug-31:/layout_activity_dtc.xml.flat",
+        "source": "com.exodash.app-main-33:/layout/activity_dtc.xml"
+    },
+    {
+        "merged": "com.exodash.app-debug-31:/xml_voice_interaction_service.xml.flat",
+        "source": "com.exodash.app-main-33:/xml/voice_interaction_service.xml"
+    },
+    {
+        "merged": "com.exodash.app-debug-31:/layout_activity_app_drawer.xml.flat",
+        "source": "com.exodash.app-main-33:/layout/activity_app_drawer.xml"
+    },
+    {
+        "merged": "com.exodash.app-debug-31:/drawable_hud_corner_tr.xml.flat",
+        "source": "com.exodash.app-main-33:/drawable/hud_corner_tr.xml"
+    },
+    {
+        "merged": "com.exodash.app-debug-31:/xml_device_filter.xml.flat",
+        "source": "com.exodash.app-main-33:/xml/device_filter.xml"
+    },
+    {
+        "merged": "com.exodash.app-debug-31:/layout_activity_main.xml.flat",
+        "source": "com.exodash.app-main-33:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.exodash.app-debug-31:/layout_item_dtc.xml.flat",
+        "source": "com.exodash.app-main-33:/layout/item_dtc.xml"
+    },
+    {
+        "merged": "com.exodash.app-debug-31:/layout_item_log.xml.flat",
+        "source": "com.exodash.app-main-33:/layout/item_log.xml"
+    },
+    {
+        "merged": "com.exodash.app-debug-31:/layout_activity_splash.xml.flat",
+        "source": "com.exodash.app-main-33:/layout/activity_splash.xml"
+    },
+    {
+        "merged": "com.exodash.app-debug-31:/drawable_ic_launcher_exodash.xml.flat",
+        "source": "com.exodash.app-main-33:/drawable/ic_launcher_exodash.xml"
+    },
+    {
+        "merged": "com.exodash.app-debug-31:/drawable_ic_gps.xml.flat",
+        "source": "com.exodash.app-main-33:/drawable/ic_gps.xml"
+    },
+    {
+        "merged": "com.exodash.app-debug-31:/drawable_boss_glow.xml.flat",
+        "source": "com.exodash.app-main-33:/drawable/boss_glow.xml"
+    },
+    {
+        "merged": "com.exodash.app-debug-31:/drawable_ic_phone.xml.flat",
+        "source": "com.exodash.app-main-33:/drawable/ic_phone.xml"
+    },
+    {
+        "merged": "com.exodash.app-debug-31:/drawable_music_frame_bg.xml.flat",
+        "source": "com.exodash.app-main-33:/drawable/music_frame_bg.xml"
+    },
+    {
+        "merged": "com.exodash.app-debug-31:/drawable_shortcut_bg.xml.flat",
+        "source": "com.exodash.app-main-33:/drawable/shortcut_bg.xml"
+    },
+    {
+        "merged": "com.exodash.app-debug-31:/drawable_hud_corner_br.xml.flat",
+        "source": "com.exodash.app-main-33:/drawable/hud_corner_br.xml"
+    },
+    {
+        "merged": "com.exodash.app-debug-31:/drawable_frame_silver.xml.flat",
+        "source": "com.exodash.app-main-33:/drawable/frame_silver.xml"
+    },
+    {
+        "merged": "com.exodash.app-debug-31:/drawable_divider_gradient.xml.flat",
+        "source": "com.exodash.app-main-33:/drawable/divider_gradient.xml"
+    },
+    {
+        "merged": "com.exodash.app-debug-31:/drawable_scanline_line.xml.flat",
+        "source": "com.exodash.app-main-33:/drawable/scanline_line.xml"
+    }
+]

@@ -1,0 +1,444 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.exodash"
+4    android:versionCode="22"
+5    android:versionName="3.1.3" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="24"
+9        android:targetSdkVersion="34" />
+10
+11    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+11-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:4:5-81
+11-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:4:22-78
+12
+13    <uses-feature
+13-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:5:5-87
+14        android:name="android.hardware.usb.host"
+14-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:5:19-59
+15        android:required="false" />
+15-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:5:60-84
+16
+17    <uses-permission android:name="android.permission.INTERNET" />
+17-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:6:5-67
+17-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:6:22-64
+18    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+18-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:7:5-71
+18-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:7:22-68
+19    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+19-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:8:5-83
+19-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:8:22-80
+20    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+20-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:9:5-79
+20-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:9:22-76
+21
+22    <queries>
+22-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:11:5-18:15
+23        <intent>
+23-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:12:9-138
+24            <action android:name="android.intent.action.MAIN" />
+24-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:12:17-69
+24-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:12:25-66
+25
+26            <category android:name="android.intent.category.APP_DIAL" />
+26-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:12:69-129
+26-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:12:79-126
+27        </intent>
+28        <intent>
+28-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:13:9-78
+29            <action android:name="android.intent.action.DIAL" />
+29-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:13:17-69
+29-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:13:25-66
+30        </intent>
+31        <intent>
+31-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:14:9-107
+32            <action android:name="android.intent.action.VIEW" />
+32-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:14:17-69
+32-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:14:25-66
+33
+34            <data android:scheme="geo" />
+34-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:14:69-98
+34-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:14:75-95
+35        </intent>
+36        <intent>
+36-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:15:9-109
+37            <action android:name="android.intent.action.VIEW" />
+37-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:14:17-69
+37-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:14:25-66
+38
+39            <data android:scheme="https" />
+39-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:14:69-98
+39-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:14:75-95
+40        </intent>
+41        <intent>
+41-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:16:9-138
+42            <action android:name="android.intent.action.MAIN" />
+42-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:12:17-69
+42-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:12:25-66
+43
+44            <category android:name="android.intent.category.LAUNCHER" />
+44-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:16:69-129
+44-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:16:79-126
+45        </intent>
+46        <intent>
+46-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:17:9-139
+47            <action android:name="android.intent.action.MAIN" />
+47-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:12:17-69
+47-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:12:25-66
+48
+49            <category android:name="android.intent.category.APP_MUSIC" />
+49-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:17:69-130
+49-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:17:79-127
+50        </intent>
+51    </queries>
+52
+53    <permission
+53-->[androidx.core:core:1.13.1] /root/.gradle/caches/8.9/transforms/985c7c7df85763d7da193290d8ddaf59/transformed/core-1.13.1/AndroidManifest.xml:22:5-24:47
+54        android:name="com.exodash.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+54-->[androidx.core:core:1.13.1] /root/.gradle/caches/8.9/transforms/985c7c7df85763d7da193290d8ddaf59/transformed/core-1.13.1/AndroidManifest.xml:23:9-81
+55        android:protectionLevel="signature" />
+55-->[androidx.core:core:1.13.1] /root/.gradle/caches/8.9/transforms/985c7c7df85763d7da193290d8ddaf59/transformed/core-1.13.1/AndroidManifest.xml:24:9-44
+56
+57    <uses-permission android:name="com.exodash.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+57-->[androidx.core:core:1.13.1] /root/.gradle/caches/8.9/transforms/985c7c7df85763d7da193290d8ddaf59/transformed/core-1.13.1/AndroidManifest.xml:26:5-97
+57-->[androidx.core:core:1.13.1] /root/.gradle/caches/8.9/transforms/985c7c7df85763d7da193290d8ddaf59/transformed/core-1.13.1/AndroidManifest.xml:26:22-94
+58
+59    <application
+59-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:20:5-165:19
+60        android:allowBackup="true"
+60-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:21:9-35
+61        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+61-->[androidx.core:core:1.13.1] /root/.gradle/caches/8.9/transforms/985c7c7df85763d7da193290d8ddaf59/transformed/core-1.13.1/AndroidManifest.xml:28:18-86
+62        android:debuggable="true"
+63        android:extractNativeLibs="false"
+64        android:icon="@drawable/ic_launcher_exodash"
+64-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:22:9-53
+65        android:label="EXODASH"
+65-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:23:9-32
+66        android:theme="@style/Theme.Exodash" >
+66-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:24:9-45
+67        <activity
+67-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:26:9-36:20
+68            android:name="com.exodash.SplashActivity"
+68-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:27:13-43
+69            android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
+69-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:29:13-87
+70            android:exported="true"
+70-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:28:13-36
+71            android:screenOrientation="landscape"
+71-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:30:13-50
+72            android:theme="@style/Theme.Exodash" >
+72-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:31:13-49
+73            <intent-filter>
+73-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:32:13-35:29
+74                <action android:name="android.intent.action.MAIN" />
+74-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:12:17-69
+74-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:12:25-66
+75
+76                <category android:name="android.intent.category.LAUNCHER" />
+76-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:16:69-129
+76-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:16:79-126
+77            </intent-filter>
+78        </activity>
+79        <activity
+79-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:38:9-80:20
+80            android:name="com.exodash.MainActivity"
+80-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:39:13-41
+81            android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
+81-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:44:13-87
+82            android:excludeFromRecents="true"
+82-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:43:13-46
+83            android:exported="true"
+83-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:40:13-36
+84            android:launchMode="singleTask"
+84-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:41:13-44
+85            android:screenOrientation="landscape"
+85-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:45:13-50
+86            android:stateNotNeeded="true"
+86-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:42:13-42
+87            android:theme="@style/Theme.Exodash" >
+87-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:46:13-49
+88
+89            <!-- Launcher (Home) -->
+90            <intent-filter>
+90-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:49:13-53:29
+91                <action android:name="android.intent.action.MAIN" />
+91-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:12:17-69
+91-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:12:25-66
+92
+93                <category android:name="android.intent.category.HOME" />
+93-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:51:17-73
+93-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:51:27-70
+94                <category android:name="android.intent.category.DEFAULT" />
+94-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:52:17-76
+94-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:52:27-73
+95            </intent-filter>
+96
+97            <!-- Assistente padrao -->
+98            <intent-filter>
+98-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:56:13-59:29
+99                <action android:name="android.intent.action.ASSIST" />
+99-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:57:17-71
+99-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:57:25-68
+100
+101                <category android:name="android.intent.category.DEFAULT" />
+101-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:52:17-76
+101-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:52:27-73
+102            </intent-filter>
+103
+104            <!-- Comando de voz -->
+105            <intent-filter>
+105-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:62:13-65:29
+106                <action android:name="android.intent.action.VOICE_COMMAND" />
+106-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:63:17-78
+106-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:63:25-75
+107
+108                <category android:name="android.intent.category.DEFAULT" />
+108-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:52:17-76
+108-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:52:27-73
+109            </intent-filter>
+110
+111            <!-- Botao de busca (long press) -->
+112            <intent-filter>
+112-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:68:13-71:29
+113                <action android:name="android.intent.action.SEARCH_LONG_PRESS" />
+113-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:69:17-82
+113-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:69:25-79
+114
+115                <category android:name="android.intent.category.DEFAULT" />
+115-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:52:17-76
+115-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:52:27-73
+116            </intent-filter>
+117
+118            <!-- USB OBD (ELM327 via cabo) -->
+119            <intent-filter>
+119-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:74:13-76:29
+120                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+120-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:75:17-90
+120-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:75:25-87
+121            </intent-filter>
+122
+123            <meta-data
+123-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:77:13-79:57
+124                android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
+124-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:78:17-79
+125                android:resource="@xml/device_filter" />
+125-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:79:17-54
+126        </activity>
+127        <activity
+127-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:82:9-86:53
+128            android:name="com.exodash.AppDrawerActivity"
+128-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:83:13-46
+129            android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
+129-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:85:13-87
+130            android:exported="false"
+130-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:84:13-37
+131            android:screenOrientation="landscape" />
+131-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:86:13-50
+132        <activity
+132-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:87:9-91:53
+133            android:name="com.exodash.LogsActivity"
+133-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:88:13-41
+134            android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
+134-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:90:13-87
+135            android:exported="false"
+135-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:89:13-37
+136            android:screenOrientation="landscape" />
+136-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:91:13-50
+137        <activity
+137-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:93:9-97:53
+138            android:name="com.exodash.DtcActivity"
+138-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:94:13-40
+139            android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
+139-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:96:13-87
+140            android:exported="false"
+140-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:95:13-37
+141            android:screenOrientation="landscape" />
+141-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:97:13-50
+142        <activity
+142-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:99:9-104:53
+143            android:name="com.exodash.SettingsActivity"
+143-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:100:13-45
+144            android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
+144-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:103:13-87
+145            android:exported="true"
+145-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:101:13-36
+146            android:label="EXODASH Config"
+146-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:102:13-43
+147            android:screenOrientation="landscape" />
+147-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:104:13-50
+148
+149        <service
+149-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:106:9-114:19
+150            android:name="com.exodash.MediaListenerService"
+150-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:107:13-49
+151            android:exported="true"
+151-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:108:13-36
+152            android:label="EXODASH Media"
+152-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:109:13-42
+153            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE" >
+153-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:110:13-87
+154            <intent-filter>
+154-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:111:13-113:29
+155                <action android:name="android.service.notification.NotificationListenerService" />
+155-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:112:17-99
+155-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:112:25-96
+156            </intent-filter>
+157        </service>
+158
+159        <!-- ============================================================ -->
+160        <!-- VoiceInteractionService — faz o EXODASH aparecer como -->
+161        <!-- assistente em Configuracoes > Apps > Apps padrao > Assistente -->
+162        <!-- ============================================================ -->
+163        <service
+163-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:120:9-131:19
+164            android:name="com.exodash.MainVoiceInteractionService"
+164-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:121:13-56
+165            android:exported="true"
+165-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:122:13-36
+166            android:label="@string/assistant_label"
+166-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:123:13-52
+167            android:permission="android.permission.BIND_VOICE_INTERACTION" >
+167-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:124:13-75
+168            <meta-data
+168-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:125:13-127:69
+169                android:name="android.voice_interaction"
+169-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:126:17-57
+170                android:resource="@xml/voice_interaction_service" />
+170-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:127:17-66
+171
+172            <intent-filter>
+172-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:128:13-130:29
+173                <action android:name="android.service.voice.VoiceInteractionService" />
+173-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:129:17-88
+173-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:129:25-85
+174            </intent-filter>
+175        </service>
+176        <service
+176-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:133:9-140:19
+177            android:name="com.exodash.MainVoiceInteractionSessionService"
+177-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:134:13-63
+178            android:exported="true"
+178-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:135:13-36
+179            android:permission="android.permission.BIND_VOICE_INTERACTION" >
+179-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:136:13-75
+180            <intent-filter>
+180-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:137:13-139:29
+181                <action android:name="android.service.voice.VoiceInteractionSessionService" />
+181-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:138:17-95
+181-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:138:25-92
+182            </intent-filter>
+183        </service>
+184
+185        <receiver
+185-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:142:9-153:20
+186            android:name="com.exodash.BootReceiver"
+186-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:143:13-41
+187            android:directBootAware="true"
+187-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:146:13-43
+188            android:enabled="true"
+188-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:144:13-35
+189            android:exported="true" >
+189-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:145:13-36
+190            <intent-filter android:priority="1000" >
+190-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:147:13-152:29
+190-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:147:28-51
+191                <action android:name="android.intent.action.BOOT_COMPLETED" />
+191-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:148:17-79
+191-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:148:25-76
+192                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+192-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:149:17-86
+192-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:149:25-83
+193                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+193-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:150:17-82
+193-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:150:25-79
+194                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
+194-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:151:17-82
+194-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:151:25-79
+195            </intent-filter>
+196        </receiver>
+197
+198        <provider
+199            android:name="androidx.core.content.FileProvider"
+199-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:156:13-62
+200            android:authorities="com.exodash.fileprovider"
+200-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:157:13-64
+201            android:exported="false"
+201-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:158:13-37
+202            android:grantUriPermissions="true" >
+202-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:159:13-47
+203            <meta-data
+203-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:160:13-162:54
+204                android:name="android.support.FILE_PROVIDER_PATHS"
+204-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:161:17-67
+205                android:resource="@xml/file_paths" />
+205-->/workspaces/EXODASH--Local/app/src/main/AndroidManifest.xml:162:17-51
+206        </provider>
+207        <provider
+207-->[androidx.emoji2:emoji2:1.3.0] /root/.gradle/caches/8.9/transforms/ecda89eac1df86d79c10607167e7f5b0/transformed/emoji2-1.3.0/AndroidManifest.xml:24:9-32:20
+208            android:name="androidx.startup.InitializationProvider"
+208-->[androidx.emoji2:emoji2:1.3.0] /root/.gradle/caches/8.9/transforms/ecda89eac1df86d79c10607167e7f5b0/transformed/emoji2-1.3.0/AndroidManifest.xml:25:13-67
+209            android:authorities="com.exodash.androidx-startup"
+209-->[androidx.emoji2:emoji2:1.3.0] /root/.gradle/caches/8.9/transforms/ecda89eac1df86d79c10607167e7f5b0/transformed/emoji2-1.3.0/AndroidManifest.xml:26:13-68
+210            android:exported="false" >
+210-->[androidx.emoji2:emoji2:1.3.0] /root/.gradle/caches/8.9/transforms/ecda89eac1df86d79c10607167e7f5b0/transformed/emoji2-1.3.0/AndroidManifest.xml:27:13-37
+211            <meta-data
+211-->[androidx.emoji2:emoji2:1.3.0] /root/.gradle/caches/8.9/transforms/ecda89eac1df86d79c10607167e7f5b0/transformed/emoji2-1.3.0/AndroidManifest.xml:29:13-31:52
+212                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+212-->[androidx.emoji2:emoji2:1.3.0] /root/.gradle/caches/8.9/transforms/ecda89eac1df86d79c10607167e7f5b0/transformed/emoji2-1.3.0/AndroidManifest.xml:30:17-75
+213                android:value="androidx.startup" />
+213-->[androidx.emoji2:emoji2:1.3.0] /root/.gradle/caches/8.9/transforms/ecda89eac1df86d79c10607167e7f5b0/transformed/emoji2-1.3.0/AndroidManifest.xml:31:17-49
+214            <meta-data
+214-->[androidx.lifecycle:lifecycle-process:2.6.2] /root/.gradle/caches/8.9/transforms/90be1dba038a41d8fd6e647345702d4c/transformed/lifecycle-process-2.6.2/AndroidManifest.xml:29:13-31:52
+215                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+215-->[androidx.lifecycle:lifecycle-process:2.6.2] /root/.gradle/caches/8.9/transforms/90be1dba038a41d8fd6e647345702d4c/transformed/lifecycle-process-2.6.2/AndroidManifest.xml:30:17-78
+216                android:value="androidx.startup" />
+216-->[androidx.lifecycle:lifecycle-process:2.6.2] /root/.gradle/caches/8.9/transforms/90be1dba038a41d8fd6e647345702d4c/transformed/lifecycle-process-2.6.2/AndroidManifest.xml:31:17-49
+217            <meta-data
+217-->[androidx.profileinstaller:profileinstaller:1.3.1] /root/.gradle/caches/8.9/transforms/45ef18d22eb5d522d591721720f822af/transformed/profileinstaller-1.3.1/AndroidManifest.xml:29:13-31:52
+218                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+218-->[androidx.profileinstaller:profileinstaller:1.3.1] /root/.gradle/caches/8.9/transforms/45ef18d22eb5d522d591721720f822af/transformed/profileinstaller-1.3.1/AndroidManifest.xml:30:17-85
+219                android:value="androidx.startup" />
+219-->[androidx.profileinstaller:profileinstaller:1.3.1] /root/.gradle/caches/8.9/transforms/45ef18d22eb5d522d591721720f822af/transformed/profileinstaller-1.3.1/AndroidManifest.xml:31:17-49
+220        </provider>
+221
+222        <receiver
+222-->[androidx.profileinstaller:profileinstaller:1.3.1] /root/.gradle/caches/8.9/transforms/45ef18d22eb5d522d591721720f822af/transformed/profileinstaller-1.3.1/AndroidManifest.xml:34:9-52:20
+223            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+223-->[androidx.profileinstaller:profileinstaller:1.3.1] /root/.gradle/caches/8.9/transforms/45ef18d22eb5d522d591721720f822af/transformed/profileinstaller-1.3.1/AndroidManifest.xml:35:13-76
+224            android:directBootAware="false"
+224-->[androidx.profileinstaller:profileinstaller:1.3.1] /root/.gradle/caches/8.9/transforms/45ef18d22eb5d522d591721720f822af/transformed/profileinstaller-1.3.1/AndroidManifest.xml:36:13-44
+225            android:enabled="true"
+225-->[androidx.profileinstaller:profileinstaller:1.3.1] /root/.gradle/caches/8.9/transforms/45ef18d22eb5d522d591721720f822af/transformed/profileinstaller-1.3.1/AndroidManifest.xml:37:13-35
+226            android:exported="true"
+226-->[androidx.profileinstaller:profileinstaller:1.3.1] /root/.gradle/caches/8.9/transforms/45ef18d22eb5d522d591721720f822af/transformed/profileinstaller-1.3.1/AndroidManifest.xml:38:13-36
+227            android:permission="android.permission.DUMP" >
+227-->[androidx.profileinstaller:profileinstaller:1.3.1] /root/.gradle/caches/8.9/transforms/45ef18d22eb5d522d591721720f822af/transformed/profileinstaller-1.3.1/AndroidManifest.xml:39:13-57
+228            <intent-filter>
+228-->[androidx.profileinstaller:profileinstaller:1.3.1] /root/.gradle/caches/8.9/transforms/45ef18d22eb5d522d591721720f822af/transformed/profileinstaller-1.3.1/AndroidManifest.xml:40:13-42:29
+229                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+229-->[androidx.profileinstaller:profileinstaller:1.3.1] /root/.gradle/caches/8.9/transforms/45ef18d22eb5d522d591721720f822af/transformed/profileinstaller-1.3.1/AndroidManifest.xml:41:17-91
+229-->[androidx.profileinstaller:profileinstaller:1.3.1] /root/.gradle/caches/8.9/transforms/45ef18d22eb5d522d591721720f822af/transformed/profileinstaller-1.3.1/AndroidManifest.xml:41:25-88
+230            </intent-filter>
+231            <intent-filter>
+231-->[androidx.profileinstaller:profileinstaller:1.3.1] /root/.gradle/caches/8.9/transforms/45ef18d22eb5d522d591721720f822af/transformed/profileinstaller-1.3.1/AndroidManifest.xml:43:13-45:29
+232                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+232-->[androidx.profileinstaller:profileinstaller:1.3.1] /root/.gradle/caches/8.9/transforms/45ef18d22eb5d522d591721720f822af/transformed/profileinstaller-1.3.1/AndroidManifest.xml:44:17-85
+232-->[androidx.profileinstaller:profileinstaller:1.3.1] /root/.gradle/caches/8.9/transforms/45ef18d22eb5d522d591721720f822af/transformed/profileinstaller-1.3.1/AndroidManifest.xml:44:25-82
+233            </intent-filter>
+234            <intent-filter>
+234-->[androidx.profileinstaller:profileinstaller:1.3.1] /root/.gradle/caches/8.9/transforms/45ef18d22eb5d522d591721720f822af/transformed/profileinstaller-1.3.1/AndroidManifest.xml:46:13-48:29
+235                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+235-->[androidx.profileinstaller:profileinstaller:1.3.1] /root/.gradle/caches/8.9/transforms/45ef18d22eb5d522d591721720f822af/transformed/profileinstaller-1.3.1/AndroidManifest.xml:47:17-88
+235-->[androidx.profileinstaller:profileinstaller:1.3.1] /root/.gradle/caches/8.9/transforms/45ef18d22eb5d522d591721720f822af/transformed/profileinstaller-1.3.1/AndroidManifest.xml:47:25-85
+236            </intent-filter>
+237            <intent-filter>
+237-->[androidx.profileinstaller:profileinstaller:1.3.1] /root/.gradle/caches/8.9/transforms/45ef18d22eb5d522d591721720f822af/transformed/profileinstaller-1.3.1/AndroidManifest.xml:49:13-51:29
+238                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+238-->[androidx.profileinstaller:profileinstaller:1.3.1] /root/.gradle/caches/8.9/transforms/45ef18d22eb5d522d591721720f822af/transformed/profileinstaller-1.3.1/AndroidManifest.xml:50:17-95
+238-->[androidx.profileinstaller:profileinstaller:1.3.1] /root/.gradle/caches/8.9/transforms/45ef18d22eb5d522d591721720f822af/transformed/profileinstaller-1.3.1/AndroidManifest.xml:50:25-92
+239            </intent-filter>
+240        </receiver>
+241    </application>
+242
+243</manifest>
