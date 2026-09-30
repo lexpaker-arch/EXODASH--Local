@@ -250,7 +250,7 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center"
-                android:text="BOSS"
+                android:text="EXO"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="#00FFCC"
