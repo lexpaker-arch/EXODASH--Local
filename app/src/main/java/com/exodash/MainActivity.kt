@@ -97,6 +97,7 @@ class MainActivity : AppCompatActivity() {
         prefs = Prefs(this)
         prefs.migrarSeNecessario()
         dtcHistory = DtcHistory(this)
+        VehicleConfig.garantirArquivo(this)
         Breadcrumbs.registrar("MainActivity: prefs criadas")
 
         // Modo imersivo: esconde status bar e navigation bar

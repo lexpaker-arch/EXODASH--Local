@@ -78,12 +78,6 @@ class SettingsActivity : AppCompatActivity() {
         findViewById<android.view.View>(R.id.btnLimparCache).setOnClickListener { limparCache() }
         findViewById<android.view.View>(R.id.btnSobre).setOnClickListener { mostrarSobre() }
 
-        // Click oculto: 7 toques na versao desbloqueia modo avancado
-        // Diagnostico (codigos de falha)
-        findViewById<android.view.View>(R.id.btnVerDtc).setOnClickListener {
-            startActivity(Intent(this, DtcActivity::class.java))
-        }
-
         // Logs de eventos
         findViewById<android.view.View>(R.id.btnVerLogs).setOnClickListener {
             startActivity(Intent(this, LogsActivity::class.java))
@@ -110,22 +104,10 @@ class SettingsActivity : AppCompatActivity() {
 
         atualizarLabels()
         atualizarSecaoAvancada()
-    }
-
-    private fun atualizarSecaoAvancada() {
+    }    private fun atualizarSecaoAvancada() {
         try {
-            val secao = findViewById<TextView>(R.id.secaoAvancadaNome)
-            val botao = findViewById<android.view.View>(R.id.btnNomeAssistente)
             val txt = findViewById<TextView>(R.id.txtNomeAssistenteAtual)
-
-            if (prefs.modoAvancado) {
-                secao.visibility = android.view.View.VISIBLE
-                botao.visibility = android.view.View.VISIBLE
-                txt.text = prefs.nomeAssistente
-            } else {
-                secao.visibility = android.view.View.GONE
-                botao.visibility = android.view.View.GONE
-            }
+            txt.text = prefs.nomeAssistente
         } catch (e: Exception) {}
     }
 
@@ -136,8 +118,7 @@ class SettingsActivity : AppCompatActivity() {
             .setTitle("Nome do assistente")
             .setSingleChoiceItems(opcoes, atual) { dialog, which ->
                 prefs.nomeAssistente = if (which == 0) "EXO" else "BOSS"
-                atualizarSecaoAvancada()
-                Toast.makeText(this,
+                        Toast.makeText(this,
                     "Nome alterado para ${prefs.nomeAssistente}",
                     Toast.LENGTH_SHORT).show()
                 dialog.dismiss()
