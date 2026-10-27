@@ -171,7 +171,15 @@ class SettingsActivity : AppCompatActivity() {
             hint = "Ano"
             inputType = InputType.TYPE_CLASS_NUMBER
         }
-        layout.addView(TextView(this).apply { text = "Marca:" })
+
+        val inputNomeCurto = EditText(this).apply {
+            setText(prefs.veiculoNomeCurto)
+            hint = "Ex: FOCUS 1.8 L"
+            inputType = InputType.TYPE_CLASS_TEXT
+        }
+        layout.addView(TextView(this).apply { text = "Nome no painel:" })
+        layout.addView(inputNomeCurto)
+        layout.addView(TextView(this).apply { text = "Marca:"; setPadding(0, 20, 0, 0) })
         layout.addView(inputMarca)
         layout.addView(TextView(this).apply { text = "Modelo:"; setPadding(0, 20, 0, 0) })
         layout.addView(inputModelo)
@@ -185,6 +193,7 @@ class SettingsActivity : AppCompatActivity() {
                 prefs.veiculoMarca = inputMarca.text.toString().trim()
                 prefs.veiculoModelo = inputModelo.text.toString().trim()
                 prefs.veiculoAno = inputAno.text.toString().toIntOrNull() ?: 0
+                prefs.veiculoNomeCurto = inputNomeCurto.text.toString().trim().uppercase()
                 atualizarLabels()
             }
             .setNegativeButton("Cancelar", null)
@@ -192,21 +201,39 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun editarGroq() {
+        val temSalva = prefs.getSalvaGroq().isNotEmpty()
         val input = EditText(this).apply {
             setText(prefs.groqApiKey)
             hint = "gsk_..."
             inputType = InputType.TYPE_CLASS_TEXT
         }
-        AlertDialog.Builder(this)
+        val msg = if (prefs.groqApiKeyEmbutida)
+            "Chave atual: EMBUTIDA NO APK (build). Cole uma nova pra substituir, ou toque em LIMPAR pra usar a do APK."
+        else
+            "Chave atual: SALVA MANUALMENTE. Toque em LIMPAR pra voltar a usar a do APK."
+
+        val builder = AlertDialog.Builder(this)
             .setTitle("API Groq")
-            .setMessage("Cole sua chave do Groq (console.groq.com/keys)")
+            .setMessage(msg)
             .setView(input)
             .setPositiveButton("Salvar") { _, _ ->
-                prefs.groqApiKey = input.text.toString().trim()
+                val nova = input.text.toString().trim()
+                prefs.groqApiKey = nova
+                LogEventos.registrar(this, "Groq: chave salva (${nova.take(12)}...)")
                 atualizarLabels()
             }
             .setNegativeButton("Cancelar", null)
-            .show()
+
+        if (temSalva) {
+            builder.setNeutralButton("LIMPAR") { _, _ ->
+                prefs.groqApiKey = ""
+                LogEventos.registrar(this, "Groq: chave manual apagada (voltou ao APK)")
+                atualizarLabels()
+                Toast.makeText(this, "Chave manual apagada. Usando chave do APK.", Toast.LENGTH_LONG).show()
+            }
+        }
+
+        builder.show()
     }
 
     private fun alternarModoIA() {

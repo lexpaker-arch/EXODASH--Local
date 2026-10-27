@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="texto_logo">22sp</dimen>
+    <dimen name="texto_by">11sp</dimen>
+    <dimen name="texto_carro_nome">16sp</dimen>
+    <dimen name="texto_carro_sub">10sp</dimen>
+    <dimen name="texto_status">12sp</dimen>
+    <dimen name="texto_clock_time">52sp</dimen>
+    <dimen name="texto_clock_seconds">16sp</dimen>
+    <dimen name="texto_clock_date">12sp</dimen>
+    <dimen name="texto_clock_day">13sp</dimen>
+    <dimen name="texto_tel_label">13sp</dimen>
+    <dimen name="texto_tel_valor">30sp</dimen>
+    <dimen name="texto_music_label">10sp</dimen>
+    <dimen name="texto_music_track">16sp</dimen>
+    <dimen name="texto_music_artist">13sp</dimen>
+    <dimen name="texto_boss_button">22sp</dimen>
+</resources>

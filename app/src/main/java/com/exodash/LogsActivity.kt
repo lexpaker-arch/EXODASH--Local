@@ -1,5 +1,7 @@
 package com.exodash
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -39,6 +41,54 @@ class LogsActivity : AppCompatActivity() {
                 }
                 .setNegativeButton("Cancelar", null)
                 .show()
+        }
+
+        findViewById<Button>(R.id.btnExportarLogs).setOnClickListener {
+            exportarLog()
+        }
+    }
+
+    private fun exportarLog() {
+        try {
+            // 1. Filtra so linhas de OBD (>> comando e << resposta)
+            val eventos = LogEventos.ler(this).sortedBy { it.timestamp }
+            val linhas = eventos
+                .filter { it.texto.contains("OBD >>") || it.texto.contains("OBD <<") || it.texto.contains("OBD ERRO") }
+                .map { "${LogEventos.formatarHora(it.timestamp)}  ${it.texto}" }
+
+            if (linhas.isEmpty()) {
+                android.widget.Toast.makeText(this,
+                    "Sem comandos OBD no log ainda. Conecte o adaptador primeiro.",
+                    android.widget.Toast.LENGTH_LONG).show()
+                return
+            }
+
+            // 2. Salva em cacheDir (FileProvider ja configurado pra isso)
+            val ts = java.text.SimpleDateFormat("yyyyMMdd_HHmmss", java.util.Locale.US)
+                .format(java.util.Date())
+            val arquivo = java.io.File(cacheDir, "obd_log_$ts.txt")
+            arquivo.writeText(linhas.joinToString("\n"))
+
+            // 3. Abre o compartilhamento do Android
+            val uri = androidx.core.content.FileProvider.getUriForFile(
+                this,
+                "$packageName.fileprovider",
+                arquivo
+            )
+
+            val intent = Intent(Intent.ACTION_SEND).apply {
+                type = "text/plain"
+                putExtra(Intent.EXTRA_STREAM, uri)
+                putExtra(Intent.EXTRA_SUBJECT, "OBD log EXODASH - $ts")
+                putExtra(Intent.EXTRA_TEXT, "Log bruto ELM327 - ${linhas.size} linhas")
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+
+            startActivity(Intent.createChooser(intent, "Exportar log OBD"))
+        } catch (e: Exception) {
+            android.widget.Toast.makeText(this,
+                "Erro ao exportar: ${e.message}",
+                android.widget.Toast.LENGTH_LONG).show()
         }
     }
 

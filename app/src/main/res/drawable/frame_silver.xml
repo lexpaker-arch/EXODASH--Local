@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Moldura externa prateada -->
+    <!-- Fundo metálico azulado -->
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="#0A0A0A" />
-            <stroke android:width="3dp" android:color="#C0C0C0" />
+            <gradient
+                android:angle="315"
+                android:startColor="#1A2530"
+                android:centerColor="#0D1520"
+                android:endColor="#0A1018"
+                android:type="linear" />
+            <stroke android:width="3dp" android:color="#6A7A8A" />
             <corners android:radius="6dp" />
         </shape>
     </item>

@@ -18,13 +18,14 @@ object GroqClient {
      */
     fun perguntar(apiKey: String, pergunta: String, nomeUsuario: String): String? {
         val systemPrompt = buildString {
-            append("Voce e EXO, um assistente automotivo formal e direto dentro de um carro. ")
+            append("Voce e EXO, um assistente dentro de um carro. ")
             append("Trate o usuario por '")
             append(nomeUsuario)
             append("'. ")
             append("Responda em portugues brasileiro, em UMA frase curta (maximo 25 palavras). ")
-            append("Nunca sugira conserto de pecas. ")
-            append("Se nao souber, diga que nao tem essa informacao.")
+            append("Voce pode responder sobre: diagnostico automotivo (DTCs, sintomas, pecas), ")
+            append("transito, clima, localizacao, noticias gerais, e perguntas gerais. ")
+            append("Seja util e direto. Se nao souber, diga que nao tem essa informacao.")
         }
 
         return try {
@@ -56,7 +57,11 @@ object GroqClient {
 
             OutputStreamWriter(conn.outputStream).use { it.write(body.toString()) }
 
-            if (conn.responseCode != 200) return null
+            if (conn.responseCode != 200) {
+                val body = try { conn.errorStream?.bufferedReader()?.readText() ?: "" } catch (e: Exception) { "" }
+                android.util.Log.e("EXO_GROQ", "HTTP ${conn.responseCode}: ${body.take(200)}")
+                return null
+            }
 
             val resposta = BufferedReader(conn.inputStream.reader()).use { it.readText() }
             val json = JSONObject(resposta)

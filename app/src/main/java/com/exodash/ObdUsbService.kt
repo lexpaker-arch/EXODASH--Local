@@ -197,26 +197,40 @@ class ObdUsbService(
 
     private fun loopLeitura() {
         var ciclos = 0
+        var dtcsAtuais: List<String> = emptyList()
         while (conectado) {
             try {
                 val velResp = enviarCmd("01 0D")
                 val rpmResp = enviarCmd("01 0C")
                 val tempResp = enviarCmd("01 05")
                 val combResp = enviarCmd("01 2F")
+                val batResp = enviarCmd("AT RV")
 
                 val vel = parseSpeed(velResp)
                 val rpm = parseRpm(rpmResp)
                 val temp = parseTemp(tempResp)
                 val comb = parseFuel(combResp)
+                val bat = parseBattery(batResp)
+
+                // DTC a cada 10 ciclos (~30s) - ISO 9141-2 e lento, nao da pra ler toda hora
+                if (ciclos % 10 == 0) {
+                    val dtcResp = enviarCmd("03")
+                    val novos = parseDTCs(dtcResp)
+                    if (novos.isNotEmpty() || dtcsAtuais.isNotEmpty()) {
+                        LogEventos.registrar(context,
+                            "DTCs lidos: ${novos.joinToString(",").ifEmpty { "nenhum" }}")
+                    }
+                    dtcsAtuais = novos
+                }
 
                 // Log apenas a cada 5 ciclos (evitar poluir)
                 if (ciclos % 5 == 0) {
                     LogEventos.registrar(context,
-                        "Dados: vel=$vel rpm=$rpm temp=$temp comb=$comb")
+                        "Dados: vel=$vel rpm=$rpm temp=$temp comb=$comb dtcs=${dtcsAtuais.size}")
                 }
                 ciclos++
 
-                val dados = TelemetryData(vel, rpm, temp, comb, null)
+                val dados = TelemetryData(vel, rpm, temp, comb, bat, dtcsAtuais)
                 handler.post { onTelemetria(dados) }
 
                 Thread.sleep(1000)
@@ -225,6 +239,57 @@ class ObdUsbService(
                 LogEventos.registrar(context, "Erro leitura: ${e.message}")
                 Thread.sleep(2000)
             }
+        }
+    }
+
+    /**
+     * Le DTCs via Mode 03.
+     * Resposta tipica ISO 9141-2: "43 01 33 00 00 00 00"
+     * Formato: 43 [byte1 byte2] [byte3 byte4] ...
+     * Cada par de bytes = 1 DTC. "00 00" = padding (ignorar).
+     * Conversao: byte1/16 -> letra (0=P,1=C,2=B,3=U), byte1%16 e byte2 -> 4 digitos.
+     * Ex: "01 33" -> P0133
+     */
+    private fun parseDTCs(resp: String): List<String> {
+        return try {
+            // Limpa: remove "43" inicial, espacos e 
+
+            val limpo = resp.uppercase()
+                .replace("\r", " ")
+                .replace("\n", " ")
+                .trim()
+
+            // Extrai todos os pares hex apos o "43"
+            val match = Regex("43\\s*(.+)$").find(limpo) ?: return emptyList()
+            val payload = match.groupValues[1]
+            val bytes = Regex("[0-9A-F]{2}").findAll(payload).map { it.value }.toList()
+
+            if (bytes.size < 2) return emptyList()
+
+            val dtcs = mutableListOf<String>()
+            var i = 0
+            while (i + 1 < bytes.size) {
+                val b1 = bytes[i].toIntOrNull(16) ?: break
+                val b2 = bytes[i + 1].toIntOrNull(16) ?: break
+
+                // "00 00" = padding, para de ler
+                if (b1 == 0 && b2 == 0) break
+
+                val letra = when (b1 shr 4) {
+                    0 -> "P"
+                    1 -> "C"
+                    2 -> "B"
+                    3 -> "U"
+                    else -> "?"
+                }
+                val d1 = b1 and 0x0F
+                val codigo = String.format("%s%01d%s", letra, d1, bytes[i + 1].padStart(2, '0'))
+                dtcs.add(codigo)
+                i += 2
+            }
+            dtcs
+        } catch (e: Exception) {
+            emptyList()
         }
     }
 
@@ -258,6 +323,19 @@ class ObdUsbService(
         return try {
             val match = Regex("41 ?2F ?([0-9A-F]{2})").find(resp)
             match?.groupValues?.get(1)?.toIntOrNull(16)?.let { (it * 100) / 255 }
+        } catch (e: Exception) { null }
+    }
+
+    /**
+     * Le tensao via "AT RV" (Read Voltage).
+     * Retorna algo como "12.6V" ou "12.6" ou "12V".
+     * Nao e o PID da ECU - e o proprio ELM327 medindo a linha.
+     * Serve como proxy da bateria (fica proximo do real).
+     */
+    private fun parseBattery(resp: String): Double? {
+        return try {
+            val match = Regex("(\\d+\\.?\\d*)V?", RegexOption.IGNORE_CASE).find(resp.trim())
+            match?.groupValues?.get(1)?.toDoubleOrNull()
         } catch (e: Exception) { null }
     }
 

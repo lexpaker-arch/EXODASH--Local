@@ -79,6 +79,17 @@ class Prefs(context: Context) {
         get() = prefs.getString(KEY_VEICULO_VIN, "") ?: ""
         set(v) = prefs.edit().putString(KEY_VEICULO_VIN, v).apply()
 
+    // ============ NOVO ============
+    /**
+     * Nome curto exibido no centro do header da tela principal.
+     * Ex: "FOCUS 1.8 L", "PALIO 1.0", "CORSA 1.6".
+     * Vazio = header central fica em branco.
+     */
+    var veiculoNomeCurto: String
+        get() = prefs.getString(KEY_VEICULO_NOME_CURTO, "") ?: ""
+        set(v) = prefs.edit().putString(KEY_VEICULO_NOME_CURTO, v).apply()
+    // ============ FIM NOVO ============
+
     // IA
     /**
      * Retorna a chave em ordem de prioridade:
@@ -105,6 +116,9 @@ class Prefs(context: Context) {
     val groqApiKeyEmbutida: Boolean
         get() = (prefs.getString(KEY_GROQ_KEY, "") ?: "").isEmpty() &&
                 try { BuildConfig.GROQ_API_KEY.isNotEmpty() } catch (e: Exception) { false }
+
+    /** Retorna APENAS a chave salva em SharedPreferences (sem fallback). Vazio se nao houver. */
+    fun getSalvaGroq(): String = prefs.getString(KEY_GROQ_KEY, "") ?: ""
 
     var modoIA: String
         get() = prefs.getString(KEY_MODO_IA, "online_primeiro") ?: "online_primeiro"
@@ -153,6 +167,9 @@ class Prefs(context: Context) {
         private const val KEY_VEICULO_MODELO = "veiculo_modelo"
         private const val KEY_VEICULO_ANO = "veiculo_ano"
         private const val KEY_VEICULO_VIN = "veiculo_vin"
+        // ============ NOVO ============
+        private const val KEY_VEICULO_NOME_CURTO = "veiculo_nome_curto"
+        // ============ FIM NOVO ============
         private const val KEY_GROQ_KEY = "groq_api_key"
         private const val KEY_MODO_IA = "modo_ia"
         private const val KEY_AUTO_UPDATE = "auto_update"

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><title>EXODASH — Antes vs Depois</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #0a0a0a; font-family: Roboto, Arial; padding: 20px; min-height: 100vh; }
+.tabs { display: flex; gap: 10px; justify-content: center; margin-bottom: 20px; }
+.tab { background: #1a1a1a; color: #888; border: 1px solid #333; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-size: 13px; letter-spacing: 1px; }
+.tab.active { background: #00FFCC; color: #000; border-color: #00FFCC; font-weight: bold; }
+.var { display: none; justify-content: center; }
+.var.active { display: flex; flex-direction: column; align-items: center; }
+.nota { text-align: center; color: #666; font-size: 12px; margin-top: 14px; max-width: 1024px; }
+.label-antes { color: #FFB347; font-size: 14px; letter-spacing: 3px; margin-bottom: 8px; font-weight: bold; }
+.label-depois { color: #00FFCC; font-size: 14px; letter-spacing: 3px; margin-bottom: 8px; font-weight: bold; }
+
+/* TELA 7" = 1024x600 */
+.screen { width: 1024px; height: 600px; background: linear-gradient(135deg, #1a2530 0%, #0d1520 40%, #0a1018 100%); border: 3px solid #6a7a8a; border-radius: 6px; padding: 14px; position: relative; overflow: hidden; box-shadow: inset 0 0 100px rgba(0,0,0,0.8); }
+.moldura { width: 100%; height: 100%; border: 1px solid rgba(0,255,204,0.25); border-radius: 4px; padding: 18px; display: flex; flex-direction: column; }
+.canto { position: absolute; width: 30px; height: 30px; }
+.canto::before, .canto::after { content: ""; position: absolute; }
+.canto::before { border: 2px solid #8a9aaa; } .canto::after { border: 2px solid #00FFCC; }
+.canto-tl { top: -8px; left: -8px; } .canto-tl::before { top:0; left:0; width:30px; height:30px; border-right:none; border-bottom:none; } .canto-tl::after { top:4px; left:4px; width:22px; height:22px; border-right:none; border-bottom:none; }
+.canto-tr { top: -8px; right: -8px; } .canto-tr::before { top:0; right:0; width:30px; height:30px; border-left:none; border-bottom:none; } .canto-tr::after { top:4px; right:4px; width:22px; height:22px; border-left:none; border-bottom:none; }
+.canto-bl { bottom: -8px; left: -8px; } .canto-bl::before { bottom:0; left:0; width:30px; height:30px; border-right:none; border-top:none; } .canto-bl::after { bottom:4px; left:4px; width:22px; height:22px; border-right:none; border-top:none; }
+.canto-br { bottom: -8px; right: -8px; } .canto-br::before { bottom:0; right:0; width:30px; height:30px; border-left:none; border-top:none; } .canto-br::after { bottom:4px; right:4px; width:22px; height:22px; border-left:none; border-top:none; }
+
+.header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 10px; }
+.col-esq { flex: 1; }
+.col-centro { flex: 1; text-align: center; }
+.col-dir { flex: 1; display: flex; justify-content: flex-end; }
+.logo { color: #C0C0C0; font-size: 22px; font-weight: bold; letter-spacing: 3px; }
+.by { color: #666; font-size: 11px; letter-spacing: 2px; margin-top: 2px; }
+.carro-nome { color: #D4A017; font-size: 16px; font-weight: bold; letter-spacing: 3px; text-shadow: 0 0 10px rgba(212,160,23,0.4); }
+.carro-sub { color: #6A5A2A; font-size: 10px; letter-spacing: 2px; margin-top: 2px; }
+.status { display: flex; gap: 16px; font-size: 12px; align-items: center; }
+.st { color: #888; } .ok { color: #00FFCC; } .warn { color: #FFAA00; } .off { color: #FF3333; }
+.cfg { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #3a4a5a; background: linear-gradient(180deg, #2a3a4a, #1a2530); display: flex; align-items: center; justify-content: center; color: #00FFCC; font-size: 20px; margin-left: 10px; }
+.div { height: 1px; background: linear-gradient(90deg, transparent, #00FFCC, transparent); opacity: 0.4; margin-bottom: 14px; }
+
+.central { flex: 1; display: flex; gap: 16px; align-items: stretch; }
+
+/* ═══════════ ANTES ═══════════ */
+.antes .card { background: linear-gradient(180deg, #1e2a38 0%, #121a24 100%); border: 1px solid #2a3a4a; border-radius: 8px; padding: 14px; }
+.antes .tele { flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+.antes .linha { display: flex; justify-content: space-between; align-items: baseline; padding: 6px 0; border-bottom: 1px solid rgba(0,255,204,0.08); }
+.antes .linha:last-child { border-bottom: none; }
+.antes .lbl { color: #7a8a9a; font-size: 9px; letter-spacing: 2px; }
+.antes .val { color: #00FFCC; font-size: 14px; font-weight: bold; }
+.antes .barra-wrap { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid rgba(0,255,204,0.08); }
+.antes .trilha { flex: 1; height: 6px; background: rgba(0,0,0,0.5); border: 1px solid #2a3a4a; border-radius: 3px; overflow: hidden; margin: 0 8px; }
+.antes .fill { height: 100%; background: #00FFCC; }
+.antes .bv { color: #00FFCC; font-size: 12px; font-weight: bold; min-width: 44px; text-align: right; }
+.antes .arc-area { display: flex; align-items: center; justify-content: center; position: relative; width: 200px; }
+.antes .arc-glow { position: absolute; width: 200px; height: 200px; border-radius: 50%; background: radial-gradient(circle, rgba(0,255,204,0.35) 0%, transparent 70%); }
+.antes .arc-anel-ext { position: absolute; width: 185px; height: 185px; border-radius: 50%; border: 2px dashed rgba(0,255,204,0.45); }
+.antes .arc-anel-int { position: absolute; width: 155px; height: 155px; border-radius: 50%; border: 2px solid rgba(0,255,204,0.35); border-top-color: #00FFCC; border-bottom-color: #00FFCC; }
+.antes .arc-btn { position: relative; width: 115px; height: 115px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #0a3a3a 0%, #000 75%); border: 2px solid #00FFCC; display: flex; align-items: center; justify-content: center; color: #00FFCC; font-size: 18px; font-weight: bold; letter-spacing: 4px; box-shadow: 0 0 35px rgba(0,255,204,0.5); }
+.antes .dir { flex: 1; display: flex; flex-direction: column; gap: 12px; }
+.antes .rel-ring { width: 100px; height: 100px; border-radius: 50%; border: 1px solid rgba(0,255,204,0.3); background: radial-gradient(circle at 30% 30%, #1e2a38, #0a1018 70%); display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0 auto; }
+.antes .rel-h { color: #d8e4f0; font-size: 24px; font-weight: 100; }
+.antes .rel-s { color: #00FFCC; font-size: 11px; }
+.antes .rel-d { color: #6a7a8a; font-size: 9px; letter-spacing: 3px; margin-top: 6px; text-align: center; }
+.antes .rel-dia { color: #00FFCC; font-size: 10px; text-align: center; }
+.antes .mus { background: linear-gradient(180deg, #1e2a38 0%, #121a24 100%); border: 1px solid #2a3a4a; border-radius: 8px; padding: 12px; }
+.antes .mus-l { color: #00FFCC; font-size: 9px; letter-spacing: 2px; }
+.antes .mus-t { color: #d8e4f0; font-size: 12px; font-weight: bold; margin-top: 4px; }
+.antes .mus-a { color: #7a8a9a; font-size: 10px; }
+.antes .rodape { display: flex; justify-content: center; gap: 28px; padding-top: 14px; }
+.antes .at-i { width: 54px; height: 54px; border-radius: 50%; border: 2px solid #3a4a5a; background: linear-gradient(180deg, #2a3a4a, #0a1018); display: flex; align-items: center; justify-content: center; }
+.antes .at-i svg { width: 26px; height: 26px; } .antes .at-i svg path { fill: #00FFCC; }
+.antes .at-n { color: #7a8a9a; font-size: 10px; margin-top: 4px; }
+
+/* ═══════════ DEPOIS ═══════════ */
+.depois .card { background: #121a24; border: none; border-radius: 10px; padding: 18px; }
+.depois .tele { flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+.depois .linha { display: flex; justify-content: space-between; align-items: baseline; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.depois .linha:last-child { border-bottom: none; }
+.depois .lbl { color: #8a9aab; font-size: 13px; letter-spacing: 1px; }
+.depois .val { color: #00FFCC; font-size: 34px; font-weight: bold; line-height: 1; }
+.depois .val-sec { color: #d8e4f0; font-size: 34px; font-weight: bold; line-height: 1; }
+.depois .uni { color: #7a8a9a; font-size: 14px; font-weight: normal; margin-left: 4px; }
+.depois .barra-wrap { display: flex; align-items: center; padding: 10px 0; gap: 12px; }
+.depois .barra-wrap .lbl { min-width: 110px; }
+.depois .trilha { flex: 1; height: 8px; background: #0a1018; border-radius: 4px; overflow: hidden; }
+.depois .fill { height: 100%; background: linear-gradient(90deg, #00FFCC, #00C8A0); }
+.depois .bv { color: #00FFCC; font-size: 20px; font-weight: bold; min-width: 70px; text-align: right; }
+.depois .arc-area { display: flex; align-items: center; justify-content: center; position: relative; width: 220px; }
+.depois .arc-glow { position: absolute; width: 220px; height: 220px; border-radius: 50%; background: radial-gradient(circle, rgba(0,255,204,0.25) 0%, transparent 70%); }
+.depois .arc-anel-ext { position: absolute; width: 200px; height: 200px; border-radius: 50%; border: 1px dashed rgba(0,255,204,0.35); }
+.depois .arc-anel-int { position: absolute; width: 170px; height: 170px; border-radius: 50%; border: 2px solid rgba(0,255,204,0.25); border-top-color: #00FFCC; border-bottom-color: #00FFCC; }
+.depois .arc-btn { position: relative; width: 130px; height: 130px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #0a2a2a 0%, #000 75%); border: 2px solid #00FFCC; display: flex; align-items: center; justify-content: center; color: #00FFCC; font-size: 22px; font-weight: bold; letter-spacing: 4px; box-shadow: 0 0 40px rgba(0,255,204,0.4); }
+.depois .dir { flex: 1; display: flex; flex-direction: column; gap: 14px; }
+.depois .rel-bloco { background: #121a24; border-radius: 10px; padding: 16px; text-align: center; }
+.depois .rel-h { color: #ffffff; font-size: 52px; font-weight: 100; line-height: 1; letter-spacing: -1px; }
+.depois .rel-s { color: #00FFCC; font-size: 16px; vertical-align: super; margin-left: 4px; }
+.depois .rel-d { color: #8a9aab; font-size: 12px; margin-top: 6px; }
+.depois .rel-dia { color: #00FFCC; font-size: 13px; margin-top: 2px; }
+.depois .mus { background: #121a24; border-radius: 10px; padding: 14px; }
+.depois .mus-l { color: #00FFCC; font-size: 10px; letter-spacing: 1px; margin-bottom: 6px; }
+.depois .mus-t { color: #ffffff; font-size: 16px; font-weight: bold; }
+.depois .mus-a { color: #8a9aab; font-size: 13px; margin-top: 2px; }
+.depois .rodape { display: flex; justify-content: center; gap: 32px; padding-top: 16px; }
+.depois .at-i { width: 64px; height: 64px; border-radius: 50%; border: 1px solid #2a3a4a; background: #121a24; display: flex; align-items: center; justify-content: center; }
+.depois .at-i svg { width: 32px; height: 32px; } .depois .at-i svg path { fill: #d8e4f0; }
+.depois .at-i.destaque { border-color: #00FFCC; } .depois .at-i.destaque svg path { fill: #00FFCC; }
+.depois .at-n { color: #8a9aab; font-size: 11px; margin-top: 4px; text-align: center; }
+</style>
+</head>
+<body>
+
+<div class="tabs">
+  <button class="tab active" onclick="show('antes', event)">ANTES</button>
+  <button class="tab" onclick="show('depois', event)">DEPOIS</button>
+</div>
+
+<!-- ═══════════ ANTES ═══════════ -->
+<div id="antes" class="var active">
+  <div class="label-antes">LAYOUT ATUAL NO G7 (7" no carro)</div>
+  <div class="screen antes">
+    <div class="moldura">
+      <div class="canto canto-tl"></div><div class="canto canto-tr"></div><div class="canto canto-bl"></div><div class="canto canto-br"></div>
+      <div class="header">
+        <div class="col-esq"><div class="logo">EXODASH</div><div class="by">BY ALEX. P</div></div>
+        <div class="col-centro">
+          <div class="carro-nome">FOCUS 1.8 L</div>
+          <div class="carro-sub">FORD • 2001</div>
+        </div>
+        <div class="col-dir">
+          <div class="status">
+            <span class="st">EXODASH: <span class="warn">OFF</span></span>
+            <span class="st">OBD: <span class="off">OFF</span></span>
+            <span class="st">USER: <span class="ok">SENHOR</span></span>
+            <div class="cfg">&#9881;</div>
+          </div>
+        </div>
+      </div>
+      <div class="div"></div>
+      <div class="central">
+        <div class="card tele">
+          <div class="linha"><span class="lbl">VELOCIDADE</span><span class="val">87 km/h</span></div>
+          <div class="linha"><span class="lbl">RPM</span><span class="val">2450</span></div>
+          <div class="linha"><span class="lbl">MOTOR</span><span class="val">89 °C</span></div>
+          <div class="barra-wrap"><span class="lbl">COMBUSTÍVEL</span><div class="trilha"><div class="fill" style="width:62%"></div></div><span class="bv">62%</span></div>
+          <div class="barra-wrap"><span class="lbl">BATERIA</span><div class="trilha"><div class="fill" style="width:78%"></div></div><span class="bv">13.8V</span></div>
+          <div class="linha"><span class="lbl">AUTONOMIA</span><span class="val">410 km</span></div>
+        </div>
+        <div class="arc-area">
+          <div class="arc-glow"></div>
+          <div class="arc-anel-ext"></div>
+          <div class="arc-anel-int"></div>
+          <div class="arc-btn">EXO</div>
+        </div>
+        <div class="dir">
+          <div class="rel-ring"><div class="rel-h">14:32</div><div class="rel-s">:47</div></div>
+          <div class="rel-d">23 SETEMBRO</div>
+          <div class="rel-dia">QUARTA-FEIRA</div>
+          <div class="mus">
+            <div class="mus-l">TOCANDO AGORA</div>
+            <div class="mus-t">Bohemian Rhapsody</div>
+            <div class="mus-a">Queen</div>
+          </div>
+        </div>
+      </div>
+      <div class="rodape">
+        <div class="at"><div class="at-i"><svg viewBox="0 0 24 24"><path d="M6.62,10.79c1.44,2.83 3.76,5.14 6.59,6.59l2.2,-2.2c0.27,-0.27 0.67,-0.36 1.02,-0.24 1.12,0.37 2.33,0.57 3.57,0.57 0.55,0 1,0.45 1,1V20c0,0.55 -0.45,1 -1,1 -9.39,0 -17,-7.61 -17,-17 0,-0.55 0.45,-1 1,-1h3.5c0.55,0 1,0.45 1,1 0,1.25 0.2,2.45 0.57,3.57 0.11,0.35 0.03,0.74 -0.25,1.02l-2.2,2.2z"/></svg></div><div class="at-n">Telefone</div></div>
+        <div class="at"><div class="at-i"><svg viewBox="0 0 24 24"><path d="M12,3v10.55c-0.59,-0.34 -1.27,-0.55 -2,-0.55 -2.21,0 -4,1.79 -4,4s1.79,4 4,4 4,-1.79 4,-4V7h4V3h-6z"/></svg></div><div class="at-n">Mídia</div></div>
+        <div class="at"><div class="at-i"><svg viewBox="0 0 24 24"><path d="M12,2C8.13,2 5,5.13 5,9c0,5.25 7,13 7,13s7,-7.75 7,-13c0,-3.87 -3.13,-7 -7,-7z"/></svg></div><div class="at-n">GPS</div></div>
+        <div class="at"><div class="at-i"><svg viewBox="0 0 24 24"><path d="M4,4h6v6H4z M14,4h6v6h-6z M4,14h6v6H4z M14,14h6v6h-6z"/></svg></div><div class="at-n">APPS</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="nota">Valores 14sp — a 80cm de distância, difícil ler sem apertar os olhos. Tudo ciano. Labels quase do mesmo tamanho dos valores.</div>
+</div>
+
+<!-- ═══════════ DEPOIS ═══════════ -->
+<div id="depois" class="var">
+  <div class="label-depois">PROPOSTA — adaptada pra 7" a 80cm do motorista</div>
+  <div class="screen depois">
+    <div class="moldura">
+      <div class="canto canto-tl"></div><div class="canto canto-tr"></div><div class="canto canto-bl"></div><div class="canto canto-br"></div>
+      <div class="header">
+        <div class="col-esq"><div class="logo">EXODASH</div><div class="by">BY ALEX. P</div></div>
+        <div class="col-centro">
+          <div class="carro-nome">FOCUS 1.8 L</div>
+          <div class="carro-sub">FORD • 2001</div>
+        </div>
+        <div class="col-dir">
+          <div class="status">
+            <span class="st">EXO <span class="warn">OFF</span></span>
+            <span class="st">OBD <span class="off">OFF</span></span>
+            <span class="st">SENHOR</span>
+            <div class="cfg">&#9881;</div>
+          </div>
+        </div>
+      </div>
+      <div class="div"></div>
+      <div class="central">
+        <div class="card tele">
+          <div class="linha"><span class="lbl">VELOCIDADE</span><span><span class="val">87</span><span class="uni">km/h</span></span></div>
+          <div class="linha"><span class="lbl">RPM</span><span class="val-sec">2450</span></div>
+          <div class="linha"><span class="lbl">MOTOR</span><span><span class="val-sec">89</span><span class="uni">°C</span></span></div>
+          <div class="barra-wrap"><span class="lbl">COMBUSTÍVEL</span><div class="trilha"><div class="fill" style="width:62%"></div></div><span class="bv">62%</span></div>
+          <div class="barra-wrap"><span class="lbl">BATERIA</span><div class="trilha"><div class="fill" style="width:78%"></div></div><span class="bv">13.8V</span></div>
+          <div class="linha"><span class="lbl">AUTONOMIA</span><span><span class="val">410</span><span class="uni">km</span></span></div>
+        </div>
+        <div class="arc-area">
+          <div class="arc-glow"></div>
+          <div class="arc-anel-ext"></div>
+          <div class="arc-anel-int"></div>
+          <div class="arc-btn">EXO</div>
+        </div>
+        <div class="dir">
+          <div class="rel-bloco">
+            <div><span class="rel-h">14:32</span><span class="rel-s">:47</span></div>
+            <div class="rel-d">23 de setembro</div>
+            <div class="rel-dia">QUARTA-FEIRA</div>
+          </div>
+          <div class="mus">
+            <div class="mus-l">TOCANDO AGORA</div>
+            <div class="mus-t">Bohemian Rhapsody</div>
+            <div class="mus-a">Queen</div>
+          </div>
+        </div>
+      </div>
+      <div class="rodape">
+        <div class="at"><div class="at-i"><svg viewBox="0 0 24 24"><path d="M6.62,10.79c1.44,2.83 3.76,5.14 6.59,6.59l2.2,-2.2c0.27,-0.27 0.67,-0.36 1.02,-0.24 1.12,0.37 2.33,0.57 3.57,0.57 0.55,0 1,0.45 1,1V20c0,0.55 -0.45,1 -1,1 -9.39,0 -17,-7.61 -17,-17 0,-0.55 0.45,-1 1,-1h3.5c0.55,0 1,0.45 1,1 0,1.25 0.2,2.45 0.57,3.57 0.11,0.35 0.03,0.74 -0.25,1.02l-2.2,2.2z"/></svg></div><div class="at-n">Telefone</div></div>
+        <div class="at"><div class="at-i"><svg viewBox="0 0 24 24"><path d="M12,3v10.55c-0.59,-0.34 -1.27,-0.55 -2,-0.55 -2.21,0 -4,1.79 -4,4s1.79,4 4,4 4,-1.79 4,-4V7h4V3h-6z"/></svg></div><div class="at-n">Mídia</div></div>
+        <div class="at"><div class="at-i"><svg viewBox="0 0 24 24"><path d="M12,2C8.13,2 5,5.13 5,9c0,5.25 7,13 7,13s7,-7.75 7,-13c0,-3.87 -3.13,-7 -7,-7z"/></svg></div><div class="at-n">GPS</div></div>
+        <div class="at"><div class="at-i"><svg viewBox="0 0 24 24"><path d="M4,4h6v6H4z M14,4h6v6h-6z M4,14h6v6H4z M14,14h6v6h-6z"/></svg></div><div class="at-n">APPS</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="nota">Valores 34sp — legível a 80cm. Labels 13sp. Ciano só em números críticos (velocidade, RPM). Relógio 52sp em branco. Sem bordas nos cards.</div>
+</div>
+
+<script>
+function show(id, e) {
+  document.querySelectorAll('.var').forEach(v => v.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  e.target.classList.add('active');
+}
+</script>
+
+</body></html>

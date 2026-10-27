@@ -90,9 +90,20 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="LIMPAR LOGS"
+            android:text="LIMPAR"
             android:textColor="#FF3333"
             android:textSize="12sp"
+            android:layout_marginEnd="8dp"
             android:backgroundTint="#2A0A0A" />
+
+        <Button
+            android:id="@+id/btnExportarLogs"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="EXPORTAR"
+            android:textColor="#00FFCC"
+            android:textSize="12sp"
+            android:backgroundTint="#0A2A2A" />
     </LinearLayout>
 </LinearLayout>

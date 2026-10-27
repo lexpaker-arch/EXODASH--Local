@@ -13,7 +13,8 @@ import java.util.Locale
 class BossService(
     private val context: Context,
     private val prefs: Prefs,
-    private val onAcao: (BossBrain.Acao) -> Unit
+    private val onAcao: (BossBrain.Acao) -> Unit,
+    private val onFalaTerminou: () -> Unit // NOVO: Avisa quando o TTS terminar
 ) : TextToSpeech.OnInitListener {
 
     private var tts: TextToSpeech? = null
@@ -67,7 +68,10 @@ class BossService(
         object : AsyncTask<Void, Void, String?>() {
             override fun doInBackground(vararg p: Void): String? {
                 val nome = prefs.nomeUsuario.ifEmpty { "Senhor" }
-                return GroqClient.perguntar(apiKey, frase, nome)
+                LogEventos.registrar(context, "Groq ENV: chave=${apiKey.take(12)}... frase=[$frase]")
+                val r = GroqClient.perguntar(apiKey, frase, nome)
+                LogEventos.registrar(context, "Groq REC: ${r?.take(80) ?: "NULL (ver responseCode)"}")
+                return r
             }
             override fun onPostExecute(resposta: String?) {
                 val nome = prefs.nomeUsuario.ifEmpty { "Senhor" }
@@ -113,6 +117,8 @@ class BossService(
             }
         } else {
             Toast.makeText(context, texto, Toast.LENGTH_LONG).show()
+            // Se o áudio estiver desligado, avisa que "terminou" para o modo conversa não travar
+            mainHandler.post { onFalaTerminou() }
         }
     }
 
@@ -123,10 +129,12 @@ class BossService(
             override fun onStart(utteranceId: String?) {}
             override fun onDone(utteranceId: String?) {
                 mainHandler.post(liberarFoco)
+                mainHandler.post { onFalaTerminou() } // Gatilho do Follow-up
             }
             @Deprecated("Deprecated in Java")
             override fun onError(utteranceId: String?) {
                 mainHandler.post(liberarFoco)
+                mainHandler.post { onFalaTerminou() } // Gatilho do Follow-up em caso de erro
             }
         })
         tts?.speak(texto, TextToSpeech.QUEUE_FLUSH, null, utteranceId)

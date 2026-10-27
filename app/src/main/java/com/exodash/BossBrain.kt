@@ -44,7 +44,7 @@ class BossBrain(private val context: Context) {
         // 0. EASTER EGG — Zé Ruela
         // ============================================================
         if (Regex("\\b(z[eé] ?ruela|zeruela|ze ruela)\\b").containsMatchIn(t)) {
-            return Resposta("Ze Ruela e voce, $nome.")
+            return Resposta("Zé Ruela é você, $nome.")
         }
 
         // ============================================================

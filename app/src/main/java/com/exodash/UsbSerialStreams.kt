@@ -41,14 +41,14 @@ class UsbSerialInputStream(private val port: UsbSerialPort) : InputStream() {
 
 class UsbSerialOutputStream(private val port: UsbSerialPort) : OutputStream() {
     override fun write(b: Int) {
-        try { port.write(byteArrayOf(b.toByte()), 1000) } catch (e: Exception) {}
+        try { port.write(byteArrayOf(b.toByte()), 1000) } catch (e: Exception) { android.util.Log.e("EXO_USB", "write byte falhou", e) }
     }
 
     override fun write(b: ByteArray, off: Int, len: Int) {
-        try { port.write(b.copyOfRange(off, off + len), 1000) } catch (e: Exception) {}
+        try { port.write(b.copyOfRange(off, off + len), 1000) } catch (e: Exception) { android.util.Log.e("EXO_USB", "write range falhou", e) }
     }
 
     override fun write(b: ByteArray) {
-        try { port.write(b, 1000) } catch (e: Exception) {}
+        try { port.write(b, 1000) } catch (e: Exception) { android.util.Log.e("EXO_USB", "write array falhou", e) }
     }
 }

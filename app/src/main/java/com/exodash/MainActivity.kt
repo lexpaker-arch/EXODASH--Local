@@ -19,6 +19,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -57,6 +58,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var telTemp: TextView
     private lateinit var telFuel: TextView
     private lateinit var telBattery: TextView
+    private lateinit var fuelBar: ProgressBar
+    private lateinit var batteryBar: ProgressBar
+    private lateinit var telAutonomia: TextView
 
     // Musica
     private lateinit var musicProgress: View
@@ -69,6 +73,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var errorTriangle: View
     private var speechRecognizer: SpeechRecognizer? = null
     private var ouvindo = false
+    private var emFollowUp = false // NOVO: Controla se estamos no modo contínuo
     private var jaSaudou = false
     private var obdConectado = false
     private var online = false
@@ -94,6 +99,14 @@ class MainActivity : AppCompatActivity() {
         Breadcrumbs.iniciar(this)
         Breadcrumbs.registrar("MainActivity: setContentView")
         setContentView(R.layout.activity_main)
+
+        // Mantem a tela ligada enquanto o app esta aberto (OBD precisa disso)
+        try {
+            window.addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        } catch (e: Exception) {
+            LogEventos.registrar(this, "onCreate: ERRO KEEP_SCREEN_ON: ${e.message}")
+        }
+
         prefs = Prefs(this)
         prefs.migrarSeNecessario()
         dtcHistory = DtcHistory(this)
@@ -107,7 +120,6 @@ class MainActivity : AppCompatActivity() {
         statusExo = findViewById(R.id.statusExo)
         statusObd = findViewById(R.id.statusObd)
         statusUser = findViewById(R.id.statusUser)
-
         // Relogio
         clockTime = findViewById(R.id.clockTime)
         clockSeconds = findViewById(R.id.clockSeconds)
@@ -121,6 +133,9 @@ class MainActivity : AppCompatActivity() {
         telTemp = findViewById(R.id.telTemp)
         telFuel = findViewById(R.id.telFuel)
         telBattery = findViewById(R.id.telBattery)
+        fuelBar = findViewById(R.id.fuelBar)
+        batteryBar = findViewById(R.id.batteryBar)
+        telAutonomia = findViewById(R.id.telAutonomia)
 
         // Musica
         musicFrame = findViewById(R.id.musicFrame)
@@ -148,8 +163,42 @@ class MainActivity : AppCompatActivity() {
 
         // BOSS
         bossButton = findViewById(R.id.bossButton)
-        boss = BossService(this, prefs) { acao -> executarAcao(acao) }
-        bossButton.setOnClickListener { iniciarEscuta() }
+        
+        // Modificação do BossService com o callback do Follow-up
+        boss = BossService(
+            this,
+            prefs,
+            onAcao = { acao -> executarAcao(acao) },
+            onFalaTerminou = {
+                runOnUiThread {
+                    if (!isFinishing && !isDestroyed) iniciarEscuta(isFollowUp = true)
+                }
+            }
+        )
+        bossButton.setOnClickListener { iniciarEscuta(isFollowUp = false) }
+
+        // Nome do carro (manual, sem auto-update) - seguro: depois do botao
+        try {
+            val nome = prefs.veiculoNomeCurto
+            if (nome.isNotEmpty()) {
+                val vNome = findViewById<TextView>(R.id.carroNome)
+                val vSub = findViewById<TextView>(R.id.carroSub)
+                vNome.text = nome.uppercase()
+                vNome.visibility = View.VISIBLE
+                val partes = mutableListOf<String>()
+                if (prefs.veiculoMarca.isNotEmpty()) partes.add(prefs.veiculoMarca)
+                if (prefs.veiculoAno > 0) partes.add(prefs.veiculoAno.toString())
+                if (partes.isNotEmpty()) {
+                    vSub.text = partes.joinToString(" \u2022 ").uppercase()
+                    vSub.visibility = View.VISIBLE
+                }
+            }
+            LogEventos.registrar(this, "onCreate: nome carro ok")
+        } catch (e: Exception) {
+            LogEventos.registrar(this, "onCreate: ERRO nome carro: ${e.message}")
+        }
+
+        LogEventos.registrar(this, "onCreate: BOTAO EXO REGISTRADO")
         bossButton.setOnLongClickListener {
             abrirDialogoPergunta()
             true
@@ -277,6 +326,22 @@ class MainActivity : AppCompatActivity() {
         telFuel.text = dados.combustivel?.let { "$it %" } ?: "--"
         telBattery.text = dados.bateria?.let { String.format("%.1f V", it) } ?: "--"
 
+        // Barras horizontais
+        fuelBar.progress = dados.combustivel ?: 0
+        // Bateria: 10V..15V -> 0..100%
+        val batPct = dados.bateria?.let { b ->
+            (((b.toDouble() - 10.0) / 5.0) * 100.0).coerceIn(0.0, 100.0).toInt()
+        } ?: 0
+        batteryBar.progress = batPct
+
+        // Autonomia: (comb% / 100) * tanque * consumo
+        val tanque = 55f     // litros - futuramente vem do vehicle.json
+        val consumo = 12f    // km/L  - futuramente vem do vehicle.json
+        val autonomia = dados.combustivel?.let {
+            ((it / 100f) * tanque * consumo).toInt()
+        }
+        telAutonomia.text = autonomia?.let { "$it km" } ?: "-- km"
+
         // Sincronizar DTCs com o historico
         if (dados.dtcs.isNotEmpty() || dtcHistory.contarAtivos() > 0) {
             dtcHistory.sincronizar(dados.dtcs)
@@ -339,18 +404,25 @@ class MainActivity : AppCompatActivity() {
                 }
                 override fun onError(error: Int) {
                     pararEscuta()
-                    val msg = when (error) {
-                        SpeechRecognizer.ERROR_NO_MATCH -> "Nao entendi, Senhor."
-                        SpeechRecognizer.ERROR_SPEECH_TIMEOUT -> "Nao ouvi nada, Senhor."
-                        SpeechRecognizer.ERROR_NETWORK,
-                        SpeechRecognizer.ERROR_NETWORK_TIMEOUT -> "Sem conexao para reconhecer voz."
-                        SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS -> "Permissao de microfone negada."
-                        else -> "Erro no reconhecimento."
+                    
+                    // Se estiver no modo Follow-up e der silêncio/timeout, não avisa com Toast, apenas dorme.
+                    if (!emFollowUp) {
+                        val msg = when (error) {
+                            SpeechRecognizer.ERROR_NO_MATCH -> "Nao entendi, Senhor."
+                            SpeechRecognizer.ERROR_SPEECH_TIMEOUT -> "Nao ouvi nada, Senhor."
+                            SpeechRecognizer.ERROR_NETWORK,
+                            SpeechRecognizer.ERROR_NETWORK_TIMEOUT -> "Sem conexao para reconhecer voz."
+                            SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS -> "Permissao de microfone negada."
+                            else -> "Erro no reconhecimento."
+                        }
+                        toast(msg)
                     }
-                    toast(msg)
+                    emFollowUp = false
                 }
                 override fun onResults(results: Bundle?) {
                     pararEscuta()
+                    emFollowUp = false // Desliga o modo Follow-up enquanto processa a resposta
+                    
                     val textos = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
                     val frase = textos?.firstOrNull()?.trim().orEmpty()
                     if (frase.isNotEmpty()) boss.processar(frase)
@@ -361,10 +433,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun iniciarEscuta() {
+    private fun iniciarEscuta(isFollowUp: Boolean = false) {
         if (ouvindo) { pararEscuta(); return }
         if (!temPermissaoAudio()) { pedirPermissaoAudio(); return }
 
+        emFollowUp = isFollowUp // Marca se foi o usuário que pediu ou se é a janela automática
         ouvindo = true
         bossButton.setBackgroundResource(R.drawable.boss_button_listening)
         bossButton.text = "OUVINDO"
@@ -378,11 +451,18 @@ class MainActivity : AppCompatActivity() {
         }
         speechRecognizer?.startListening(intent)
 
-        // Timeout: se em 10s nao recebeu resultado, destrava
+        // Timeout: a janela de escuta dura 10s
         handler.postDelayed({
             if (ouvindo) {
                 pararEscuta()
-                toast("Nao consegui ouvir. Tente de novo.")
+                emFollowUp = false
+                // Se foi um clique manual (não follow-up) e ele não falou, avisa.
+                // Se era a janela de follow-up, desliga em silêncio.
+                if (!isFollowUp) {
+                    toast("Nao consegui ouvir. Tente de novo.")
+                } else {
+                    LogEventos.registrar(this, "Follow-up finalizado (silencio).")
+                }
             }
         }, 10000)
     }
@@ -412,7 +492,7 @@ class MainActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQ_AUDIO) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                iniciarEscuta()
+                iniciarEscuta(isFollowUp = false)
             } else {
                 AlertDialog.Builder(this)
                     .setTitle("Permissao necessaria")
@@ -422,11 +502,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-    // =============================================================
-    // DIALOGO MANUAL
-    // =============================================================
-
 
     // =============================================================
     // MUSICA

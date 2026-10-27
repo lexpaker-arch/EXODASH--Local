@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><title>V2 - Relogio Gigante</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #0d0d0d; font-family: Roboto; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+.screen { width: 900px; height: 520px; background: #000; border: 3px solid #C0C0C0; border-radius: 6px; padding: 10px; position: relative; overflow: hidden; }
+.moldura { width: 100%; height: 100%; border: 1px solid rgba(0,255,204,0.25); border-radius: 4px; padding: 14px; display: flex; flex-direction: column; }
+.canto { position: absolute; width: 30px; height: 30px; }
+.canto::before, .canto::after { content: ""; position: absolute; }
+.canto::before { border: 2px solid #C0C0C0; } .canto::after { border: 2px solid #00FFCC; }
+.canto-tl { top: -8px; left: -8px; } .canto-tl::before { top:0; left:0; width:30px; height:30px; border-right:none; border-bottom:none; } .canto-tl::after { top:4px; left:4px; width:22px; height:22px; border-right:none; border-bottom:none; }
+.canto-tr { top: -8px; right: -8px; } .canto-tr::before { top:0; right:0; width:30px; height:30px; border-left:none; border-bottom:none; } .canto-tr::after { top:4px; right:4px; width:22px; height:22px; border-left:none; border-bottom:none; }
+.canto-bl { bottom: -8px; left: -8px; } .canto-bl::before { bottom:0; left:0; width:30px; height:30px; border-right:none; border-top:none; } .canto-bl::after { bottom:4px; left:4px; width:22px; height:22px; border-right:none; border-top:none; }
+.canto-br { bottom: -8px; right: -8px; } .canto-br::before { bottom:0; right:0; width:30px; height:30px; border-left:none; border-top:none; } .canto-br::after { bottom:4px; right:4px; width:22px; height:22px; border-left:none; border-top:none; }
+.header { display: flex; justify-content: space-between; padding-bottom: 8px; }
+.logo { color: #C0C0C0; font-size: 18px; font-weight: bold; letter-spacing: 3px; }
+.by { color: #666; font-size: 9px; letter-spacing: 2px; margin-top: 2px; }
+.status { display: flex; gap: 14px; font-size: 10px; align-items: center; }
+.st { color: #888; } .ok { color: #00FFCC; } .warn { color: #FFAA00; } .off { color: #FF3333; }
+.cfg { width: 32px; height: 32px; border-radius: 50%; border: 2px solid #333; display: flex; align-items: center; justify-content: center; color: #00FFCC; font-size: 16px; margin-left: 8px; }
+.div { height: 1px; background: linear-gradient(90deg, transparent, #00FFCC, transparent); opacity: 0.5; margin-bottom: 12px; }
+.central { flex: 1; display: flex; gap: 12px; align-items: stretch; }
+.esquerda { flex: 1.1; display: flex; flex-direction: column; }
+.relogio-giga { background: #0F0F0F; border: 1px solid rgba(0,255,204,0.3); border-radius: 8px; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; }
+.rel-giga-h { color: #E8E8E8; font-size: 72px; font-weight: 100; line-height: 1; text-shadow: 0 0 30px rgba(0,255,204,0.3); letter-spacing: 2px; }
+.rel-giga-s { color: #00FFCC; font-size: 16px; letter-spacing: 5px; margin-top: 8px; }
+.rel-giga-d { color: #666; font-size: 10px; letter-spacing: 3px; margin-top: 12px; text-transform: uppercase; }
+.rel-giga-dia { color: #00FFCC; font-size: 11px; letter-spacing: 2px; margin-top: 2px; }
+.boss-area { flex: 1.2; display: flex; align-items: center; justify-content: center; position: relative; }
+.brilho { position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle, rgba(0,255,204,0.35) 0%, transparent 70%); }
+.anel { position: absolute; width: 200px; height: 200px; border-radius: 50%; border: 2px solid rgba(0,255,204,0.5); animation: gira 20s linear infinite; }
+@keyframes gira { to { transform: rotate(360deg); } }
+.boss-btn { position: relative; width: 150px; height: 150px; border-radius: 50%; background: #0A2A2A; border: 3px solid #00FFCC; display: flex; align-items: center; justify-content: center; color: #00FFCC; font-size: 18px; font-weight: bold; letter-spacing: 5px; box-shadow: 0 0 40px rgba(0,255,204,0.35); }
+.direita { flex: 0.9; display: flex; flex-direction: column; gap: 8px; }
+.tele-mini { background: #0F0F0F; border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; padding: 6px 10px; display: flex; justify-content: space-between; align-items: center; }
+.tm-l { color: #888; font-size: 9px; letter-spacing: 1.5px; }
+.tm-v { color: #00FFCC; font-size: 15px; font-weight: bold; }
+.mus { background: #0F0F0F; border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; padding: 8px; }
+.mus-l { color: #00FFCC; font-size: 7px; letter-spacing: 2px; opacity: 0.7; }
+.mus-t { color: #E8E8E8; font-size: 10px; font-weight: bold; margin-top: 3px; }
+.mus-a { color: #888; font-size: 8px; }
+.rodape { display: flex; justify-content: center; gap: 24px; padding-top: 12px; }
+.at { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+.at-i { width: 46px; height: 46px; border-radius: 50%; border: 2px solid #333; display: flex; align-items: center; justify-content: center; background: #000; }
+.at-i svg { width: 24px; height: 24px; } .at-i svg path { fill: #00FFCC; }
+.at-n { color: #666; font-size: 8px; }
+.nota { position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%); color: #666; font-size: 11px; }
+</style></head>
+<body>
+<div class="screen">
+  <div class="moldura">
+    <div class="canto canto-tl"></div><div class="canto canto-tr"></div><div class="canto canto-bl"></div><div class="canto canto-br"></div>
+    <div class="header">
+      <div><div class="logo">EXODASH</div><div class="by">BY ALEX. P</div></div>
+      <div class="status">
+        <span class="st">EXODASH: <span class="warn">OFFLINE</span></span>
+        <span class="st">OBD: <span class="off">OFFLINE</span></span>
+        <span class="st">USUARIO: <span class="ok">SENHOR</span></span>
+        <div class="cfg">&#9881;</div>
+      </div>
+    </div>
+    <div class="div"></div>
+    <div class="central">
+      <div class="esquerda">
+        <div class="relogio-giga">
+          <div class="rel-giga-h">14:32</div>
+          <div class="rel-giga-s">: 47</div>
+          <div class="rel-giga-d">23 DE SETEMBRO</div>
+          <div class="rel-giga-dia">QUARTA-FEIRA</div>
+        </div>
+      </div>
+      <div class="boss-area">
+        <div class="brilho"></div><div class="anel"></div>
+        <div class="boss-btn">EXO</div>
+      </div>
+      <div class="direita">
+        <div class="tele-mini"><span class="tm-l">VEL</span><span class="tm-v">87 km/h</span></div>
+        <div class="tele-mini"><span class="tm-l">RPM</span><span class="tm-v">2450</span></div>
+        <div class="tele-mini"><span class="tm-l">MOTOR</span><span class="tm-v">89 C</span></div>
+        <div class="tele-mini"><span class="tm-l">COMB</span><span class="tm-v">62 %</span></div>
+        <div class="tele-mini"><span class="tm-l">BAT</span><span class="tm-v">13.8 V</span></div>
+        <div class="mus">
+          <div class="mus-l">TOCANDO AGORA</div>
+          <div class="mus-t">Bohemian Rhapsody</div>
+          <div class="mus-a">Queen</div>
+        </div>
+      </div>
+    </div>
+    <div class="rodape">
+      <div class="at"><div class="at-i"><svg viewBox="0 0 24 24"><path d="M6.62,10.79c1.44,2.83 3.76,5.14 6.59,6.59l2.2,-2.2c0.27,-0.27 0.67,-0.36 1.02,-0.24 1.12,0.37 2.33,0.57 3.57,0.57 0.55,0 1,0.45 1,1V20c0,0.55 -0.45,1 -1,1 -9.39,0 -17,-7.61 -17,-17 0,-0.55 0.45,-1 1,-1h3.5c0.55,0 1,0.45 1,1 0,1.25 0.2,2.45 0.57,3.57 0.11,0.35 0.03,0.74 -0.25,1.02l-2.2,2.2z"/></svg></div><div class="at-n">Telefone</div></div>
+      <div class="at"><div class="at-i"><svg viewBox="0 0 24 24"><path d="M12,3v10.55c-0.59,-0.34 -1.27,-0.55 -2,-0.55 -2.21,0 -4,1.79 -4,4s1.79,4 4,4 4,-1.79 4,-4V7h4V3h-6z"/></svg></div><div class="at-n">Midia</div></div>
+      <div class="at"><div class="at-i"><svg viewBox="0 0 24 24"><path d="M12,2C8.13,2 5,5.13 5,9c0,5.25 7,13 7,13s7,-7.75 7,-13c0,-3.87 -3.13,-7 -7,-7zM12,11.5c-1.38,0 -2.5,-1.12 -2.5,-2.5s1.12,-2.5 2.5,-2.5 2.5,1.12 2.5,2.5 -1.12,2.5 -2.5,2.5z"/></svg></div><div class="at-n">GPS</div></div>
+      <div class="at"><div class="at-i"><svg viewBox="0 0 24 24"><path d="M4,4h6v6H4z M14,4h6v6h-6z M4,14h6v6H4z M14,14h6v6h-6z"/></svg></div><div class="at-n">APPS</div></div>
+    </div>
+  </div>
+</div>
+<div class="nota">V2 - Relogio Gigante</div>
+</body></html>
