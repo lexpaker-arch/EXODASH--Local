@@ -26,6 +26,12 @@ jobs:
       - name: Grant execute permission
         run: chmod +x gradlew
 
+      - name: Extrair Versao do Gradle
+        id: get_version
+        run: |
+          VERSION_NAME=$(grep -oP 'versionName = "\K[^"]+' app/build.gradle.kts)
+          echo "VERSION_NAME=$VERSION_NAME" >> $GITHUB_OUTPUT
+
       - name: Criar secrets.properties
         run: echo "GROQ_API_KEY=${{ secrets.GROQ_API_KEY }}" > secrets.properties
 
@@ -42,14 +48,10 @@ jobs:
             -Pandroid.injected.signing.key.alias=${{ secrets.KEY_ALIAS }} \
             -Pandroid.injected.signing.key.password=${{ secrets.KEY_PASSWORD }}
 
-      - name: Renomear APK
+      - name: Renomear APK com a Versao
         run: |
-          VERSION=${GITHUB_REF#refs/tags/}
-          if [ "$VERSION" = "$GITHUB_REF" ]; then
-            VERSION="manual-$(date +%Y%m%d-%H%M)"
-          fi
           mkdir -p release
-          cp app/build/outputs/apk/release/app-release.apk release/EXODASH-${VERSION}.apk
+          cp app/build/outputs/apk/release/app-release.apk release/EXODASH-v${{ steps.get_version.outputs.VERSION_NAME }}.apk
           ls -lh release/
 
       - name: Upload artifact
@@ -61,11 +63,9 @@ jobs:
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: latest
-          name: Versao Mais Recente (Auto-Update)
+          tag_name: v${{ steps.get_version.outputs.VERSION_NAME }}
+          name: EXODASH Versao ${{ steps.get_version.outputs.VERSION_NAME }}
           files: release/*.apk
           generate_release_notes: true
-          prerelease: false
-          make_latest: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
