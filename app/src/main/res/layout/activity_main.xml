@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/bg_metallic"
-    android:padding="20dp">
+    android:padding="24dp">
 
     <!-- ========== HEADER ========== -->
     <LinearLayout
@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:layout_marginBottom="20dp">
+        android:layout_marginBottom="24dp">
 
         <TextView
             android:layout_width="0dp"
@@ -21,6 +21,7 @@
             android:text="EXODASH"
             android:textColor="#F8FAFC"
             android:textSize="16sp"
+            android:fontFamily="@font/inter_regular"
             android:textStyle="bold"
             android:letterSpacing="0.15" />
 
@@ -36,13 +37,14 @@
                 android:text=""
                 android:textColor="#D4AF37"
                 android:textSize="18sp"
+                android:fontFamily="@font/inter_regular"
                 android:textStyle="bold"
                 android:letterSpacing="0.1" />
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="2dp">
+                android:layout_marginTop="4dp">
                 <TextView
                     android:id="@+id/statusExo"
                     android:layout_width="wrap_content"
@@ -50,8 +52,8 @@
                     android:text="EXO: ON"
                     android:textColor="#10B981"
                     android:textSize="9sp"
-                    android:fontFamily="monospace"
-                    android:layout_marginEnd="10dp" />
+                    android:fontFamily="@font/roboto_mono"
+                    android:layout_marginEnd="12dp" />
                 <TextView
                     android:id="@+id/statusObd"
                     android:layout_width="wrap_content"
@@ -59,9 +61,8 @@
                     android:text="OBD: ON"
                     android:textColor="#10B981"
                     android:textSize="9sp"
-                    android:fontFamily="monospace" />
+                    android:fontFamily="@font/roboto_mono" />
             </LinearLayout>
-            <!-- IDs ocultos para não quebrar o Kotlin -->
             <TextView android:id="@+id/carroSub" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" />
             <TextView android:id="@+id/statusUser" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" />
         </LinearLayout>
@@ -73,17 +74,15 @@
             android:gravity="end">
             <LinearLayout
                 android:id="@+id/btnConfig"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
                 android:gravity="center"
                 android:clickable="true"
                 android:focusable="true">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="⚙"
-                    android:textColor="#64748B"
-                    android:textSize="22sp" />
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_settings" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
@@ -96,25 +95,25 @@
         android:orientation="horizontal"
         android:gravity="center_vertical">
 
-        <!-- TELEMETRIA (Grade 2x2 + Velocidade) -->
+        <!-- TELEMETRIA -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1.2"
             android:orientation="vertical">
             
-            <!-- Velocidade -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="20dp">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="VELOCIDADE"
                     android:textColor="#64748B"
                     android:textSize="10sp"
+                    android:fontFamily="@font/inter_regular"
                     android:textStyle="bold" />
                 <TextView
                     android:id="@+id/telSpeed"
@@ -122,34 +121,25 @@
                     android:layout_height="wrap_content"
                     android:text="--"
                     android:textColor="#00FFCC"
-                    android:textSize="48sp"
-                    android:fontFamily="monospace"
-                    android:textStyle="bold" />
+                    android:textSize="52sp"
+                    android:fontFamily="@font/roboto_mono"
+                    android:textStyle="bold"
+                    android:letterSpacing="-0.05" />
             </LinearLayout>
 
-            <!-- Grade 2x2 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="RPM" android:textColor="#64748B" android:textSize="9sp" />
-                    <TextView android:id="@+id/telRpm" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="--" android:textColor="#F8FAFC" android:textSize="22sp" android:fontFamily="monospace" />
-                    <ProgressBar android:id="@+id/fuelBar" style="?android:attr/progressBarStyleHorizontal" android:layout_width="match_parent" android:layout_height="3dp" android:layout_marginTop="4dp" android:progressDrawable="@drawable/barra_progress" />
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="RPM" android:textColor="#64748B" android:textSize="9sp" android:fontFamily="@font/inter_regular" />
+                    <TextView android:id="@+id/telRpm" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="--" android:textColor="#F8FAFC" android:textSize="24sp" android:fontFamily="@font/roboto_mono" />
+                    <ProgressBar android:id="@+id/fuelBar" style="?android:attr/progressBarStyleHorizontal" android:layout_width="match_parent" android:layout_height="3dp" android:layout_marginTop="6dp" android:progressDrawable="@drawable/barra_progress" />
                 </LinearLayout>
                 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:layout_marginStart="15dp">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="MOTOR" android:textColor="#64748B" android:textSize="9sp" />
-                    <TextView android:id="@+id/telTemp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="--" android:textColor="#F8FAFC" android:textSize="22sp" android:fontFamily="monospace" />
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="20dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="MOTOR" android:textColor="#64748B" android:textSize="9sp" android:fontFamily="@font/inter_regular" />
+                    <TextView android:id="@+id/telTemp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="--" android:textColor="#F8FAFC" android:textSize="24sp" android:fontFamily="@font/roboto_mono" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -157,25 +147,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="15dp">
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="COMBUSTÍVEL" android:textColor="#64748B" android:textSize="9sp" />
-                    <TextView android:id="@+id/telFuel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="--" android:textColor="#F8FAFC" android:textSize="22sp" android:fontFamily="monospace" />
+                android:layout_marginTop="20dp">
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="COMBUSTÍVEL" android:textColor="#64748B" android:textSize="9sp" android:fontFamily="@font/inter_regular" />
+                    <TextView android:id="@+id/telFuel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="--" android:textColor="#F8FAFC" android:textSize="24sp" android:fontFamily="@font/roboto_mono" />
                 </LinearLayout>
                 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:layout_marginStart="15dp">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="BATERIA" android:textColor="#64748B" android:textSize="9sp" />
-                    <TextView android:id="@+id/telBattery" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="--" android:textColor="#F8FAFC" android:textSize="22sp" android:fontFamily="monospace" />
-                    <ProgressBar android:id="@+id/batteryBar" style="?android:attr/progressBarStyleHorizontal" android:layout_width="match_parent" android:layout_height="3dp" android:layout_marginTop="4dp" android:progressDrawable="@drawable/barra_progress" />
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="20dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="BATERIA" android:textColor="#64748B" android:textSize="9sp" android:fontFamily="@font/inter_regular" />
+                    <TextView android:id="@+id/telBattery" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="--" android:textColor="#F8FAFC" android:textSize="24sp" android:fontFamily="@font/roboto_mono" />
+                    <ProgressBar android:id="@+id/batteryBar" style="?android:attr/progressBarStyleHorizontal" android:layout_width="match_parent" android:layout_height="3dp" android:layout_marginTop="6dp" android:progressDrawable="@drawable/barra_progress" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -183,23 +164,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginTop="15dp">
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="AUTONOMIA" android:textColor="#64748B" android:textSize="9sp" />
-                <TextView android:id="@+id/telAutonomia" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="-- km" android:textColor="#F8FAFC" android:textSize="22sp" android:fontFamily="monospace" />
+                android:layout_marginTop="20dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="AUTONOMIA" android:textColor="#64748B" android:textSize="9sp" android:fontFamily="@font/inter_regular" />
+                <TextView android:id="@+id/telAutonomia" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="-- km" android:textColor="#F8FAFC" android:textSize="24sp" android:fontFamily="@font/roboto_mono" />
             </LinearLayout>
         </LinearLayout>
 
         <!-- BOTÃO EXO (Centro) -->
         <FrameLayout
-            android:layout_width="220dp"
-            android:layout_height="220dp"
+            android:layout_width="240dp"
+            android:layout_height="240dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp">
             
-            <!-- Anel externo simulado -->
             <View
-                android:layout_width="200dp"
-                android:layout_height="200dp"
+                android:layout_width="220dp"
+                android:layout_height="220dp"
                 android:layout_gravity="center"
                 android:background="@drawable/boss_glow" />
                 
@@ -210,13 +190,14 @@
                 android:layout_gravity="center"
                 android:text="EXO"
                 android:textSize="20sp"
+                android:fontFamily="@font/inter_regular"
                 android:textStyle="bold"
                 android:textColor="#00FFCC"
                 android:background="@drawable/boss_button_bg"
                 android:stateListAnimator="@null" />
         </FrameLayout>
 
-        <!-- DIREITA (Relógio, Música, Clima) -->
+        <!-- DIREITA (Relógio, Música) -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -224,7 +205,6 @@
             android:orientation="vertical"
             android:gravity="end">
 
-            <!-- Relógio -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -236,8 +216,8 @@
                     android:layout_height="wrap_content"
                     android:text="--:--"
                     android:textColor="#F8FAFC"
-                    android:textSize="56sp"
-                    android:fontFamily="sans-serif-thin" />
+                    android:textSize="60sp"
+                    android:fontFamily="@font/inter_light" />
                 <TextView
                     android:id="@+id/clockSeconds"
                     android:layout_width="wrap_content"
@@ -245,8 +225,9 @@
                     android:text=":--"
                     android:textColor="#64748B"
                     android:textSize="16sp"
+                    android:fontFamily="@font/roboto_mono"
                     android:layout_marginStart="5dp"
-                    android:layout_marginBottom="10dp"/>
+                    android:layout_marginBottom="12dp"/>
             </LinearLayout>
             <TextView
                 android:id="@+id/clockDate"
@@ -255,11 +236,10 @@
                 android:text="--"
                 android:textColor="#64748B"
                 android:textSize="10sp"
+                android:fontFamily="@font/inter_regular"
                 android:letterSpacing="0.1" />
-            <!-- ID oculto para não quebrar o Kotlin -->
             <TextView android:id="@+id/clockDay" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" />
 
-            <!-- Música -->
             <LinearLayout
                 android:id="@+id/musicFrame"
                 android:layout_width="match_parent"
@@ -268,14 +248,12 @@
                 android:gravity="center_vertical"
                 android:background="@drawable/card_bg"
                 android:padding="12dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="24dp"
                 android:visibility="gone">
-                <TextView
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:text="🎵"
-                    android:gravity="center"
-                    android:background="@drawable/barra_trilha"
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_music"
                     android:layout_marginEnd="12dp"/>
                 <LinearLayout
                     android:layout_width="0dp"
@@ -289,16 +267,17 @@
                         android:text="---"
                         android:textColor="#F8FAFC"
                         android:textSize="12sp"
+                        android:fontFamily="@font/inter_regular"
                         android:textStyle="bold" />
                     <TextView
                         android:id="@+id/musicArtist"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="---"
+                        android:text="MP3 LOCAL"
                         android:textColor="#64748B"
-                        android:textSize="10sp" />
+                        android:textSize="10sp"
+                        android:fontFamily="@font/inter_regular" />
                 </LinearLayout>
-                <!-- ID oculto para o progresso não quebrar -->
                 <View android:id="@+id/musicProgress" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone"/>
             </LinearLayout>
         </LinearLayout>
@@ -310,10 +289,9 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:layout_marginTop="20dp"
-        android:paddingTop="15dp">
+        android:layout_marginTop="24dp"
+        android:paddingTop="20dp">
 
-        <!-- Triângulo de DTC (Esquerda) -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -340,11 +318,11 @@
                     android:text="0"
                     android:textColor="#EF4444"
                     android:textSize="16sp"
+                    android:fontFamily="@font/roboto_mono"
                     android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Atalhos (Centro) -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -352,27 +330,26 @@
             android:gravity="center">
             
             <LinearLayout android:id="@+id/btnTelefone" android:layout_width="64dp" android:layout_height="64dp" android:gravity="center" android:orientation="vertical" android:clickable="true" android:focusable="true" android:layout_marginEnd="20dp">
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="📞" android:textSize="22sp" />
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TEL" android:textColor="#64748B" android:textSize="8sp" android:layout_marginTop="2dp" />
+                <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_phone" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TEL" android:textColor="#64748B" android:textSize="8sp" android:fontFamily="@font/inter_regular" android:layout_marginTop="4dp" />
             </LinearLayout>
             
             <LinearLayout android:id="@+id/btnMidia" android:layout_width="64dp" android:layout_height="64dp" android:gravity="center" android:orientation="vertical" android:clickable="true" android:focusable="true" android:layout_marginEnd="20dp">
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🎵" android:textSize="22sp" />
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="MÍDIA" android:textColor="#64748B" android:textSize="8sp" android:layout_marginTop="2dp" />
+                <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_music" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="MÍDIA" android:textColor="#64748B" android:textSize="8sp" android:fontFamily="@font/inter_regular" android:layout_marginTop="4dp" />
             </LinearLayout>
 
             <LinearLayout android:id="@+id/btnGps" android:layout_width="64dp" android:layout_height="64dp" android:gravity="center" android:orientation="vertical" android:clickable="true" android:focusable="true" android:layout_marginEnd="20dp">
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="📍" android:textSize="22sp" />
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="GPS" android:textColor="#64748B" android:textSize="8sp" android:layout_marginTop="2dp" />
+                <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_gps" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="GPS" android:textColor="#64748B" android:textSize="8sp" android:fontFamily="@font/inter_regular" android:layout_marginTop="4dp" />
             </LinearLayout>
 
             <LinearLayout android:id="@+id/btnApps" android:layout_width="64dp" android:layout_height="64dp" android:gravity="center" android:orientation="vertical" android:clickable="true" android:focusable="true">
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="▦" android:textSize="22sp" />
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="APPS" android:textColor="#64748B" android:textSize="8sp" android:layout_marginTop="2dp" />
+                <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_apps" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="APPS" android:textColor="#64748B" android:textSize="8sp" android:fontFamily="@font/inter_regular" android:layout_marginTop="4dp" />
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Branding (Direita) -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -385,6 +362,7 @@
                 android:text="EXODRIVE"
                 android:textColor="#475569"
                 android:textSize="10sp"
+                android:fontFamily="@font/inter_regular"
                 android:textStyle="bold"
                 android:letterSpacing="0.2" />
             <TextView
@@ -393,6 +371,7 @@
                 android:text="BY ALEX. P"
                 android:textColor="#334155"
                 android:textSize="8sp"
+                android:fontFamily="@font/inter_regular"
                 android:letterSpacing="0.1"
                 android:layout_marginTop="2dp" />
         </LinearLayout>
