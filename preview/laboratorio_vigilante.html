@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>EXO VIGILANTE - UI</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;600&family=Roboto+Mono:wght@300;400;600&display=swap');
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #000; display: flex; justify-content: center; align-items: center; min-height: 100vh; font-family: 'Inter', sans-serif; }
+
+/* TELA 1024x600 */
+.screen {
+    width: 1024px;
+    height: 600px;
+    background: #0D1117;
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.9), inset 0 1px 0 rgba(255,255,255,0.05);
+    color: #F8FAFC;
+    display: flex;
+    flex-direction: column;
+    padding: 30px 40px;
+}
+
+/* HEADER */
+header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(212,175,55,0.1); padding-bottom: 20px; }
+.brand { font-size: 12px; font-weight: 600; letter-spacing: 3px; color: #D4A017; text-transform: uppercase; }
+.carro { font-size: 16px; font-weight: 600; letter-spacing: 2px; color: #FFF; }
+.status-escudo { display: flex; align-items: center; gap: 8px; color: #D4A017; font-size: 12px; font-weight: bold; letter-spacing: 1px; }
+
+/* CARD CENTRAL */
+main { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
+
+.circuito-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 600px;
+    position: relative;
+    margin-bottom: 40px;
+}
+
+.no-circuito { display: flex; flex-direction: column; align-items: center; gap: 10px; z-index: 2; }
+.icone { width: 60px; height: 60px; border-radius: 50%; border: 2px solid #30363D; display: flex; align-items: center; justify-content: center; font-size: 24px; background: #161B22; color: #8B949E; }
+.no-circuito.ativo .icone { border-color: #D4A017; color: #D4A017; box-shadow: 0 0 20px rgba(212,175,55,0.2); background: rgba(212,175,55,0.05); }
+.no-circuito span { font-size: 10px; color: #8B949E; letter-spacing: 1px; text-transform: uppercase; }
+
+.linha { flex: 1; height: 2px; background: #30363D; position: relative; margin: 0 15px; margin-bottom: 25px; }
+.linha.quebrada { background: repeating-linear-gradient(90deg, #D4A017, #D4A017 10px, transparent 10px, transparent 20px); }
+.linha.normal { background: #8B949E; }
+
+/* TEXTO DO STATUS */
+.status-texto { text-align: center; margin-bottom: 40px; transition: 0.3s; }
+.status-title { font-size: 42px; font-weight: 200; letter-spacing: 5px; margin-bottom: 10px; }
+.status-sub { font-family: 'Roboto Mono', monospace; font-size: 12px; color: #8B949E; letter-spacing: 2px; }
+
+/* ESTADOS */
+.armado .status-title { color: #D4A017; text-shadow: 0 0 20px rgba(212,175,55,0.3); }
+.armado .escudo { color: #D4A017; }
+.desarmado .status-title { color: #8B949E; }
+.desarmado .escudo { color: #30363D; }
+
+/* BOTÃO DE AÇÃO */
+.botao-acao {
+    width: 120px; height: 120px; border-radius: 50%;
+    background: transparent; border: 2px solid #D4A017; color: #D4A017;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: bold; letter-spacing: 2px; cursor: pointer;
+    transition: all 0.3s; box-shadow: 0 0 30px rgba(212,175,55,0.1);
+}
+.botao-acao:hover { background: rgba(212,175,55,0.1); box-shadow: 0 0 40px rgba(212,175,55,0.3); }
+.botao-acao span { font-size: 24px; margin-bottom: 5px; }
+
+/* FOOTER */
+footer { display: flex; justify-content: space-between; align-items: flex-end; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 20px; }
+.footer-info { display: flex; flex-direction: column; gap: 4px; }
+.footer-info div { font-family: 'Roboto Mono', monospace; font-size: 10px; color: #8B949E; }
+.footer-info span { color: #F8FAFC; }
+.by { font-size: 10px; color: #475569; letter-spacing: 2px; }
+</style>
+</head>
+<body>
+
+<div class="screen desarmado" id="screen">
+    <header>
+        <div class="brand">EXO VIGILANTE</div>
+        <div class="carro">FOCUS MK1 2001</div>
+        <div class="status-escudo escudo">
+            🛡️ SISTEMA <span id="textoHeader" style="color:inherit; margin-left: 5px;">DESARMADO</span>
+        </div>
+    </header>
+
+    <main>
+        <!-- DIAGRAMA DO CIRCUITO -->
+        <div class="circuito-container">
+            <div class="no-circuito ativo">
+                <div class="icone">🔋</div>
+                <span>Bateria</span>
+            </div>
+            
+            <div class="linha normal" id="linha1"></div>
+            
+            <div class="no-circuito ativo" id="noRele">
+                <div class="icone">⚙️</div>
+                <span>Relé</span>
+            </div>
+            
+            <div class="linha normal" id="linha2"></div>
+            
+            <div class="no-circuito ativo" id="noModulo">
+                <div class="icone">💡</div>
+                <span>Módulo</span>
+            </div>
+        </div>
+
+        <!-- TEXTO CENTRAL -->
+        <div class="status-texto">
+            <div class="status-title" id="statusTitle">DESARMADO</div>
+            <div class="status-sub" id="statusSub">Relé Conectado | Circuito Fechado</div>
+        </div>
+
+        <!-- BOTÃO -->
+        <div class="botao-acao" onclick="toggleEstado()">
+            <span id="iconeBotao">🔓</span>
+            <div id="textoBotao">ARMAR</div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-info">
+            <div>BATERIA: <span>12.6V</span></div>
+            <div>SINAL BT: <span>CONECTADO</span></div>
+            <div>ÚLTIMO EVENTO: <span>HOJE, 14:32</span></div>
+        </div>
+        <div class="by">BY ALEX. P</div>
+    </footer>
+</div>
+
+<script>
+let armado = false;
+
+function toggleEstado() {
+    armado = !armado;
+    const screen = document.getElementById('screen');
+    const statusTitle = document.getElementById('statusTitle');
+    const statusSub = document.getElementById('statusSub');
+    const textoHeader = document.getElementById('textoHeader');
+    const iconeBotao = document.getElementById('iconeBotao');
+    const textoBotao = document.getElementById('textoBotao');
+    const linha2 = document.getElementById('linha2');
+    const noModulo = document.getElementById('noModulo');
+
+    if (armado) {
+        screen.className = 'screen armado';
+        statusTitle.textContent = 'ARMADO';
+        statusSub.textContent = 'Relé Desconectado | Circuito Aberto';
+        textoHeader.textContent = 'ARMADO';
+        
+        // Muda o botão
+        iconeBotao.textContent = '🔒';
+        textoBotao.textContent = 'DESARMAR';
+        
+        // Corta o circuito (Linha 2 fica quebrada/amarela)
+        linha2.className = 'linha quebrada';
+        
+        // Módulo apaga
+        noModulo.classList.remove('ativo');
+    } else {
+        screen.className = 'screen desarmado';
+        statusTitle.textContent = 'DESARMADO';
+        statusSub.textContent = 'Relé Conectado | Circuito Fechado';
+        textoHeader.textContent = 'DESARMADO';
+        
+        // Muda o botão
+        iconeBotao.textContent = '🔓';
+        textoBotao.textContent = 'ARMAR';
+        
+        // Reconecta o circuito
+        linha2.className = 'linha normal';
+        
+        // Módulo acende
+        noModulo.classList.add('ativo');
+    }
+}
+</script>
+
+</body>
+</html>
