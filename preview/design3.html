@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>EXODASH - Conceitos de Design</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #0d0d0d; font-family: -apple-system, 'Segoe UI', Roboto, sans-serif; display: flex; flex-direction: column; align-items: center; padding: 20px; min-height: 100vh; }
+.tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+.tab { background: #1a1a1a; color: #888; border: 1px solid #333; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: bold; transition: 0.3s; }
+.tab.active { background: #00FFCC; color: #000; border-color: #00FFCC; }
+.var { display: none; }
+.var.active { display: block; }
+
+/* TELA 7" (1024x600) */
+.screen { width: 1024px; height: 600px; position: relative; overflow: hidden; border-radius: 8px; box-shadow: 0 20px 50px rgba(0,0,0,0.8); }
+
+/* ═══════════ 1. TESLA MINIMALISTA ═══════════ */
+.tesla { background: #000000; color: #FFFFFF; display: flex; flex-direction: column; }
+.tesla header { padding: 30px 40px; display: flex; justify-content: space-between; align-items: center; }
+.tesla .carro { font-size: 18px; font-weight: 500; letter-spacing: 2px; color: #888; }
+.tesla .status { font-size: 12px; color: #00FFCC; display: flex; gap: 20px; }
+.tesla main { flex: 1; display: flex; align-items: center; justify-content: space-between; padding: 0 60px; }
+.tesla .tele-esq { display: flex; flex-direction: column; gap: 20px; }
+.tesla .huge-num { font-size: 120px; font-weight: 200; line-height: 0.8; letter-spacing: -4px; }
+.tesla .huge-label { font-size: 16px; color: #666; text-transform: uppercase; letter-spacing: 2px; }
+.tesla .rpm-num { font-size: 40px; font-weight: 300; color: #888; }
+.tesla .exo-btn { width: 120px; height: 120px; border-radius: 50%; border: 2px solid #333; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 600; color: #FFF; background: transparent; transition: 0.3s; }
+.tesla .exo-btn:hover { border-color: #00FFCC; color: #00FFCC; }
+.tesla .tele-dir { display: flex; flex-direction: column; gap: 20px; text-align: right; }
+.tesla .hora { font-size: 48px; font-weight: 200; }
+.tesla .data { font-size: 14px; color: #666; }
+.tesla footer { padding: 20px 40px; display: flex; justify-content: center; gap: 40px; }
+.tesla .icon { width: 40px; height: 40px; border-radius: 50%; border: 1px solid #333; display: flex; align-items: center; justify-content: center; color: #666; }
+
+/* ═══════════ 2. MERCEDES LUXURY ═══════════ */
+.mercedes { background: linear-gradient(135deg, #0B101E 0%, #060810 100%); color: #E8EDF2; display: flex; flex-direction: column; }
+.mercedes header { padding: 30px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(212,175,55,0.2); }
+.mercedes .logo { font-family: serif; font-size: 24px; color: #D4AF37; letter-spacing: 4px; }
+.mercedes .carro { font-size: 16px; color: #D4AF37; letter-spacing: 3px; text-transform: uppercase; }
+.mercedes main { flex: 1; display: flex; align-items: center; justify-content: space-around; padding: 0 40px; }
+.mercedes .gauge { width: 200px; height: 200px; border-radius: 50%; border: 2px solid rgba(212,175,55,0.3); display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
+.mercedes .gauge::before { content: ''; position: absolute; inset: 10px; border-radius: 50%; border: 1px solid rgba(212,175,55,0.1); }
+.mercedes .g-val { font-size: 56px; font-weight: 300; color: #FFF; }
+.mercedes .g-label { font-size: 12px; color: #D4AF37; letter-spacing: 2px; margin-top: 5px; }
+.mercedes .exo-center { text-align: center; }
+.mercedes .exo-btn { width: 100px; height: 100px; border-radius: 50%; border: 1px solid #D4AF37; background: rgba(212,175,55,0.05); display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 300; color: #D4AF37; letter-spacing: 2px; margin: 0 auto 20px; }
+.mercedes .clock-lux { font-size: 36px; font-weight: 200; color: #FFF; }
+.mercedes footer { padding: 20px 40px; display: flex; justify-content: center; gap: 30px; border-top: 1px solid rgba(212,175,55,0.1); }
+.mercedes .icon { color: #D4AF37; opacity: 0.6; font-size: 20px; }
+
+/* ═══════════ 3. CYBERPUNK EXO ═══════════ */
+.cyber { background: #05070A; color: #E8EDF2; display: flex; flex-direction: column; background-image: linear-gradient(rgba(0,255,204,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,204,0.03) 1px, transparent 1px); background-size: 30px 30px; }
+.cyber header { padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0,255,204,0.15); background: linear-gradient(90deg, rgba(0,255,204,0.05) 0%, transparent 50%); }
+.cyber .logo { font-size: 16px; font-weight: bold; color: #00FFCC; letter-spacing: 3px; }
+.cyber .carro { font-size: 14px; color: #00FFCC; letter-spacing: 3px; text-shadow: 0 0 10px rgba(0,255,204,0.5); }
+.cyber main { flex: 1; display: flex; align-items: center; justify-content: space-between; padding: 0 40px; }
+.cyber .tele { display: flex; flex-direction: column; gap: 15px; }
+.cyber .tel-linha { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(0,255,204,0.1); padding-bottom: 5px; width: 250px; }
+.cyber .tel-l { font-size: 10px; color: #6A7A8A; letter-spacing: 2px; }
+.cyber .tel-v { font-size: 24px; color: #00FFCC; font-family: monospace; font-weight: bold; text-shadow: 0 0 8px rgba(0,255,204,0.4); }
+.cyber .exo-area { position: relative; width: 200px; height: 200px; display: flex; align-items: center; justify-content: center; }
+.cyber .anel-ext { position: absolute; width: 180px; height: 180px; border-radius: 50%; border: 1px dashed rgba(0,255,204,0.3); animation: gira 20s linear infinite; }
+.cyber .anel-int { position: absolute; width: 150px; height: 150px; border-radius: 50%; border: 2px solid rgba(0,255,204,0.2); border-left-color: #00FFCC; animation: gira-rev 12s linear infinite; }
+.cyber .exo-btn { width: 80px; height: 80px; border-radius: 50%; border: 2px solid #00FFCC; background: radial-gradient(circle at 30% 30%, #1A1F28, #0A0D12); box-shadow: 0 0 30px rgba(0,255,204,0.4); z-index: 2; display: flex; align-items: center; justify-content: center; color: #00FFCC; font-weight: bold; font-size: 18px; letter-spacing: 2px; }
+@keyframes gira { to { transform: rotate(360deg); } }
+@keyframes gira-rev { to { transform: rotate(-360deg); } }
+.cyber .dir { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+.cyber .hora-box { background: rgba(0,255,204,0.05); border: 1px solid rgba(0,255,204,0.2); padding: 15px 25px; border-radius: 8px; text-align: center; }
+.cyber .hora { font-size: 42px; font-weight: 200; color: #FFF; }
+.cyber .data { font-size: 10px; color: #00FFCC; letter-spacing: 2px; margin-top: 5px; }
+.cyber footer { padding: 15px 30px; display: flex; justify-content: center; gap: 30px; border-top: 1px solid rgba(0,255,204,0.1); }
+.cyber .icon { width: 46px; height: 46px; border-radius: 50%; border: 1px solid rgba(0,255,204,0.3); display: flex; align-items: center; justify-content: center; color: #00FFCC; font-size: 18px; }
+</style>
+</head>
+<body>
+
+<div class="tabs">
+  <button class="tab active" onclick="show('t1', this)">1. TESLA MINIMALISTA</button>
+  <button class="tab" onclick="show('t2', this)">2. MERCEDES LUXURY</button>
+  <button class="tab" onclick="show('t3', this)">3. CYBERPUNK EXO</button>
+</div>
+
+<!-- TELA 1 -->
+<div id="t1" class="var active">
+  <div class="screen tesla">
+    <header>
+      <div class="carro">FOCUS 1.8 L</div>
+      <div class="status"><span>EXO</span><span>OBD</span><span>USER</span></div>
+    </header>
+    <main>
+      <div class="tele-esq">
+        <div>
+          <div class="huge-num">87</div>
+          <div class="huge-label">km/h</div>
+        </div>
+        <div class="rpm-num">2450 RPM</div>
+      </div>
+      <div class="exo-btn">EXO</div>
+      <div class="tele-dir">
+        <div class="hora">14:32</div>
+        <div class="data">23 DE SETEMBRO</div>
+      </div>
+    </main>
+    <footer>
+      <div class="icon">📞</div><div class="icon">🎵</div><div class="icon">📍</div><div class="icon">▦</div>
+    </footer>
+  </div>
+</div>
+
+<!-- TELA 2 -->
+<div id="t2" class="var">
+  <div class="screen mercedes">
+    <header>
+      <div class="logo">EXODRIVE</div>
+      <div class="carro">Focus 1.8 L</div>
+      <div style="color:#D4AF37; font-size:12px;">BY ALEX P.</div>
+    </header>
+    <main>
+      <div class="gauge">
+        <div class="g-val">87</div>
+        <div class="g-label">VELOCIDADE</div>
+      </div>
+      <div class="exo-center">
+        <div class="exo-btn">EXO</div>
+        <div class="clock-lux">14:32</div>
+      </div>
+      <div class="gauge">
+        <div class="g-val">89°</div>
+        <div class="g-label">MOTOR</div>
+      </div>
+    </main>
+    <footer>
+      <div class="icon">TELEFONE</div><div class="icon">MÍDIA</div><div class="icon">GPS</div><div class="icon">APPS</div>
+    </footer>
+  </div>
+</div>
+
+<!-- TELA 3 -->
+<div id="t3" class="var">
+  <div class="screen cyber">
+    <header>
+      <div class="logo">EXO SYSTEM</div>
+      <div class="carro">FOCUS 1.8 L</div>
+      <div style="color:#6A7A8A; font-size:12px;">OP: CHEFE</div>
+    </header>
+    <main>
+      <div class="tele">
+        <div class="tel-linha"><span class="tel-l">VELOCIDADE</span><span class="tel-v">87 <small style="font-size:12px;color:#6A7A8A;">km/h</small></span></div>
+        <div class="tel-linha"><span class="tel-l">RPM</span><span class="tel-v">2450</span></div>
+        <div class="tel-linha"><span class="tel-l">MOTOR</span><span class="tel-v">89 °C</span></div>
+        <div class="tel-linha"><span class="tel-l">COMBUSTÍVEL</span><span class="tel-v">62%</span></div>
+        <div class="tel-linha"><span class="tel-l">BATERIA</span><span class="tel-v">13.8V</span></div>
+      </div>
+      <div class="exo-area">
+        <div class="anel-ext"></div><div class="anel-int"></div>
+        <div class="exo-btn">EXO</div>
+      </div>
+      <div class="dir">
+        <div class="hora-box">
+          <div class="hora">14:32</div>
+          <div class="data">QUARTA-FEIRA</div>
+        </div>
+        <div style="background:rgba(0,255,204,0.05); border:1px solid rgba(0,255,204,0.2); padding:10px 20px; border-radius:8px; text-align:center;">
+          <div style="color:#6A7A8A; font-size:10px; letter-spacing:1px;">TOCANDO AGORA</div>
+          <div style="color:#FFF; font-size:14px; margin-top:5px;">Bohemian Rhapsody</div>
+        </div>
+      </div>
+    </main>
+    <footer>
+      <div class="icon">📞</div><div class="icon">🎵</div><div class="icon">📍</div><div class="icon">▦</div>
+    </footer>
+  </div>
+</div>
+
+<script>
+function show(id, el) {
+  document.querySelectorAll('.var').forEach(v => v.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+</script>
+</body>
+</html>

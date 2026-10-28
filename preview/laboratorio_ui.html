@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>EXODASH - UI Premium</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;600&family=Roboto+Mono:wght@300;400;600&display=swap');
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #0d0d0d; display: flex; justify-content: center; align-items: center; min-height: 100vh; font-family: 'Inter', sans-serif; }
+
+/* A TELA DO CARRO (1024x600) */
+.screen {
+    width: 1024px;
+    height: 600px;
+    background: radial-gradient(circle at 50% 0%, #1E293B 0%, #0F172A 40%, #020617 100%);
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.9), inset 0 1px 0 rgba(255,255,255,0.1);
+    color: #F8FAFC;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 30px;
+}
+
+/* Efeito de Grid Sutil no Fundo */
+.screen::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+}
+
+/* HEADER */
+header { display: flex; justify-content: space-between; align-items: center; z-index: 10; padding-bottom: 15px; }
+.brand { font-size: 14px; font-weight: 600; letter-spacing: 4px; color: #F8FAFC; }
+.carro-box { text-align: center; }
+.carro { font-size: 18px; font-weight: 600; letter-spacing: 2px; color: #D4AF37; text-shadow: 0 0 15px rgba(212,175,55,0.3); }
+.status { display: flex; gap: 15px; font-family: 'Roboto Mono', monospace; font-size: 10px; color: #64748B; justify-content: center; margin-top: 5px; }
+.status span { color: #10B981; }
+.config-btn { background: none; border: none; color: #64748B; font-size: 20px; cursor: pointer; }
+
+/* ÁREA CENTRAL */
+main { flex: 1; display: flex; align-items: center; justify-content: space-between; z-index: 10; padding: 10px 0; }
+
+/* TELEMETRIA PREMIUM (Esquerda) */
+.telemetria { display: grid; grid-template-columns: 1fr 1fr; gap: 15px 20px; width: 360px; }
+.tele-item { display: flex; flex-direction: column; gap: 4px; position: relative; }
+.tele-label { font-size: 9px; color: #64748B; letter-spacing: 1.5px; font-weight: 600; text-transform: uppercase; }
+.tele-valor { font-family: 'Roboto Mono', monospace; font-size: 26px; font-weight: 400; color: #F8FAFC; line-height: 1; display: flex; align-items: baseline; gap: 4px; }
+.tele-valor.destaque { color: #00FFCC; text-shadow: 0 0 20px rgba(0,255,204,0.3); font-size: 48px; }
+.tele-unidade { font-size: 11px; color: #475569; font-weight: 300; }
+.barra-bg { width: 100%; height: 3px; background: rgba(255,255,255,0.1); border-radius: 2px; margin-top: 6px; }
+.barra-fill { height: 100%; border-radius: 2px; background: linear-gradient(90deg, #00FFCC, #818CF8); box-shadow: 0 0 8px rgba(0,255,204,0.4); }
+
+/* O BOTÃO EXO PREMIUM (Centro) */
+.exo-container { position: relative; width: 220px; height: 220px; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-direction: column; }
+.exo-anel { position: absolute; inset: 0; border-radius: 50%; border: 1px solid rgba(0,255,204,0.1); border-top: 1px solid rgba(0,255,204,0.6); animation: spin 8s linear infinite; }
+.exo-anel-2 { position: absolute; inset: 12px; border-radius: 50%; border: 1px dashed rgba(0,255,204,0.2); animation: spin-rev 12s linear infinite; }
+.exo-anel-3 { position: absolute; inset: 25px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.05); box-shadow: inset 0 0 25px rgba(0,255,204,0.1); }
+.exo-botao { position: relative; width: 120px; height: 120px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #1E293B, #020617); border: 2px solid rgba(0,255,204,0.5); box-shadow: 0 0 30px rgba(0,255,204,0.15), inset 0 0 15px rgba(0,255,204,0.1); display: flex; flex-direction: column; align-items: center; justify-content: center; color: #00FFCC; font-weight: 600; font-size: 20px; letter-spacing: 3px; transition: all 0.3s ease; animation: pulse 3s infinite; z-index: 2; }
+.exo-botao span { font-size: 9px; color: #64748B; letter-spacing: 1px; margin-top: 2px; }
+
+/* Equalizador de Voz */
+.visualizador { display: flex; gap: 3px; margin-top: 25px; height: 15px; align-items: center; z-index: 2; }
+.barra-eq { width: 3px; background: #00FFCC; border-radius: 2px; height: 5px; opacity: 0.3; }
+.exo-container:hover .barra-eq { animation: eq 1s infinite alternate; opacity: 1; }
+.barra-eq:nth-child(2) { animation-delay: 0.2s; } .barra-eq:nth-child(3) { animation-delay: 0.4s; } .barra-eq:nth-child(4) { animation-delay: 0.1s; } .barra-eq:nth-child(5) { animation-delay: 0.3s; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes spin-rev { to { transform: rotate(-360deg); } }
+@keyframes pulse { 0% { box-shadow: 0 0 20px rgba(0,255,204,0.1); } 50% { box-shadow: 0 0 40px rgba(0,255,204,0.3); } 100% { box-shadow: 0 0 20px rgba(0,255,204,0.1); } }
+@keyframes eq { from { height: 5px; } to { height: 15px; } }
+
+/* DIREITA (Relógio, Música e Clima) */
+.direita { display: flex; flex-direction: column; align-items: flex-end; gap: 15px; width: 280px; }
+.relogio { text-align: right; }
+.hora { font-family: 'Inter', sans-serif; font-size: 60px; font-weight: 200; line-height: 1; letter-spacing: -2px; }
+.data { font-size: 10px; color: #64748B; letter-spacing: 2px; margin-top: 5px; text-transform: uppercase; }
+
+/* MÚSICA LOCAL */
+.musica { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 12px 16px; width: 100%; display: flex; align-items: center; gap: 12px; backdrop-filter: blur(10px); position: relative; overflow: hidden; }
+.progress-bar { position: absolute; bottom: 0; left: 0; height: 2px; background: #00FFCC; width: 42%; box-shadow: 0 0 10px #00FFCC; }
+.capa-musica { width: 36px; height: 36px; border-radius: 6px; background: linear-gradient(135deg, #38BDF8, #818CF8); display: flex; align-items: center; justify-content: center; color: #FFF; font-size: 16px; }
+.mus-info { display: flex; flex-direction: column; gap: 2px; flex: 1; }
+.mus-titulo { font-size: 12px; font-weight: 600; color: #F8FAFC; }
+.mus-artista { font-size: 10px; color: #64748B; }
+.mus-play { color: #00FFCC; font-size: 18px; opacity: 0.8; cursor: pointer; }
+
+/* CLIMA */
+.clima-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 10px 16px; width: 100%; display: flex; align-items: center; justify-content: space-between; }
+.clima-info { display: flex; flex-direction: column; }
+.clima-temp { font-size: 18px; font-weight: 600; color: #F8FAFC; }
+.clima-desc { font-size: 10px; color: #64748B; }
+.clima-icon { font-size: 20px; color: #F59E0B; }
+
+/* RODAPÉ (Atalhos e Branding) */
+footer { display: flex; justify-content: space-between; align-items: flex-end; z-index: 10; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.03); position: relative; }
+.footer-esq { display: flex; align-items: center; width: 250px; }
+.footer-centro { display: flex; justify-content: center; gap: 40px; flex: 1; }
+.footer-dir { display: flex; flex-direction: column; align-items: flex-end; justify-content: flex-end; width: 250px; gap: 4px; }
+
+.dtc-alert { color: #EF4444; font-size: 32px; animation: blink 1s infinite; cursor: pointer; line-height: 1; }
+@keyframes blink { 50% { opacity: 0.2; } }
+
+.at { display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; opacity: 0.6; transition: 0.3s; }
+.at:hover { opacity: 1; }
+.at-icone { width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; }
+.at-icone svg { width: 20px; height: 20px; fill: #00FFCC; opacity: 0.8; }
+.at-nome { font-size: 9px; color: #64748B; letter-spacing: 1px; text-transform: uppercase; }
+
+.exodrive-brand { font-size: 10px; font-weight: 600; letter-spacing: 3px; color: #475569; text-transform: uppercase; }
+.by-alex { font-size: 9px; font-weight: 600; letter-spacing: 2px; color: #334155; text-transform: uppercase; }
+</style>
+</head>
+<body>
+<div class="screen">
+    <header>
+        <div class="brand">EXODASH</div>
+        <div class="carro-box">
+            <div class="carro">FOCUS 1.8 L</div>
+            <div class="status"><div>OBD <span>ONLINE</span></div><div>EXO <span>ATIVO</span></div></div>
+        </div>
+        <button class="config-btn">⚙</button>
+    </header>
+    
+    <main>
+        <div class="telemetria">
+            <div class="tele-item" style="grid-column: span 2; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px;">
+                <div class="tele-label">VELOCIDADE</div>
+                <div class="tele-valor destaque">87 <span class="tele-unidade">km/h</span></div>
+            </div>
+            <div class="tele-item">
+                <div class="tele-label">RPM</div>
+                <div class="tele-valor">2450</div>
+                <div class="barra-bg"><div class="barra-fill" style="width: 40%;"></div></div>
+            </div>
+            <div class="tele-item">
+                <div class="tele-label">MOTOR</div>
+                <div class="tele-valor">89 <span class="tele-unidade">°C</span></div>
+                <div class="barra-bg"><div class="barra-fill" style="width: 50%; background: #F59E0B;"></div></div>
+            </div>
+            <div class="tele-item">
+                <div class="tele-label">COMBUSTÍVEL</div>
+                <div class="tele-valor">62<span class="tele-unidade">%</span></div>
+                <div class="barra-bg"><div class="barra-fill" style="width: 62%; background: #10B981;"></div></div>
+            </div>
+            <div class="tele-item">
+                <div class="tele-label">BATERIA</div>
+                <div class="tele-valor">13.8 <span class="tele-unidade">V</span></div>
+                <div class="barra-bg"><div class="barra-fill" style="width: 80%; background: #00FFCC;"></div></div>
+            </div>
+            <div class="tele-item" style="grid-column: span 2;">
+                <div class="tele-label">AUTONOMIA</div>
+                <div class="tele-valor">410 <span class="tele-unidade">km</span></div>
+            </div>
+        </div>
+        
+        <div class="exo-container">
+            <div class="exo-anel"></div><div class="exo-anel-2"></div><div class="exo-anel-3"></div>
+            <div class="exo-botao">EXO<span>OUVIR</span></div>
+            <div class="visualizador">
+                <div class="barra-eq"></div><div class="barra-eq"></div><div class="barra-eq"></div><div class="barra-eq"></div><div class="barra-eq"></div>
+            </div>
+        </div>
+        
+        <div class="direita">
+            <div class="relogio">
+                <div class="hora">14:32</div>
+                <div class="data">QUARTA-FEIRA, 23 OUT</div>
+            </div>
+            <div class="musica">
+                <div class="capa-musica">🎵</div>
+                <div class="mus-info"><div class="mus-titulo">Bohemian Rhapsody</div><div class="mus-artista">MP3 LOCAL</div></div>
+                <div class="mus-play">▶</div>
+                <div class="progress-bar"></div>
+            </div>
+            <div class="clima-card">
+                <div class="clima-info">
+                    <div class="clima-temp">24°C</div>
+                    <div class="clima-desc">Parcialmente Nublado</div>
+                </div>
+                <div class="clima-icon">☁</div>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="footer-esq">
+            <div class="dtc-alert" title="Falha no motor">▲</div>
+        </div>
+        <div class="footer-centro">
+            <div class="at"><div class="at-icone"><svg viewBox="0 0 24 24"><path d="M6.62,10.79c1.44,2.83 3.76,5.14 6.59,6.59l2.2,-2.2c0.27,-0.27 0.67,-0.36 1.02,-0.24 1.12,0.37 2.33,0.57 3.57,0.57 0.55,0 1,0.45 1,1V20c0,0.55 -0.45,1 -1,1 -9.39,0 -17,-7.61 -17,-17 0,-0.55 0.45,-1 1,-1h3.5c0.55,0 1,0.45 1,1 0,1.25 0.2,2.45 0.57,3.57 0.11,0.35 0.03,0.74 -0.25,1.02l-2.2,2.2z"/></svg></div><div class="at-nome">Telefone</div></div>
+            <div class="at"><div class="at-icone"><svg viewBox="0 0 24 24"><path d="M12,3v10.55c-0.59,-0.34 -1.27,-0.55 -2,-0.55 -2.21,0 -4,1.79 -4,4s1.79,4 4,4 4,-1.79 4,-4V7h4V3h-6z"/></svg></div><div class="at-nome">Mídia</div></div>
+            <div class="at"><div class="at-icone"><svg viewBox="0 0 24 24"><path d="M12,2C8.13,2 5,5.13 5,9c0,5.25 7,13 7,13s7,-7.75 7,-13c0,-3.87 -3.13,-7 -7,-7zM12,11.5c-1.38,0 -2.5,-1.12 -2.5,-2.5s1.12,-2.5 2.5,-2.5 2.5,1.12 2.5,2.5 -1.12,2.5 -2.5,2.5z"/></svg></div><div class="at-nome">GPS</div></div>
+            <div class="at"><div class="at-icone"><svg viewBox="0 0 24 24"><path d="M4,4h6v6H4z M14,4h6v6h-6z M4,14h6v6H4z M14,14h6v6h-6z"/></svg></div><div class="at-nome">Apps</div></div>
+        </div>
+        <div class="footer-dir">
+            <div class="exodrive-brand">EXODRIVE</div>
+            <div class="by-alex">BY ALEX. P</div>
+        </div>
+    </footer>
+</div>
+</body>
+</html>

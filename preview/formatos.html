@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>EXODASH - Novos Formatos</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #0d0d0d; font-family: 'Segoe UI', Roboto, sans-serif; display: flex; flex-direction: column; align-items: center; padding: 20px; min-height: 100vh; }
+.tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+.tab { background: #1a1a1a; color: #888; border: 1px solid #333; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: bold; }
+.tab.active { background: #00FFCC; color: #000; border-color: #00FFCC; }
+.var { display: none; }
+.var.active { display: block; }
+
+/* TELA 7" (1024x600) */
+.screen { width: 1024px; height: 600px; position: relative; overflow: hidden; border-radius: 8px; box-shadow: 0 20px 50px rgba(0,0,0,0.8); color: #FFF; }
+
+/* ═══════════ 1. COCKPIT (Horizonte) ═══════════ */
+.cockpit { background: radial-gradient(circle at center, #0A1A2A 0%, #000000 80%); display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.cockpit .top-bar { position: absolute; top: 30px; left: 40px; right: 40px; display: flex; justify-content: space-between; font-size: 14px; color: #6A7A8A; letter-spacing: 2px; }
+.cockpit .center-hud { position: relative; display: flex; align-items: center; justify-content: center; width: 400px; height: 400px; }
+.cockpit .anel-exo { position: absolute; inset: 0; border-radius: 50%; border: 2px solid rgba(0,255,204,0.2); border-top-color: #00FFCC; animation: spin 4s linear infinite; cursor: pointer; box-shadow: inset 0 0 40px rgba(0,255,204,0.1); }
+.cockpit .anel-exo-2 { position: absolute; inset: 20px; border-radius: 50%; border: 1px dashed rgba(0,255,204,0.4); cursor: pointer; }
+.cockpit .exo-label { position: absolute; top: -40px; color: #00FFCC; font-size: 12px; letter-spacing: 5px; font-weight: bold; text-shadow: 0 0 10px #00FFCC; }
+.cockpit .velocidade { font-size: 180px; font-weight: 200; line-height: 1; letter-spacing: -5px; text-shadow: 0 0 30px rgba(0,255,204,0.3); }
+.cockpit .kmh { font-size: 20px; color: #00FFCC; font-weight: 300; letter-spacing: 2px; position: absolute; bottom: 80px; }
+.cockpit .bottom-bar { position: absolute; bottom: 30px; left: 40px; right: 40px; display: flex; justify-content: space-between; align-items: flex-end; }
+.cockpit .tele-mini { display: flex; gap: 30px; }
+.cockpit .tm { display: flex; flex-direction: column; }
+.cockpit .tm-l { font-size: 10px; color: #6A7A8A; }
+.cockpit .tm-v { font-size: 24px; color: #FFF; font-weight: 300; }
+.cockpit .hora-box { text-align: right; }
+.cockpit .hora { font-size: 32px; font-weight: 300; }
+.cockpit .data { font-size: 12px; color: #6A7A8A; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ═══════════ 2. DASHBOARD MODULAR ═══════════ */
+.modular { background: #0D1117; display: grid; grid-template-columns: 2fr 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 15px; padding: 20px; }
+.modular .card { background: #161B22; border: 1px solid #30363D; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
+.modular .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: #00FFCC; opacity: 0.5; }
+.modular .card-vel { grid-row: span 2; justify-content: center; align-items: center; background: linear-gradient(180deg, #161B22 0%, #0D1117 100%); }
+.modular .val-huge { font-size: 140px; font-weight: bold; line-height: 1; letter-spacing: -4px; }
+.modular .lbl-huge { font-size: 16px; color: #00FFCC; letter-spacing: 3px; margin-top: 10px; }
+.modular .card-exo { grid-column: span 2; justify-content: center; align-items: center; cursor: pointer; transition: 0.3s; }
+.modular .card-exo:hover { background: #1F2937; }
+.modular .exo-circ { width: 80px; height: 80px; border-radius: 50%; border: 2px solid #00FFCC; display: flex; align-items: center; justify-content: center; color: #00FFCC; font-size: 20px; font-weight: bold; box-shadow: 0 0 20px rgba(0,255,204,0.2); }
+.modular .c-title { font-size: 10px; color: #6A7A8A; text-transform: uppercase; letter-spacing: 2px; }
+.modular .c-val { font-size: 32px; font-weight: 300; color: #FFF; margin-top: auto; }
+.modular .c-val span { font-size: 14px; color: #6A7A8A; }
+.modular .c-clima { background: #1C2128; }
+.modular .c-clima .c-val { color: #D4AF37; font-size: 24px; }
+
+/* ═══════════ 3. SPLIT SCREEN (Copiloto) ═══════════ */
+.split { display: flex; background: #000; }
+.split .left-ai { width: 40%; background: linear-gradient(135deg, #0A1A2A 0%, #05070A 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; border-right: 1px solid rgba(0,255,204,0.2); }
+.split .ai-core { position: relative; width: 200px; height: 200px; display: flex; align-items: center; justify-content: center; }
+.split .ai-ring-1 { position: absolute; inset: 0; border-radius: 50%; border: 1px solid #00FFCC; opacity: 0.3; animation: pulse 3s infinite; }
+.split .ai-ring-2 { position: absolute; inset: 30px; border-radius: 50%; border: 1px dashed #00FFCC; animation: spin 10s linear infinite; }
+.split .ai-orb { width: 100px; height: 100px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #00FFCC, #005544); box-shadow: 0 0 40px #00FFCC; cursor: pointer; }
+.split .ai-status { margin-top: 30px; color: #00FFCC; font-family: monospace; letter-spacing: 2px; font-size: 14px; }
+.split .right-data { flex: 1; display: flex; flex-direction: column; padding: 30px; }
+.split .rd-header { display: flex; justify-content: space-between; border-bottom: 1px solid #333; padding-bottom: 15px; margin-bottom: 20px; }
+.split .rd-time { font-size: 36px; font-weight: 200; }
+.split .rd-car { color: #00FFCC; font-size: 12px; letter-spacing: 2px; text-align: right; }
+.split .rd-car span { display: block; color: #FFF; font-size: 16px; margin-top: 5px; }
+.split .rd-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; flex: 1; }
+.split .rd-item { background: rgba(255,255,255,0.03); padding: 15px; border-radius: 8px; display: flex; flex-direction: column; justify-content: center; }
+.split .rd-l { font-size: 10px; color: #6A7A8A; letter-spacing: 1px; }
+.split .rd-v { font-size: 36px; font-weight: 300; color: #FFF; margin-top: 5px; }
+.split .rd-v span { font-size: 14px; color: #6A7A8A; }
+@keyframes pulse { 0% { transform: scale(1); opacity: 0.3; } 50% { transform: scale(1.1); opacity: 0.1; } 100% { transform: scale(1); opacity: 0.3; } }
+</style>
+</head>
+<body>
+
+<div class="tabs">
+  <button class="tab active" onclick="show('t1', this)">COCKPIT (CENTRO)</button>
+  <button class="tab" onclick="show('t2', this)">MODULAR (CARDS)</button>
+  <button class="tab" onclick="show('t3', this)">SPLIT (COPILOTO)</button>
+</div>
+
+<!-- TELA 1 -->
+<div id="t1" class="var active">
+  <div class="screen cockpit">
+    <div class="top-bar"><div>EXODRIVE SISTEMAS</div><div>OBD: ONLINE</div></div>
+    <div class="center-hud">
+      <div class="anel-exo"></div>
+      <div class="anel-exo-2"></div>
+      <div class="exo-label">TOCAR PARA EXO</div>
+      <div class="velocidade">87</div>
+      <div class="kmh">km/h</div>
+    </div>
+    <div class="bottom-bar">
+      <div class="tele-mini">
+        <div class="tm"><div class="tm-l">RPM</div><div class="tm-v">2450</div></div>
+        <div class="tm"><div class="tm-l">MOTOR</div><div class="tm-v">89°C</div></div>
+        <div class="tm"><div class="tm-l">COMB</div><div class="tm-v">62%</div></div>
+      </div>
+      <div class="hora-box">
+        <div class="hora">14:32</div>
+        <div class="data">QUARTA-FEIRA</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TELA 2 -->
+<div id="t2" class="var">
+  <div class="screen modular">
+    <div class="card card-vel">
+      <div class="val-huge">87</div>
+      <div class="lbl-huge">VELOCIDADE</div>
+    </div>
+    <div class="card card-exo" style="grid-column: 2 / span 2;">
+      <div class="exo-circ">EXO</div>
+    </div>
+    <div class="card">
+      <div class="c-title">RPM</div>
+      <div class="c-val">2450</div>
+    </div>
+    <div class="card">
+      <div class="c-title">MOTOR</div>
+      <div class="c-val">89<span>°C</span></div>
+    </div>
+    <div class="card c-clima">
+      <div class="c-title">AUTONOMIA</div>
+      <div class="c-val">410 km</div>
+    </div>
+    <div class="card">
+      <div class="c-title">RELÓGIO</div>
+      <div class="c-val" style="font-size:24px;">14:32</div>
+    </div>
+  </div>
+</div>
+
+<!-- TELA 3 -->
+<div id="t3" class="var">
+  <div class="screen split">
+    <div class="left-ai">
+      <div class="ai-core">
+        <div class="ai-ring-1"></div>
+        <div class="ai-ring-2"></div>
+        <div class="ai-orb"></div>
+      </div>
+      <div class="ai-status">OUVINDO...</div>
+    </div>
+    <div class="right-data">
+      <div class="rd-header">
+        <div class="rd-time">14:32</div>
+        <div class="rd-car">EXODASH <span>FOCUS 1.8 L</span></div>
+      </div>
+      <div class="rd-grid">
+        <div class="rd-item">
+          <div class="rd-l">VELOCIDADE</div>
+          <div class="rd-v">87 <span>km/h</span></div>
+        </div>
+        <div class="rd-item">
+          <div class="rd-l">RPM</div>
+          <div class="rd-v">2450</div>
+        </div>
+        <div class="rd-item">
+          <div class="rd-l">MOTOR</div>
+          <div class="rd-v">89 <span>°C</span></div>
+        </div>
+        <div class="rd-item">
+          <div class="rd-l">AUTONOMIA</div>
+          <div class="rd-v">410 <span>km</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function show(id, el) {
+  document.querySelectorAll('.var').forEach(v => v.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+</script>
+</body>
+</html>

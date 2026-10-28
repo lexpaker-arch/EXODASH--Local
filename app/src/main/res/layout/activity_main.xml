@@ -1,146 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/frame_silver"
-    android:padding="16dp">
+    android:background="@drawable/bg_metallic"
+    android:padding="20dp">
 
     <!-- ========== HEADER ========== -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:layout_marginBottom="20dp">
 
-        <!-- Coluna esquerda: logo -->
-        <LinearLayout
+        <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:text="EXODASH"
+            android:textColor="#F8FAFC"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.15" />
 
-            <TextView
-                android:id="@+id/logoText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="EXODASH"
-                android:textColor="#C0C0C0"
-                android:textSize="@dimen/texto_logo"
-                android:textStyle="bold"
-                android:letterSpacing="0.10" />
-
-            <TextView
-                android:id="@+id/byText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="BY ALEX. P"
-                android:textColor="#666666"
-                android:textSize="@dimen/texto_by"
-                android:letterSpacing="0.15"
-                android:layout_marginTop="2dp" />
-        </LinearLayout>
-
-        <!-- Coluna central: nome do carro (dourado) -->
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:orientation="vertical"
             android:gravity="center">
-
             <TextView
                 android:id="@+id/carroNome"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
-                android:textColor="#D4A017"
-                android:textSize="@dimen/texto_carro_nome"
+                android:textColor="#D4AF37"
+                android:textSize="18sp"
                 android:textStyle="bold"
-                android:letterSpacing="0.15"
-                android:shadowColor="#D4A017"
-                android:shadowDx="0"
-                android:shadowDy="0"
-                android:shadowRadius="6"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/carroSub"
+                android:letterSpacing="0.1" />
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=""
-                android:textColor="#6A5A2A"
-                android:textSize="@dimen/texto_carro_sub"
-                android:letterSpacing="0.3"
-                android:layout_marginTop="2dp"
-                android:visibility="gone" />
+                android:orientation="horizontal"
+                android:layout_marginTop="2dp">
+                <TextView
+                    android:id="@+id/statusExo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="EXO: ON"
+                    android:textColor="#10B981"
+                    android:textSize="9sp"
+                    android:fontFamily="monospace"
+                    android:layout_marginEnd="10dp" />
+                <TextView
+                    android:id="@+id/statusObd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="OBD: ON"
+                    android:textColor="#10B981"
+                    android:textSize="9sp"
+                    android:fontFamily="monospace" />
+            </LinearLayout>
+            <!-- IDs ocultos para não quebrar o Kotlin -->
+            <TextView android:id="@+id/carroSub" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" />
+            <TextView android:id="@+id/statusUser" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" />
         </LinearLayout>
 
-        <!-- Coluna direita: status + config -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="horizontal"
-            android:gravity="end|center_vertical">
-
-            <TextView
-                android:id="@+id/statusExo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="EXODASH: OFFLINE"
-                android:textColor="#FFAA00"
-                android:textSize="@dimen/texto_status"
-                android:layout_marginEnd="12dp" />
-
-            <TextView
-                android:id="@+id/statusObd"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="OBD: OFFLINE"
-                android:textColor="#FF3333"
-                android:textSize="@dimen/texto_status"
-                android:layout_marginEnd="12dp" />
-
-            <TextView
-                android:id="@+id/statusUser"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="USUÁRIO: SENHOR"
-                android:textColor="#00FFCC"
-                android:textSize="@dimen/texto_status"
-                android:layout_marginEnd="12dp" />
-
-            <!-- BOTAO CONFIGURACOES -->
+            android:gravity="end">
             <LinearLayout
                 android:id="@+id/btnConfig"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:orientation="horizontal"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:gravity="center"
                 android:clickable="true"
-                android:focusable="true"
-                android:background="@drawable/shortcut_bg">
+                android:focusable="true">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="&#9881;"
-                    android:textColor="#00FFCC"
-                    android:textSize="18sp" />
+                    android:text="⚙"
+                    android:textColor="#64748B"
+                    android:textSize="22sp" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
-    <!-- ========== DIVISORIA ========== -->
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@drawable/divider_gradient"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp" />
-
-    <!-- ========== ZONA CENTRAL ========== -->
+    <!-- ========== ÁREA CENTRAL ========== -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -148,483 +96,305 @@
         android:orientation="horizontal"
         android:gravity="center_vertical">
 
-        <!-- TELEMETRIA (esquerda) -->
+        <!-- TELEMETRIA (Grade 2x2 + Velocidade) -->
         <LinearLayout
-            android:id="@+id/telemetryLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:background="@drawable/card_bg"
-            android:padding="8dp">
-
+            android:layout_weight="1.2"
+            android:orientation="vertical">
+            
+            <!-- Velocidade -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="4dp">
+                android:orientation="vertical"
+                android:layout_marginBottom="16dp">
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:text="VELOCIDADE"
-                    android:textColor="#888888"
-                    android:textSize="@dimen/texto_tel_label"
-                    android:letterSpacing="0.05" />
+                    android:textColor="#64748B"
+                    android:textSize="10sp"
+                    android:textStyle="bold" />
                 <TextView
                     android:id="@+id/telSpeed"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="--"
                     android:textColor="#00FFCC"
-                    android:textSize="@dimen/texto_tel_valor"
+                    android:textSize="48sp"
+                    android:fontFamily="monospace"
                     android:textStyle="bold" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="4dp">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="RPM"
-                    android:textColor="#888888"
-                    android:textSize="@dimen/texto_tel_label" />
-                <TextView
-                    android:id="@+id/telRpm"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="--"
-                    android:textColor="#D8E4F0"
-                    android:textSize="@dimen/texto_tel_valor"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="4dp">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="MOTOR"
-                    android:textColor="#888888"
-                    android:textSize="@dimen/texto_tel_label" />
-                <TextView
-                    android:id="@+id/telTemp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="--"
-                    android:textColor="#D8E4F0"
-                    android:textSize="@dimen/texto_tel_valor"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="4dp">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="COMB"
-                    android:textColor="#888888"
-                    android:textSize="@dimen/texto_tel_label" />
-                <TextView
-                    android:id="@+id/telFuel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="--"
-                    android:textColor="#00FFCC"
-                    android:textSize="@dimen/texto_tel_valor"
-                    android:textStyle="bold" />
-            </LinearLayout>
-            <ProgressBar
-                android:id="@+id/fuelBar"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="6dp"
-                android:max="100"
-                android:progress="0"
-                android:progressDrawable="@drawable/barra_progress"
-                android:layout_marginBottom="4dp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="4dp">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="BAT"
-                    android:textColor="#888888"
-                    android:textSize="@dimen/texto_tel_label" />
-                <TextView
-                    android:id="@+id/telBattery"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="--"
-                    android:textColor="#00FFCC"
-                    android:textSize="@dimen/texto_tel_valor"
-                    android:textStyle="bold" />
-            </LinearLayout>
-            <ProgressBar
-                android:id="@+id/batteryBar"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="6dp"
-                android:max="100"
-                android:progress="0"
-                android:progressDrawable="@drawable/barra_progress"
-                android:layout_marginBottom="4dp" />
-
+            <!-- Grade 2x2 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-                <TextView
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="AUT"
-                    android:textColor="#888888"
-                    android:textSize="@dimen/texto_tel_label" />
-                <TextView
-                    android:id="@+id/telAutonomia"
-                    android:layout_width="wrap_content"
+                    android:orientation="vertical">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="RPM" android:textColor="#64748B" android:textSize="9sp" />
+                    <TextView android:id="@+id/telRpm" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="--" android:textColor="#F8FAFC" android:textSize="22sp" android:fontFamily="monospace" />
+                    <ProgressBar android:id="@+id/fuelBar" style="?android:attr/progressBarStyleHorizontal" android:layout_width="match_parent" android:layout_height="3dp" android:layout_marginTop="4dp" android:progressDrawable="@drawable/barra_progress" />
+                </LinearLayout>
+                
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="-- km"
-                    android:textColor="#00FFCC"
-                    android:textSize="@dimen/texto_tel_valor"
-                    android:textStyle="bold" />
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginStart="15dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="MOTOR" android:textColor="#64748B" android:textSize="9sp" />
+                    <TextView android:id="@+id/telTemp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="--" android:textColor="#F8FAFC" android:textSize="22sp" android:fontFamily="monospace" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="15dp">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="COMBUSTÍVEL" android:textColor="#64748B" android:textSize="9sp" />
+                    <TextView android:id="@+id/telFuel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="--" android:textColor="#F8FAFC" android:textSize="22sp" android:fontFamily="monospace" />
+                </LinearLayout>
+                
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginStart="15dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="BATERIA" android:textColor="#64748B" android:textSize="9sp" />
+                    <TextView android:id="@+id/telBattery" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="--" android:textColor="#F8FAFC" android:textSize="22sp" android:fontFamily="monospace" />
+                    <ProgressBar android:id="@+id/batteryBar" style="?android:attr/progressBarStyleHorizontal" android:layout_width="match_parent" android:layout_height="3dp" android:layout_marginTop="4dp" android:progressDrawable="@drawable/barra_progress" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="15dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="AUTONOMIA" android:textColor="#64748B" android:textSize="9sp" />
+                <TextView android:id="@+id/telAutonomia" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="-- km" android:textColor="#F8FAFC" android:textSize="22sp" android:fontFamily="monospace" />
             </LinearLayout>
         </LinearLayout>
 
-        <!-- BOSS (centro) -->
+        <!-- BOTÃO EXO (Centro) -->
         <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp">
-
+            android:layout_width="220dp"
+            android:layout_height="220dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp">
+            
+            <!-- Anel externo simulado -->
             <View
-                android:id="@+id/bossGlow"
-                android:layout_width="140dp"
-                android:layout_height="140dp"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
                 android:layout_gravity="center"
                 android:background="@drawable/boss_glow" />
-
+                
             <Button
                 android:id="@+id/bossButton"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
                 android:layout_gravity="center"
                 android:text="EXO"
-                android:textSize="@dimen/texto_boss_button"
+                android:textSize="20sp"
                 android:textStyle="bold"
                 android:textColor="#00FFCC"
-                android:letterSpacing="0.10"
                 android:background="@drawable/boss_button_bg"
                 android:stateListAnimator="@null" />
         </FrameLayout>
 
-        <!-- DIREITA: relogio + musica -->
+        <!-- DIREITA (Relógio, Música, Clima) -->
         <LinearLayout
-            android:id="@+id/rightColumn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:gravity="end"
-            android:background="@drawable/card_bg"
-            android:padding="12dp">
+            android:gravity="end">
 
+            <!-- Relógio -->
             <LinearLayout
-                android:id="@+id/clockLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="end">
-
-                <FrameLayout
-                    android:layout_width="90dp"
-                    android:layout_height="90dp"
-                    android:background="@drawable/clock_ring">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:gravity="center">
-
-                        <TextView
-                            android:id="@+id/clockTime"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="--:--"
-                            android:textColor="#E8E8E8"
-                            android:textSize="@dimen/texto_clock_time"
-                            android:fontFamily="sans-serif-thin"
-                            android:letterSpacing="0.05" />
-
-                        <View
-                            android:layout_width="40dp"
-                            android:layout_height="1dp"
-                            android:background="#4000FFCC"
-                            android:layout_marginTop="4dp" />
-
-                        <TextView
-                            android:id="@+id/clockSeconds"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=":--"
-                            android:textColor="#00FFCC"
-                            android:textSize="@dimen/texto_clock_seconds"
-                            android:letterSpacing="0.2"
-                            android:alpha="0.6"
-                            android:layout_marginTop="4dp" />
-                    </LinearLayout>
-                </FrameLayout>
-
+                android:orientation="horizontal"
+                android:gravity="bottom">
                 <TextView
-                    android:id="@+id/clockDate"
+                    android:id="@+id/clockTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="-- DE --------"
-                    android:textColor="#666666"
-                    android:textSize="@dimen/texto_clock_date"
-                    android:letterSpacing="0.05"
-                    android:layout_marginTop="6dp" />
-
+                    android:text="--:--"
+                    android:textColor="#F8FAFC"
+                    android:textSize="56sp"
+                    android:fontFamily="sans-serif-thin" />
                 <TextView
-                    android:id="@+id/clockDay"
+                    android:id="@+id/clockSeconds"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="----------"
-                    android:textColor="#00FFCC"
-                    android:textSize="@dimen/texto_clock_day"
-                    android:letterSpacing="0.05"
-                    android:layout_marginTop="1dp" />
+                    android:text=":--"
+                    android:textColor="#64748B"
+                    android:textSize="16sp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginBottom="10dp"/>
             </LinearLayout>
+            <TextView
+                android:id="@+id/clockDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="--"
+                android:textColor="#64748B"
+                android:textSize="10sp"
+                android:letterSpacing="0.1" />
+            <!-- ID oculto para não quebrar o Kotlin -->
+            <TextView android:id="@+id/clockDay" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" />
 
-            <!-- FAIXA DE MUSICA -->
+            <!-- Música -->
             <LinearLayout
                 android:id="@+id/musicFrame"
-                android:layout_width="170dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/music_frame_bg"
-                android:padding="8dp"
-                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@drawable/card_bg"
+                android:padding="12dp"
+                android:layout_marginTop="20dp"
                 android:visibility="gone">
-
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:text="🎵"
+                    android:gravity="center"
+                    android:background="@drawable/barra_trilha"
+                    android:layout_marginEnd="12dp"/>
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="TOCANDO AGORA"
-                    android:textColor="#00FFCC"
-                    android:textSize="7sp"
-                    android:letterSpacing="0.2"
-                    android:alpha="0.7" />
-
-                <TextView
-                    android:id="@+id/musicTrack"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="---"
-                    android:textColor="#E8E8E8"
-                    android:textSize="@dimen/texto_music_track"
-                    android:textStyle="bold"
-                    android:maxLines="1"
-                    android:ellipsize="end"
-                    android:layout_marginTop="4dp" />
-
-                <TextView
-                    android:id="@+id/musicArtist"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="---"
-                    android:textColor="#888888"
-                    android:textSize="@dimen/texto_music_artist"
-                    android:maxLines="1"
-                    android:ellipsize="end"
-                    android:layout_marginTop="1dp" />
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:background="@drawable/music_progress_bg"
-                    android:layout_marginTop="6dp">
-                    <View
-                        android:id="@+id/musicProgress"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/music_progress_bar" />
-                </FrameLayout>
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/musicTrack"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="---"
+                        android:textColor="#F8FAFC"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/musicArtist"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="---"
+                        android:textColor="#64748B"
+                        android:textSize="10sp" />
+                </LinearLayout>
+                <!-- ID oculto para o progresso não quebrar -->
+                <View android:id="@+id/musicProgress" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
-
-    <!-- ========== TRIANGULO DE ERRO ========== -->
-    <FrameLayout
-        android:id="@+id/errorTriangle"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_gravity="end"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="4dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:visibility="gone">
-
-        <View
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_gravity="center"
-            android:background="@drawable/error_triangle" />
-
-        <TextView
-            android:id="@+id/errorTriangleCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="1"
-            android:textColor="#FFFFFF"
-            android:textSize="11sp"
-            android:textStyle="bold"
-            android:layout_marginTop="4dp" />
-    </FrameLayout>
-
-    <!-- ========== RODAPE ========== -->
+    <!-- ========== RODAPÉ ========== -->
     <LinearLayout
-        android:id="@+id/bottomLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center"
-        android:paddingTop="10dp">
+        android:gravity="center_vertical"
+        android:layout_marginTop="20dp"
+        android:paddingTop="15dp">
 
+        <!-- Triângulo de DTC (Esquerda) -->
         <LinearLayout
-            android:id="@+id/btnTelefone"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:layout_marginEnd="20dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:background="@drawable/shortcut_ripple">
-            <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:padding="12dp"
-                android:src="@drawable/ic_phone"
-                android:background="@drawable/shortcut_bg"
-                android:contentDescription="T" />
-            <TextView
+            android:layout_weight="1"
+            android:gravity="start|center_vertical">
+            <LinearLayout
+                android:id="@+id/errorTriangle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Telefone"
-                android:textColor="#666666"
-                android:textSize="8sp"
-                android:layout_marginTop="3dp" />
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:visibility="gone">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="▲"
+                    android:textColor="#EF4444"
+                    android:textSize="28sp"
+                    android:layout_marginEnd="6dp" />
+                <TextView
+                    android:id="@+id/errorTriangleCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textColor="#EF4444"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
         </LinearLayout>
 
+        <!-- Atalhos (Centro) -->
         <LinearLayout
-            android:id="@+id/btnMidia"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:layout_marginEnd="20dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:background="@drawable/shortcut_ripple">
-            <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:padding="12dp"
-                android:src="@drawable/ic_music"
-                android:background="@drawable/shortcut_bg"
-                android:contentDescription="M" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Mídia"
-                android:textColor="#666666"
-                android:textSize="8sp"
-                android:layout_marginTop="3dp" />
+            android:orientation="horizontal"
+            android:gravity="center">
+            
+            <LinearLayout android:id="@+id/btnTelefone" android:layout_width="64dp" android:layout_height="64dp" android:gravity="center" android:orientation="vertical" android:clickable="true" android:focusable="true" android:layout_marginEnd="20dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="📞" android:textSize="22sp" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TEL" android:textColor="#64748B" android:textSize="8sp" android:layout_marginTop="2dp" />
+            </LinearLayout>
+            
+            <LinearLayout android:id="@+id/btnMidia" android:layout_width="64dp" android:layout_height="64dp" android:gravity="center" android:orientation="vertical" android:clickable="true" android:focusable="true" android:layout_marginEnd="20dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🎵" android:textSize="22sp" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="MÍDIA" android:textColor="#64748B" android:textSize="8sp" android:layout_marginTop="2dp" />
+            </LinearLayout>
+
+            <LinearLayout android:id="@+id/btnGps" android:layout_width="64dp" android:layout_height="64dp" android:gravity="center" android:orientation="vertical" android:clickable="true" android:focusable="true" android:layout_marginEnd="20dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="📍" android:textSize="22sp" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="GPS" android:textColor="#64748B" android:textSize="8sp" android:layout_marginTop="2dp" />
+            </LinearLayout>
+
+            <LinearLayout android:id="@+id/btnApps" android:layout_width="64dp" android:layout_height="64dp" android:gravity="center" android:orientation="vertical" android:clickable="true" android:focusable="true">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="▦" android:textSize="22sp" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="APPS" android:textColor="#64748B" android:textSize="8sp" android:layout_marginTop="2dp" />
+            </LinearLayout>
         </LinearLayout>
 
+        <!-- Branding (Direita) -->
         <LinearLayout
-            android:id="@+id/btnGps"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:orientation="vertical"
-            android:gravity="center"
-            android:layout_marginEnd="20dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:background="@drawable/shortcut_ripple">
-            <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:padding="12dp"
-                android:src="@drawable/ic_gps"
-                android:background="@drawable/shortcut_bg"
-                android:contentDescription="G" />
+            android:gravity="end">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="GPS"
-                android:textColor="#666666"
-                android:textSize="8sp"
-                android:layout_marginTop="3dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/btnApps"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:clickable="true"
-            android:focusable="true"
-            android:background="@drawable/shortcut_ripple">
-            <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:padding="12dp"
-                android:src="@drawable/ic_apps"
-                android:background="@drawable/shortcut_bg"
-                android:contentDescription="A" />
+                android:text="EXODRIVE"
+                android:textColor="#475569"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.2" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="APPS"
-                android:textColor="#666666"
+                android:text="BY ALEX. P"
+                android:textColor="#334155"
                 android:textSize="8sp"
-                android:layout_marginTop="3dp" />
+                android:letterSpacing="0.1"
+                android:layout_marginTop="2dp" />
         </LinearLayout>
     </LinearLayout>
-
-    <!-- ========== SCANLINE (sutil) ========== -->
-    <View
-        android:id="@+id/scanlineView"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@drawable/scanline_line"
-        android:alpha="0.4"
-        android:clickable="false"
-        android:focusable="false" />
 </LinearLayout>
