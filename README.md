@@ -1,2 +1,1 @@
-# EXODASH--Local
-Exodash- lovcal
+<conteúdo acima>
