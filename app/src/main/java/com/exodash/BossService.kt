@@ -3,7 +3,6 @@ package com.exodash
 import android.content.Context
 import android.media.AudioManager
 import android.media.ToneGenerator
-import android.os.AsyncTask
 import android.os.Handler
 import android.os.Looper
 import android.speech.tts.TextToSpeech
