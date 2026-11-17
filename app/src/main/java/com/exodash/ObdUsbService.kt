@@ -1,5 +1,6 @@
 package com.exodash
 
+import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -51,6 +52,7 @@ class ObdUsbService(
         }
     }
 
+    @SuppressLint("UnspecifiedRegisterReceiverFlag")
     fun conectar() {
         usbManager = context.getSystemService(Context.USB_SERVICE) as? UsbManager ?: return
         val filtro = IntentFilter(ACTION)

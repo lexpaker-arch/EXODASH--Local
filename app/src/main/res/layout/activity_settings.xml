@@ -378,42 +378,6 @@
             android:gravity="center_vertical"
             android:paddingTop="6dp"
             android:paddingBottom="6dp">
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="API Groq"
-                    android:textColor="#E8E8E8"
-                    android:textSize="13sp" />
-                <TextView
-                    android:id="@+id/txtGroqStatus"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Nao configurada"
-                    android:textColor="#FF3333"
-                    android:textSize="11sp"
-                    android:layout_marginTop="2dp" />
-            </LinearLayout>
-            <Button
-                android:id="@+id/btnEditarGroq"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Editar"
-                android:textColor="#00FFCC"
-                android:backgroundTint="#0A2A2A" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp">
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

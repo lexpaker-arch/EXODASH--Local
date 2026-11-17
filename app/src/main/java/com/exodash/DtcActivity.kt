@@ -94,7 +94,9 @@ class DtcActivity : AppCompatActivity() {
             .show()
     }
 
+    @Suppress("DEPRECATION")
     override fun onBackPressed() {
+        super.onBackPressed()
         finish()
     }
 

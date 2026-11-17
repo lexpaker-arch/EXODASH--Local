@@ -53,35 +53,7 @@ class BossService(
         }
 
         val nome = prefs.nomeUsuario.ifEmpty { "Senhor" }
-        val modo = prefs.modoIA
-        if (modo == "offline_only") {
-            responder("Nao entendi, $nome. Posso consultar codigos de erro, abrir GPS, musica, telefone ou apps.")
-            return
-        }
-
-        val apiKey = prefs.groqApiKey
-        if (apiKey.isEmpty()) {
-            responder("Nao entendi, $nome. Posso consultar codigos de erro, abrir GPS, musica, telefone ou apps.")
-            return
-        }
-
-        object : AsyncTask<Void, Void, String?>() {
-            override fun doInBackground(vararg p: Void): String? {
-                val nome = prefs.nomeUsuario.ifEmpty { "Senhor" }
-                LogEventos.registrar(context, "Groq ENV: chave=${apiKey.take(12)}... frase=[$frase]")
-                val r = GroqClient.perguntar(apiKey, frase, nome)
-                LogEventos.registrar(context, "Groq REC: ${r?.take(80) ?: "NULL (ver responseCode)"}")
-                return r
-            }
-            override fun onPostExecute(resposta: String?) {
-                val nome = prefs.nomeUsuario.ifEmpty { "Senhor" }
-                if (resposta.isNullOrEmpty()) {
-                    responder("Sem conexao, $nome. Posso consultar codigos de erro, abrir GPS, musica, telefone ou apps.")
-                } else {
-                    responder(resposta)
-                }
-            }
-        }.execute()
+        responder("Nao entendi, $nome. Posso consultar codigos de erro, abrir GPS, musica, telefone, clima, transito ou apps.")
     }
 
     fun responder(texto: String) {

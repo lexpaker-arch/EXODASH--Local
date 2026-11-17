@@ -3,6 +3,7 @@ package com.exodash
 import android.Manifest
 import android.app.AlertDialog
 import android.content.Intent
+import android.view.KeyEvent
 import android.media.AudioManager
 import android.net.Uri
 import android.content.pm.PackageManager
@@ -597,7 +598,27 @@ class MainActivity : AppCompatActivity() {
             BossBrain.Acao.AUMENTAR_VOLUME -> ajustarVolume(1)
             BossBrain.Acao.DIMINUIR_VOLUME -> ajustarVolume(-1)
             BossBrain.Acao.SILENCIAR -> boss.pararFala()
+            BossBrain.Acao.MEDIA_PLAY_PAUSE -> com.exodash.ia.MediaController.playPause(this)
+            BossBrain.Acao.MEDIA_NEXT -> com.exodash.ia.MediaController.next(this)
+            BossBrain.Acao.MEDIA_PREV -> com.exodash.ia.MediaController.prev(this)
+            BossBrain.Acao.ATENDER -> enviarTeclaTelefone(KeyEvent.KEYCODE_CALL)
+            BossBrain.Acao.DESLIGAR -> enviarTeclaTelefone(KeyEvent.KEYCODE_ENDCALL)
             BossBrain.Acao.NENHUMA -> {}
+        }
+    }
+
+    private fun enviarTeclaTelefone(keyCode: Int) {
+        try {
+            val down = Intent(Intent.ACTION_MEDIA_BUTTON).apply {
+                putExtra(Intent.EXTRA_KEY_EVENT, KeyEvent(KeyEvent.ACTION_DOWN, keyCode))
+            }
+            val up = Intent(Intent.ACTION_MEDIA_BUTTON).apply {
+                putExtra(Intent.EXTRA_KEY_EVENT, KeyEvent(KeyEvent.ACTION_UP, keyCode))
+            }
+            sendOrderedBroadcast(down, null)
+            sendOrderedBroadcast(up, null)
+        } catch (e: Exception) {
+            toast("Falha ao enviar tecla de telefone")
         }
     }
 
@@ -700,7 +721,10 @@ class MainActivity : AppCompatActivity() {
         if (hasFocus) esconderBarrasSistema()
     }
 
-    override fun onBackPressed() {}
+    @Suppress("DEPRECATION", "MissingSuperCall")
+    override fun onBackPressed() {
+        // Back bloqueado de proposito na tela principal (app automotivo)
+    }
 
     override fun onDestroy() {
         Breadcrumbs.registrar("MainActivity: onDestroy")

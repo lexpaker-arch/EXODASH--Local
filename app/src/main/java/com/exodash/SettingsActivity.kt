@@ -61,12 +61,6 @@ class SettingsActivity : AppCompatActivity() {
         // Veículo
         findViewById<Button>(R.id.btnEditarVeiculo).setOnClickListener { editarVeiculo() }
 
-        // IA
-        findViewById<Button>(R.id.btnEditarGroq).setOnClickListener { editarGroq() }
-        findViewById<TextView>(R.id.txtModoIA).setOnClickListener {
-            alternarModoIA()
-        }
-
         // Atualização
         val swAutoUpdate = findViewById<Switch>(R.id.swAutoUpdate)
         swAutoUpdate.isChecked = prefs.autoUpdateAtivo
@@ -200,57 +194,6 @@ class SettingsActivity : AppCompatActivity() {
             .show()
     }
 
-    private fun editarGroq() {
-        val temSalva = prefs.getSalvaGroq().isNotEmpty()
-        val input = EditText(this).apply {
-            setText(prefs.groqApiKey)
-            hint = "gsk_..."
-            inputType = InputType.TYPE_CLASS_TEXT
-        }
-        val msg = if (prefs.groqApiKeyEmbutida)
-            "Chave atual: EMBUTIDA NO APK (build). Cole uma nova pra substituir, ou toque em LIMPAR pra usar a do APK."
-        else
-            "Chave atual: SALVA MANUALMENTE. Toque em LIMPAR pra voltar a usar a do APK."
-
-        val builder = AlertDialog.Builder(this)
-            .setTitle("API Groq")
-            .setMessage(msg)
-            .setView(input)
-            .setPositiveButton("Salvar") { _, _ ->
-                val nova = input.text.toString().trim()
-                prefs.groqApiKey = nova
-                LogEventos.registrar(this, "Groq: chave salva (${nova.take(12)}...)")
-                atualizarLabels()
-            }
-            .setNegativeButton("Cancelar", null)
-
-        if (temSalva) {
-            builder.setNeutralButton("LIMPAR") { _, _ ->
-                prefs.groqApiKey = ""
-                LogEventos.registrar(this, "Groq: chave manual apagada (voltou ao APK)")
-                atualizarLabels()
-                Toast.makeText(this, "Chave manual apagada. Usando chave do APK.", Toast.LENGTH_LONG).show()
-            }
-        }
-
-        builder.show()
-    }
-
-    private fun alternarModoIA() {
-        val modos = arrayOf("Online → Offline", "Só offline", "Só online")
-        val chaves = arrayOf("online_primeiro", "offline_only", "online_only")
-        val atual = chaves.indexOf(prefs.modoIA).coerceAtLeast(0)
-        AlertDialog.Builder(this)
-            .setTitle("Modo da IA")
-            .setSingleChoiceItems(modos, atual) { dialog, which ->
-                prefs.modoIA = chaves[which]
-                atualizarLabels()
-                dialog.dismiss()
-            }
-            .setNegativeButton("Cancelar", null)
-            .show()
-    }
-
     // =============================================
     // ATUALIZAÇÃO
     // =============================================
@@ -376,30 +319,6 @@ class SettingsActivity : AppCompatActivity() {
                    else "${prefs.veiculoMarca} ${prefs.veiculoModelo} ${prefs.veiculoAno}"
         findViewById<TextView>(R.id.txtVeiculo).text = veic
 
-        val groq = findViewById<TextView>(R.id.txtGroqStatus)
-        when {
-            prefs.groqApiKeyEmbutida -> {
-                groq.text = "Configurada (embutida no APK) ✓"
-                groq.setTextColor(0xFF00FFCC.toInt())
-            }
-            prefs.groqApiKeyConfigurada -> {
-                groq.text = "Configurada manualmente ✓"
-                groq.setTextColor(0xFF00FFCC.toInt())
-            }
-            else -> {
-                groq.text = "Não configurada"
-                groq.setTextColor(0xFFFF3333.toInt())
-            }
-        }
-
-        val modo = when (prefs.modoIA) {
-            "online_primeiro" -> "Online → Offline"
-            "offline_only" -> "Só offline"
-            "online_only" -> "Só online"
-            else -> "Online → Offline"
-        }
-        findViewById<TextView>(R.id.txtModoIA).text = modo
-
         findViewById<TextView>(R.id.txtVersaoAtual).text = Updater.versaoLocal(this)
     }
 
@@ -443,7 +362,9 @@ class SettingsActivity : AppCompatActivity() {
         } catch (e: Exception) {}
     }
 
+    @Suppress("DEPRECATION")
     override fun onBackPressed() {
+        super.onBackPressed()
         finish()
     }
 }

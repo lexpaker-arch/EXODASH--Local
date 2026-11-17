@@ -104,7 +104,11 @@ class LogsActivity : AppCompatActivity() {
         adapter.atualizar(itens)
     }
 
-    override fun onBackPressed() { finish() }
+    @Suppress("DEPRECATION")
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
+    }
 
     inner class LogAdapter : BaseAdapter() {
         private val lista = mutableListOf<LogEventos.Evento>()

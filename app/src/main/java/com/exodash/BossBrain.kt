@@ -1,6 +1,10 @@
 package com.exodash
 
 import android.content.Context
+import com.exodash.ia.ClimaClient
+import com.exodash.ia.TransitoClient
+import com.exodash.ia.MediaController
+import com.exodash.ia.TelefoneController
 import org.json.JSONObject
 import java.util.Calendar
 import java.util.Locale
@@ -30,7 +34,12 @@ class BossBrain(private val context: Context) {
         LIMPAR_DTC,
         AUMENTAR_VOLUME,
         DIMINUIR_VOLUME,
-        SILENCIAR
+        SILENCIAR,
+        MEDIA_PLAY_PAUSE,
+        MEDIA_NEXT,
+        MEDIA_PREV,
+        ATENDER,
+        DESLIGAR
     }
 
     private fun nome(): String = prefs.nomeUsuario.ifEmpty { "Senhor" }
@@ -233,6 +242,49 @@ class BossBrain(private val context: Context) {
         if (Regex("(ajuda|help|socorro|o que posso dizer)").containsMatchIn(t)) {
             return Resposta("Pode me perguntar sobre erros, telemetria, hora, ou pedir para abrir apps, $nome.")
         }
+        // 10. CLIMA
+        if (Regex("(clima|tempo|vai chover|como (ta|esta) o tempo|temperatura|previsao)").containsMatchIn(t)) {
+            return Resposta(ClimaClient.consultar(context))
+        }
+
+        // 11. TRANSITO
+        val regexRota = Regex("(?:rota|transito|caminho|como (?:chego|vou)|ir para|navegar para)\\s+(?:para\\s+)?(.+)")
+        regexRota.find(t)?.let { match ->
+            val destino = match.groupValues[1].trim()
+            if (destino.isNotEmpty()) {
+                return Resposta(TransitoClient.consultar(context, destino))
+            }
+        }
+
+        // 12. MIDIA
+        if (Regex("\\b(proxima|proximo|pula|skip|avanca)\\b").containsMatchIn(t)) {
+            return Resposta("Proxima, $nome.", Acao.MEDIA_NEXT)
+        }
+        if (Regex("\\b(anterior|volta|voltar musica)\\b").containsMatchIn(t)) {
+            return Resposta("Voltando, $nome.", Acao.MEDIA_PREV)
+        }
+        if (Regex("\\b(pausa|pause|para musica|pausar)\\b").containsMatchIn(t)) {
+            return Resposta("Pausando, $nome.", Acao.MEDIA_PLAY_PAUSE)
+        }
+        if (Regex("\\b(play|toca|tocar|continua|despausa)\\b").containsMatchIn(t)) {
+            return Resposta("Tocando, $nome.", Acao.MEDIA_PLAY_PAUSE)
+        }
+
+        // 13. TELEFONE
+        if (Regex("\\b(atende|atender|aceita|aceitar chamada)\\b").containsMatchIn(t)) {
+            return Resposta("Atendendo, $nome.", Acao.ATENDER)
+        }
+        if (Regex("\\b(desliga|desligar|recusa|recusar chamada|encerra)\\b").containsMatchIn(t)) {
+            return Resposta("Desligando, $nome.", Acao.DESLIGAR)
+        }
+        val regexLigar = Regex("(?:liga|ligar|chama|chamar)\\s+(?:para\\s+)?(.+)")
+        regexLigar.find(t)?.let { match ->
+            val alvo = match.groupValues[1].trim()
+            if (alvo.isNotEmpty() && alvo.length < 40) {
+                return Resposta("Ligando para $alvo, $nome.", Acao.ABRIR_TELEFONE)
+            }
+        }
+
 
         return null
     }

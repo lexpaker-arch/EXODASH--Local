@@ -90,40 +90,6 @@ class Prefs(context: Context) {
         set(v) = prefs.edit().putString(KEY_VEICULO_NOME_CURTO, v).apply()
     // ============ FIM NOVO ============
 
-    // IA
-    /**
-     * Retorna a chave em ordem de prioridade:
-     * 1. Chave salva pelo usuario nas configuracoes
-     * 2. Chave embutida no APK (BuildConfig.GROQ_API_KEY)
-     */
-    var groqApiKey: String
-        get() {
-            val salva = prefs.getString(KEY_GROQ_KEY, "") ?: ""
-            if (salva.isNotEmpty()) return salva
-            return try {
-                BuildConfig.GROQ_API_KEY
-            } catch (e: Exception) {
-                ""
-            }
-        }
-        set(v) = prefs.edit().putString(KEY_GROQ_KEY, v).apply()
-
-    /** Indica se ha uma chave configurada (salva ou embutida). */
-    val groqApiKeyConfigurada: Boolean
-        get() = groqApiKey.isNotEmpty()
-
-    /** Indica se a chave veio do BuildConfig (embutida no APK). */
-    val groqApiKeyEmbutida: Boolean
-        get() = (prefs.getString(KEY_GROQ_KEY, "") ?: "").isEmpty() &&
-                try { BuildConfig.GROQ_API_KEY.isNotEmpty() } catch (e: Exception) { false }
-
-    /** Retorna APENAS a chave salva em SharedPreferences (sem fallback). Vazio se nao houver. */
-    fun getSalvaGroq(): String = prefs.getString(KEY_GROQ_KEY, "") ?: ""
-
-    var modoIA: String
-        get() = prefs.getString(KEY_MODO_IA, "online_primeiro") ?: "online_primeiro"
-        set(v) = prefs.edit().putString(KEY_MODO_IA, v).apply()
-
     // Auto-update
     var autoUpdateAtivo: Boolean
         get() = prefs.getBoolean(KEY_AUTO_UPDATE, true)
@@ -170,8 +136,6 @@ class Prefs(context: Context) {
         // ============ NOVO ============
         private const val KEY_VEICULO_NOME_CURTO = "veiculo_nome_curto"
         // ============ FIM NOVO ============
-        private const val KEY_GROQ_KEY = "groq_api_key"
-        private const val KEY_MODO_IA = "modo_ia"
         private const val KEY_AUTO_UPDATE = "auto_update"
         private const val KEY_ULTIMA_VERSAO = "ultima_versao"
     }
