@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ExoButton" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/bg_button_cyan</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.1</item>
+        <item name="android:minHeight">@dimen/touch_min</item>
+        <item name="android:paddingStart">@dimen/space_lg</item>
+        <item name="android:paddingEnd">@dimen/space_lg</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="ExoButton.Danger">
+        <item name="android:background">@drawable/bg_button_red</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="ExoButton.Ghost">
+        <item name="android:background">@drawable/bg_button_ghost</item>
+        <item name="android:textColor">@color/cyan</item>
+    </style>
+
+    <style name="ExoLabel">
+        <item name="android:textColor">@color/cyan</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.15</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="ExoValue">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="ExoTitle">
+        <item name="android:textColor">@color/cyan</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.2</item>
+    </style>
+
+    <style name="ExoHeader">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingStart">@dimen/space_md</item>
+        <item name="android:paddingEnd">@dimen/space_md</item>
+        <item name="android:paddingTop">@dimen/space_md</item>
+        <item name="android:paddingBottom">@dimen/space_md</item>
+        <item name="android:background">@color/black</item>
+    </style>
+
+    <style name="ExoBackButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">@dimen/touch_min</item>
+        <item name="android:text">← VOLTAR</item>
+        <item name="android:textColor">@color/cyan</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.1</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:paddingStart">@dimen/space_sm</item>
+        <item name="android:paddingEnd">@dimen/space_sm</item>
+    </style>
+
+    <style name="ExoCard">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/bg_card</item>
+        <item name="android:padding">@dimen/space_md</item>
+        <item name="android:layout_marginBottom">@dimen/space_sm</item>
+    </style>
+
+    <style name="ExoDivider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/stroke_thin</item>
+        <item name="android:background">@drawable/divider_gradient</item>
+        <item name="android:layout_marginTop">@dimen/space_sm</item>
+        <item name="android:layout_marginBottom">@dimen/space_sm</item>
+    </style>
+
+</resources>

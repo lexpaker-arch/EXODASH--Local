@@ -62,14 +62,10 @@ class SettingsActivity : AppCompatActivity() {
         findViewById<Button>(R.id.btnEditarVeiculo).setOnClickListener { editarVeiculo() }
 
         // Atualização
-        val swAutoUpdate = findViewById<Switch>(R.id.swAutoUpdate)
-        swAutoUpdate.isChecked = prefs.autoUpdateAtivo
-        swAutoUpdate.setOnCheckedChangeListener { _, v -> prefs.autoUpdateAtivo = v }
 
-        findViewById<Button>(R.id.btnVerificarUpdate).setOnClickListener { verificarUpdate() }
+        findViewById<Button>(R.id.btnVerificarAtualizacao).setOnClickListener { verificarUpdate() }
 
         // Sobre
-        findViewById<android.view.View>(R.id.btnLimparCache).setOnClickListener { limparCache() }
         findViewById<android.view.View>(R.id.btnSobre).setOnClickListener { mostrarSobre() }
 
         // Logs de eventos
@@ -77,7 +73,12 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(Intent(this, LogsActivity::class.java))
         }
 
-        findViewById<TextView>(R.id.txtVersaoAtual).setOnClickListener {
+        // DTCs
+        findViewById<android.view.View>(R.id.btnVerDtc).setOnClickListener {
+            startActivity(Intent(this, DtcActivity::class.java))
+        }
+
+        findViewById<TextView>(R.id.txtVersao).setOnClickListener {
             contadorToquesVersao++
             if (contadorToquesVersao >= 7) {
                 prefs.modoAvancado = true
@@ -92,6 +93,8 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         atualizarLabels()
+        atualizarResumoLogs()
+        atualizarResumoDtc()
     }
 
     // =============================================
@@ -319,7 +322,7 @@ class SettingsActivity : AppCompatActivity() {
                    else "${prefs.veiculoMarca} ${prefs.veiculoModelo} ${prefs.veiculoAno}"
         findViewById<TextView>(R.id.txtVeiculo).text = veic
 
-        findViewById<TextView>(R.id.txtVersaoAtual).text = Updater.versaoLocal(this)
+        findViewById<TextView>(R.id.txtVersao).text = Updater.versaoLocal(this)
     }
 
     private fun nomeAmigavel(pkg: String, padrao: String): String {
@@ -336,6 +339,8 @@ class SettingsActivity : AppCompatActivity() {
         super.onResume()
         // Se ficou um update pendente (usuario foi autorizar permissao), retoma
         Updater.retomarSePendente(this)
+        atualizarResumoLogs()
+        atualizarResumoDtc()
     }
 
     private fun atualizarResumoLogs() {
