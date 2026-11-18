@@ -72,6 +72,11 @@ class SettingsActivity : AppCompatActivity() {
         findViewById<android.view.View>(R.id.btnLimparCache).setOnClickListener { limparCache() }
         findViewById<android.view.View>(R.id.btnSobre).setOnClickListener { mostrarSobre() }
 
+        // Diagnóstico (DTC)
+        findViewById<android.view.View>(R.id.btnVerDtc).setOnClickListener {
+            startActivity(Intent(this, DtcActivity::class.java))
+        }
+
         // Logs de eventos
         findViewById<android.view.View>(R.id.btnVerLogs).setOnClickListener {
             startActivity(Intent(this, LogsActivity::class.java))
