@@ -1,0 +1,26 @@
+> Task :app:clean
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:dataBindingMergeDependencyArtifactsDebug
+> Task :app:generateDebugResValues
+> Task :app:generateDebugResources
+
+> Task :app:mergeDebugResources FAILED
+ERROR: /workspaces/EXODASH--Local/app/src/main/res/layout/activity_settings.xml.bak: Resource and asset merger: The file name must end with .xml
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:mergeDebugResources'.
+> /workspaces/EXODASH--Local/app/src/main/res/layout/activity_settings.xml.bak: Error: The file name must end with .xml
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 7s
+5 actionable tasks: 5 executed

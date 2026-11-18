@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/space_md"
+    android:paddingBottom="@dimen/space_md">
+    <LinearLayout
+        android:id="@+id/btnVoltar"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/touch_min"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:clickable="true"
+        android:focusable="true">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="←"
+            android:textColor="@color/cyan"
+            android:textSize="22sp"
+            android:layout_marginEnd="@dimen/space_sm" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="VOLTAR"
+            android:textColor="@color/cyan"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="EXODASH Config"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginTop="@dimen/space_sm" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="BY ALEX. P"
+        android:textColor="@color/gray"
+        android:textSize="9sp"
+        android:layout_marginTop="2dp" />
+</LinearLayout>
