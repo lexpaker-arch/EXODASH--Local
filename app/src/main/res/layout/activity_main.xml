@@ -40,6 +40,16 @@ android:textSize="18sp"
 android:fontFamily="@font/inter_regular"
 android:textStyle="bold"
 android:letterSpacing="0.1" />
+<TextView
+android:id="@+id/statusUser"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="USUÁRIO"
+android:textColor="#00FFCC"
+android:textSize="11sp"
+android:fontFamily="@font/roboto_mono"
+android:letterSpacing="0.08"
+android:layout_marginTop="2dp" />
 <LinearLayout
 android:layout_width="wrap_content"
 android:layout_height="wrap_content"
@@ -64,7 +74,6 @@ android:textSize="9sp"
 android:fontFamily="@font/roboto_mono" />
 </LinearLayout>
 <TextView android:id="@+id/carroSub" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" />
-<TextView android:id="@+id/statusUser" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" />
 </LinearLayout>
 
 <LinearLayout
