@@ -77,5 +77,9 @@ dependencies {
     implementation("com.google.code.gson:gson:2.11.0")
     // OBD USB direto
     implementation("com.github.mik3y:usb-serial-for-android:3.10.0")
+    // Media3 (player local + MediaSession)
+    implementation("androidx.media3:media3-exoplayer:1.4.1")
+    implementation("androidx.media3:media3-session:1.4.1")
+    implementation("androidx.media3:media3-common:1.4.1")
     // Dependências locais (baixadas manualmente)
 }
