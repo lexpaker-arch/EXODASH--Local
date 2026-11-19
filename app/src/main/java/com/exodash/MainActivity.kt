@@ -179,25 +179,7 @@ class MainActivity : AppCompatActivity() {
         bossButton.setOnClickListener { iniciarEscuta(isFollowUp = false) }
 
         // Nome do carro (manual, sem auto-update) - seguro: depois do botao
-        try {
-            val nome = prefs.veiculoNomeCurto
-            if (nome.isNotEmpty()) {
-                val vNome = findViewById<TextView>(R.id.carroNome)
-                val vSub = findViewById<TextView>(R.id.carroSub)
-                vNome.text = nome.uppercase()
-                vNome.visibility = View.VISIBLE
-                val partes = mutableListOf<String>()
-                if (prefs.veiculoMarca.isNotEmpty()) partes.add(prefs.veiculoMarca)
-                if (prefs.veiculoAno > 0) partes.add(prefs.veiculoAno.toString())
-                if (partes.isNotEmpty()) {
-                    vSub.text = partes.joinToString(" \u2022 ").uppercase()
-                    vSub.visibility = View.VISIBLE
-                }
-            }
-            LogEventos.registrar(this, "onCreate: nome carro ok")
-        } catch (e: Exception) {
-            LogEventos.registrar(this, "onCreate: ERRO nome carro: ${e.message}")
-        }
+        atualizarNomeCarro()
 
         LogEventos.registrar(this, "onCreate: BOTAO EXO REGISTRADO")
         bossButton.setOnLongClickListener {
